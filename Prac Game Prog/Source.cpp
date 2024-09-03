@@ -30,51 +30,17 @@ LPDIRECT3DTEXTURE9 numbersTexture = nullptr;
 RECT spriteRect;
 RECT textRect;
 
+
+
 SceneManager sceneManager;
+
+//GAMEPLAY STUFF // TODO : do it someehere else in the future
+float thrust = 3.5f;
+float rotationSpeed = .1f;
+
 
 #pragma endregion
 
-
-// bool SpawnWindow()
-// {
-// 	/*
-// 		Step 1
-// 		Define and Register a Window.
-// 	*/
-//
-// 	//	Window's structure
-//
-// 	//	Set all members in wndClass to 0.
-// 	ZeroMemory(&wndClass, sizeof(wndClass));
-// 	
-// 	//	These are the fundamental structure members to be specify, in order to create your window.
-// 	wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-// 	wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
-// 	wndClass.hInstance = hInstance;	//	GetModuleHandle(nullptr);
-// 	wndClass.lpfnWndProc = WindowProcedure;
-// 	wndClass.lpszClassName = "Game Class Name insert here";
-// 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
-//
-// 	//	Register the window.
-// 	RegisterClass(&wndClass);
-//
-// 	/*
-// 		Step 2
-// 		Create the Window.
-// 	*/
-// 	//	You are to refer to MSDN for each of the parameters details.
-// 	g_hWnd = CreateWindowEx(0, wndClass.lpszClassName, "Valorant 1.6", WS_OVERLAPPEDWINDOW /*WS_EX_TOPMOST | WS_POPUP*/, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
-// 	ShowWindow(g_hWnd, 1);
-// 	
-// 	//	ShowCursor(false);
-//
-//
-// 	//make sure msg is zeroes
-// 	ZeroMemory(&msg, sizeof(msg));
-//
-// 	return true;
-//
-// }
 
 bool GameIsRunning()
 {
@@ -429,9 +395,6 @@ void Update(int framesToUpdate)
 	auto t = e->transform;
 	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
 	
-	//demo variables
-	float thrust = 10;
-
 	
 	if (diKeys[DIK_W] & 0x80)
 	{
@@ -448,12 +411,12 @@ void Update(int framesToUpdate)
 
 	if (diKeys[DIK_A] & 0x80)
 	{
-		t->rotation -= framesToUpdate * .1f;
+		t->rotation -= framesToUpdate * rotationSpeed;
 	}
 
 	if (diKeys[DIK_D] & 0x80)
 	{
-		t->rotation += framesToUpdate * .1f;
+		t->rotation += framesToUpdate * rotationSpeed;
 	}
 
 	auto e1 = sceneManager.currentScene->entityManager->GetEntity(ENEMY);
@@ -475,12 +438,12 @@ void Update(int framesToUpdate)
 
 	if (diKeys[DIK_LEFT] & 0x80)
 	{
-		t1->rotation -= framesToUpdate * .1f;
+		t1->rotation -= framesToUpdate * rotationSpeed;
 	}
 
 	if (diKeys[DIK_RIGHT] & 0x80)
 	{
-		t1->rotation += framesToUpdate * .1f;
+		t1->rotation += framesToUpdate * rotationSpeed;
 	}
 	
 	//myClock->UpdateClockTime();
