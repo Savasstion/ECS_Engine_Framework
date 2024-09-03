@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Prac Game Prog", "Prac Game Prog\Prac Game Prog.vcxproj", "{817F3AC6-C050-4A57-A0F0-520443BAE193}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Debug|x64.ActiveCfg = Debug|x64
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Debug|x64.Build.0 = Debug|x64
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Debug|x86.ActiveCfg = Debug|Win32
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Debug|x86.Build.0 = Debug|Win32
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Release|x64.ActiveCfg = Release|x64
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Release|x64.Build.0 = Release|x64
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Release|x86.ActiveCfg = Release|Win32
+		{817F3AC6-C050-4A57-A0F0-520443BAE193}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {82E70F0F-6B53-47E3-BA72-EA77D68F8926}
+	EndGlobalSection
+EndGlobal
