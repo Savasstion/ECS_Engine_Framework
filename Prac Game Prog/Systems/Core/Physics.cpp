@@ -29,10 +29,13 @@ void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
 
 void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders)
 {
+    //  you may now need to do research on how to check collisions for the whole vector of colliders
+
     for (auto c : colliders)
     {
+        //  this is how you can get a colliderComponent from the vector(arraylist)
         auto collider = std::dynamic_pointer_cast<BoxColliderComponent>(c);
-        DoCycleOfMotion(rgb);
+        
     }
     
 }
