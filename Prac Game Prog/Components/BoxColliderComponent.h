@@ -8,5 +8,6 @@ public:
     RECT box;
     BoxColliderComponent();
     BoxColliderComponent(RECT box);
+    virtual ~BoxColliderComponent() = default;  // Virtual destructor
     
 };
