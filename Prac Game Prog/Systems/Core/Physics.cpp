@@ -51,8 +51,8 @@ void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders)
             auto colliderB = std::dynamic_pointer_cast<BoxColliderComponent>(colliders[j]);
 
             if (CheckCollision(colliderA, colliderB)) {
-                auto rbA = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderA->parent->GetComponent(RIGIDBODY2D));
-                auto rbB = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderB->parent->GetComponent(RIGIDBODY2D));
+                auto rbA = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderA->parent->rigidbody);
+                auto rbB = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderB->parent->rigidbody);
                 ResolveCollision(rbA, rbB);
             }
         }
