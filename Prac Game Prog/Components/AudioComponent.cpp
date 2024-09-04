@@ -7,15 +7,10 @@ void AudioComponent::LoadSound(std::string sourcePath, boolean isLooping, boolea
 {
     
     if(isStream)
-    {
-        auto mode = FMOD_CREATESTREAM;
-        result = audioSystem->createSound(sourcePath.c_str(), mode,0,&sound);
-    }
+        result = audioSystem->createStream(sourcePath.c_str(), FMOD_DEFAULT,0,&sound);
     else
-    {
-        auto mode = FMOD_DEFAULT;
-        result = audioSystem->createSound(sourcePath.c_str(), mode,0,&sound);
-    }
+        result = audioSystem->createSound(sourcePath.c_str(), FMOD_DEFAULT,0,&sound);
+    
 
     if(isLooping)
         result = sound->setMode(FMOD_LOOP_NORMAL);
