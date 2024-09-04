@@ -9,6 +9,7 @@
 #include "Components/Sprite2DRendererComponent.h"
 #include "Systems/Managers/EntityManager.h"
 #include "Systems/Core/Graphics.h"
+#include "Systems/Core/Physics.h"
 #include "Systems/Managers/SceneManager.h"
 
 
@@ -85,42 +86,6 @@ bool GameIsRunning()
 
 #pragma region CLEAN_UP_FUNCTIONS
 
-// void CleanupWindow()
-// {
-// 	//	Free up the memory.
-// 	UnregisterClass(wndClass.lpszClassName, hInstance);
-// 	std::cout << "Unregistering window class" << '\n';
-// }
-// void CleanupD3DDevice()
-// {
-// 	if(d3dDevice != nullptr)
-// 	{
-// 		//	Release the device when exiting.
-// 		d3dDevice->Release();
-// 		//	Reset pointer to NULL, a good practice.
-// 		d3dDevice = nullptr;
-// 		std::cout << "D3DDevice cleared" << '\n';
-// 	}
-// }
-// void CleanupDirectXInterfaces() 
-// {
-// 	//	clean up sprites and textures
-// 	if(spriteBrush != nullptr)
-// 	{
-// 		spriteBrush->Release();
-// 		spriteBrush = nullptr;
-// 		std::cout << "Sprite brush cleared" << '\n';
-// 	}
-// 	
-// 	if (fontInterface != nullptr) 
-// 	{
-// 		fontInterface->Release();
-// 		fontInterface = nullptr;
-// 	}
-//
-//
-// }
-
 void CLeanupLoadedTextures()
 {
 	//	TODO: softcode it in the future
@@ -134,117 +99,6 @@ void CLeanupLoadedTextures()
 }
 
 #pragma endregion
-
-bool CreateD3DDevice()
-{
-	//	define direct3d9
-	//	this is where we take the direct3d class and instantiate an obj
-	//	becuz method we need is in the class
-	direct3D9 = Direct3DCreate9(D3D_SDK_VERSION);
-
-
-	ZeroMemory(&d3dPP, sizeof(d3dPP));
-
-	//	Refer to Direct3D 9 documentation for the meaning of the members.
-	//	requirements for virtual gpu
-	d3dPP.Windowed = true;
-	d3dPP.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	d3dPP.BackBufferFormat = D3DFMT_X8R8G8B8;
-	d3dPP.BackBufferCount = 1;
-	d3dPP.BackBufferWidth = SCREEN_WIDTH;
-	d3dPP.BackBufferHeight = SCREEN_HEIGHT;
-	d3dPP.hDeviceWindow = g_hWnd;
-
-
-	//	Create a Direct3D 9 device (virtual gpu).			
-	//	change to D3DDEVTYPE_REF if u want a software renderer instead
-	hr = direct3D9->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, g_hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dPP, &d3dDevice);
-
-
-
-	//if failed, print error message to console
-	if (FAILED(hr))
-	{
-		std::cout << "D3DDevice failed to be created!";
-		return false;
-	}
-
-	return true;
-
-}
-
-void DrawInterfaces()
-{
-	//	make sprite brush
-	if(spriteBrush == nullptr)
-	{
-		hr = D3DXCreateSprite(d3dDevice, &spriteBrush);
-		std::cout << "Sprite brush created" << '\n';
-	}
-	//	check if succeed or fail using hr
-	if FAILED(hr)
-	{
-		std::cout << "spriteBrush fucked\n";
-		std::cout << "Error : "<< DXGetErrorString(hr) << "\nDescription : " << DXGetErrorDescription(hr) << '\n';
-	}
-
-	//	Create font interface
-	if(fontInterface == nullptr)
-		hr = D3DXCreateFont(d3dDevice, 25, 0, 0, 1, false,
-			DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
-			DEFAULT_PITCH | FF_DONTCARE, "Arial", &fontInterface);
-	
-	//	Create line interface
-	if (lineInterface == nullptr)
-		hr = D3DXCreateLine(d3dDevice, &lineInterface);
-	
-
-	spriteBrush->Begin(D3DXSPRITE_ALPHABLEND);
-
-	//TODO:put this in a System  
-	//	DRAW ALL SPRITE2D Components
-	//	Sprite2DRenderer.DrawAllSprites
-	for(std::shared_ptr<Component> r : sceneManager.currentScene->componentManager->GetComponents(SPRITE2D_RENDERER))
-	{
-		std::shared_ptr<Sprite2DRendererComponent> c = std::dynamic_pointer_cast<Sprite2DRendererComponent>(r);
-		D3DXMATRIX mat = c->parent->GetTransformMatrix();
-		spriteBrush->SetTransform(&mat);
-		spriteBrush->Draw(c->spriteInfo.texture,&c->spriteRect,NULL,NULL,D3DCOLOR_XRGB(255, 255, 255));
-		
-	}
-	
-	//	note : if u put line::Begin() must end immediately after use cuz it will mess with spriteBrush somehow
-	lineInterface->Begin();
-	lineInterface->End();
-
-	//	Draw Mouse Pointer
-	spriteRect.left = 0;
-	spriteRect.top = 0;
-	spriteRect.right = 23;
-	spriteRect.bottom = 40;
-	//spriteBrush->Draw(mousePointerTexture, &spriteRect, nullptr, &mousePos, D3DCOLOR_XRGB(255, 255, 255));
-	
-	spriteBrush->End();
-
-}
-
-int Render()
-{
-	//	Clear the back buffer.
-	d3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-
-	//	Begin the scene - UNLOCK MEMORY FOR DRAWING
-	d3dDevice->BeginScene();
-
-	DrawInterfaces();
-
-	//	End the scene - LOCK THE MEMORY
-	d3dDevice->EndScene();
-
-	//	Present the back buffer to screen
-	d3dDevice->Present(nullptr, nullptr, nullptr, nullptr);
-	return 0;
-}
 
 void LoadInitialTextures() 
 {
@@ -476,6 +330,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	t->scale = D3DXVECTOR2(2,2);
 
 	rgb = scene->componentManager->CreateRigidbody2DComponent(e);
+	rgb->friction = 0.5f;
 	
 	//	Test Entity 2
 	e = scene->entityManager->CreateEntity(ENEMY);
@@ -493,19 +348,10 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	t->scale = D3DXVECTOR2(1,1);
 
 	rgb = scene->componentManager->CreateRigidbody2DComponent(e);
+	rgb->friction = 0.5f;
 	
 }
 #pragma endregion
-
-void DoPhysics()
-{
-	for (auto c : sceneManager.currentScene->componentManager->GetComponents(RIGIDBODY2D))
-	{
-		auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(c);
-		rgb->DoCycleOfMotion();
-	}
-}
-
 //	use int main if you want to have a console to print out message
 //int main() 
 
@@ -530,19 +376,20 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	while (GameIsRunning()) //game loop i guess
 	{
 		//	Run all systems
-		sceneManager.currentScene->entityManager->Update();
-		sceneManager.currentScene->componentManager->Update();
+		sceneManager.currentScene->entityManager->UpdateEntityList();
+		sceneManager.currentScene->componentManager->UpdateComponentList();
 		//TODO: DO ANIM, PHYSICS COMPONENTS 
 		
 		//get input
 		GetInput();
 		//do physics
-		DoPhysics();
+		//DoPhysics();
+		Physics::DoScenePhysics(sceneManager.currentScene);
 		//AI
 		//game update/logic
 		Update(gameTimer->GetFramesToUpdate());
 		//Draw!!!!
-		Render();
+		Graphics::RenderScene(sceneManager.currentScene);
 		//play sound
 
 

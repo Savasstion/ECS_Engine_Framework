@@ -2,14 +2,10 @@
 
 void EntityManager::Start()
 {
-    //  Do all entities' Start function
-    for(auto e : entities)
-    {
-        e->Start();
-    }
+    DoALlEntityStartups();
 }
 
-void EntityManager::Update()
+void EntityManager::UpdateEntityList()
 {
     //  entities in to_be_added list is added to main lists
     for(auto e : entitiesToAdd)
@@ -37,13 +33,25 @@ void EntityManager::Update()
         }
     }
 
+        
+}
+
+void EntityManager::DoALlEntityStartups()
+{
+    //  Do all entities' Start function
+    for(auto e : entities)
+    {
+        e->Start();
+    }
+}
+
+void EntityManager::DoAllEntityUpdates()
+{
     //  do all entity updates
     for(auto e : entities)
     {
         e->Update();
     }
-    
-    
 }
 
 std::shared_ptr<Entity> EntityManager::CreateEntity(TagEnum tag)

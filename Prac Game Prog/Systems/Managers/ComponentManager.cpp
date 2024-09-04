@@ -7,13 +7,10 @@
 
 void ComponentManager::Start()
 {
-    for(auto c : components)
-    {
-        c->Start();
-    }
+   DoALlComponentStartups();
 }
 
-void ComponentManager::Update()
+void ComponentManager::UpdateComponentList()
 {
     //look at entity manager cpp to get the same idea/comments implemented here
     for(auto c : componentsToAdd)
@@ -38,13 +35,25 @@ void ComponentManager::Update()
             componentMap[c->GetComponentTag()].erase(std::remove(componentMap[c->GetComponentTag()].begin(), componentMap[c->GetComponentTag()].end(), c), componentMap[c->GetComponentTag()].end());
         }
     }
+    
+    
+}
 
+void ComponentManager::DoALlComponentStartups()
+{
+    for(auto c : components)
+    {
+        c->Start();
+    }
+}
+
+void ComponentManager::DoAllComponentUpdates()
+{
     //  do all entity updates
     for(auto c : components)
     {
         c->Update();
     }
-    
 }
 
 std::shared_ptr<TransformComponent> ComponentManager::CreateTransformComponent(std::shared_ptr<Entity> parent)

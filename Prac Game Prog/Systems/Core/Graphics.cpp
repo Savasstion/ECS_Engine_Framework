@@ -129,11 +129,55 @@ bool Graphics::CreateD3DDevice()
 
 }
 
-void Graphics::DrawInterfaces()
+void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
 {
+    HRESULT hr= {};
+    //	make sprite brush
+    if(spriteBrush == nullptr)
+    {
+        hr = D3DXCreateSprite(d3dDevice, &spriteBrush);
+        std::cout << "Sprite brush created" << '\n';
+    }
+    //	check if succeed or fail using hr
+    if FAILED(hr)
+    {
+        std::cout << "spriteBrush fucked\n";
+        std::cout << "Error : "<< DXGetErrorString(hr) << "\nDescription : " << DXGetErrorDescription(hr) << '\n';
+    }
+
+    //	Create font interface
+    if(fontInterface == nullptr)
+        hr = D3DXCreateFont(d3dDevice, 25, 0, 0, 1, false,
+            DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
+            DEFAULT_PITCH | FF_DONTCARE, "Arial", &fontInterface);
+	
+    //	Create line interface
+    if (lineInterface == nullptr)
+        hr = D3DXCreateLine(d3dDevice, &lineInterface);
+	
+
+    spriteBrush->Begin(D3DXSPRITE_ALPHABLEND);
+	
+    //	DRAW ALL SPRITE2D Components
+    //	Sprite2DRenderer.DrawAllSprites
+    Graphics::DrawAll2DSprites(currentScene->componentManager->GetComponents(SPRITE2D_RENDERER));
+	
+    //	note : if u put line::Begin() must end immediately after use cuz it will mess with spriteBrush somehow
+    lineInterface->Begin();
+    lineInterface->End();
+
+    //	Draw Mouse Pointer
+    //spriteRect.left = 0;
+    //spriteRect.top = 0;
+    //spriteRect.right = 23;
+    //spriteRect.bottom = 40;
+    //spriteBrush->Draw(mousePointerTexture, &spriteRect, nullptr, &mousePos, D3DCOLOR_XRGB(255, 255, 255));
+	
+    spriteBrush->End();
+
 }
 
-int Graphics::Render()
+int Graphics::RenderScene(std::shared_ptr<Scene> currentScene)
 {
     //	Clear the back buffer.
     d3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
@@ -141,7 +185,7 @@ int Graphics::Render()
     //	Begin the scene - UNLOCK MEMORY FOR DRAWING
     d3dDevice->BeginScene();
 
-    DrawInterfaces();
+    DrawInterfacesOfScene(currentScene);
 
     //	End the scene - LOCK THE MEMORY
     d3dDevice->EndScene();
@@ -149,4 +193,18 @@ int Graphics::Render()
     //	Present the back buffer to screen
     d3dDevice->Present(nullptr, nullptr, nullptr, nullptr);
     return 0;
+}
+
+void Graphics::DrawAll2DSprites(std::vector<std::shared_ptr<Component>> sprite2DRendererComponents)
+{
+    //	DRAW ALL SPRITE2D Components
+    //	Sprite2DRenderer.DrawAllSprites
+    for(std::shared_ptr<Component> r : sprite2DRendererComponents)
+    {
+        std::shared_ptr<Sprite2DRendererComponent> c = std::dynamic_pointer_cast<Sprite2DRendererComponent>(r);
+        D3DXMATRIX mat = c->parent->GetTransformMatrix();
+        spriteBrush->SetTransform(&mat);
+        spriteBrush->Draw(c->spriteInfo.texture,&c->spriteRect,NULL,NULL,D3DCOLOR_XRGB(255, 255, 255));
+		
+    }
 }
