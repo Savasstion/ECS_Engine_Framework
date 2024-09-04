@@ -7,7 +7,7 @@
 
 void ComponentManager::Start()
 {
-   DoALlComponentStartups();
+   DoAllComponentStartups();
 }
 
 void ComponentManager::UpdateComponentList()
@@ -39,7 +39,7 @@ void ComponentManager::UpdateComponentList()
     
 }
 
-void ComponentManager::DoALlComponentStartups()
+void ComponentManager::DoAllComponentStartups()
 {
     for(auto c : components)
     {

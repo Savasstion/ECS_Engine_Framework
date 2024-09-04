@@ -21,7 +21,7 @@ class EntityManager
 public:
     void Start();
     void UpdateEntityList();
-    void DoALlEntityStartups();
+    void DoAllEntityStartups();
     void DoAllEntityUpdates();
     std::shared_ptr<Entity> CreateEntity(TagEnum tag);
     std::shared_ptr<Entity> CreateEntity(TagEnum tag, std::string name, D3DXVECTOR2 scale, float rotation, D3DXVECTOR2 position);

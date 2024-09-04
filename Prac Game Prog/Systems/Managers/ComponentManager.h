@@ -24,7 +24,7 @@ public:
     
     void Start();
     void UpdateComponentList();
-    void DoALlComponentStartups();
+    void DoAllComponentStartups();
     void DoAllComponentUpdates();
     std::shared_ptr<TransformComponent> CreateTransformComponent(std::shared_ptr<Entity> parent);
     std::shared_ptr<NameComponent> CreateNameComponent(std::shared_ptr<Entity> parent);

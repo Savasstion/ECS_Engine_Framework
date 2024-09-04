@@ -2,7 +2,7 @@
 
 void EntityManager::Start()
 {
-    DoALlEntityStartups();
+    DoAllEntityStartups();
 }
 
 void EntityManager::UpdateEntityList()
@@ -36,7 +36,7 @@ void EntityManager::UpdateEntityList()
         
 }
 
-void EntityManager::DoALlEntityStartups()
+void EntityManager::DoAllEntityStartups()
 {
     //  Do all entities' Start function
     for(auto e : entities)
