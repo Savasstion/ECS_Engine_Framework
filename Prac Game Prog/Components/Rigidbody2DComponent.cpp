@@ -11,14 +11,17 @@ Rigidbody2DComponent::Rigidbody2DComponent()
 void Rigidbody2DComponent::ApplyForce(D3DXVECTOR2 force)
 {
     acceleration = force / mass;
-    
 }
 
+//TODO : friction is not working correctly, need fix 
 void Rigidbody2DComponent::DoCycleOfMotion()
 {
     velocity += acceleration;
     velocity *= (1 - friction);
+    
+    if(velocity > maxVelocity)
+        velocity = maxVelocity;
 
     if(parent->transform != nullptr)
-        parent->transform->position += velocity; 
+        parent->transform->position += velocity;
 }
