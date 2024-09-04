@@ -30,6 +30,9 @@
 #pragma comment(lib, "dxguid.lib")
 
 #include <iostream>
+#include "fmod.hpp"
+//	FMOD VC LIB
+#pragma comment(lib, "fmod_vc.lib")
 #pragma endregion
 
 #ifndef GLOBAL_H
@@ -69,6 +72,10 @@ extern LPD3DXFONT fontInterface;
 extern LPD3DXLINE lineInterface;
 
 //extern FrameTimer* gameTimer;
+
+// Audio stuff
+extern FMOD::System* audioSystem;	//	virtual sound card
+extern FMOD::Channel* channel;	//	
 
 #endif // GLOBAL_H
     

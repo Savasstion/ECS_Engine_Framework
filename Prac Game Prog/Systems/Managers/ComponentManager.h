@@ -6,7 +6,9 @@
 #include "../../Components/Rigidbody2DComponent.h"
 #include "../../Components/Sprite2DRendererComponent.h"
 #include "../../Enums/ComponentEnum.h"
+#include "../../Components/Audio2DComponent.h"
 #include "../Core/Globals.h"
+
 
 typedef std::vector<std::shared_ptr<Component>> ComponentVector;
 //  A map so we can get a vector of entities according to their tag
@@ -31,6 +33,7 @@ public:
     std::shared_ptr<Sprite2DRendererComponent> CreateSprite2DRendererComponent(std::shared_ptr<Entity> parent);
     std::shared_ptr<BoxColliderComponent> CreateBoxColliderComponent(std::shared_ptr<Entity> parent);
     std::shared_ptr<Rigidbody2DComponent> CreateRigidbody2DComponent(std::shared_ptr<Entity> parent);
+    std::shared_ptr<Audio2DComponent> CreateAudio2DComponent(std::shared_ptr<Entity> parent);
     ComponentVector& GetComponents();
     ComponentVector& GetComponents(ComponentEnum componentTag);
     void DestroyAllComponents();

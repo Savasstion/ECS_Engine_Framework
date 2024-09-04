@@ -313,6 +313,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	std::shared_ptr<TransformComponent> t;
 	std::shared_ptr<Entity> e;
 	std::shared_ptr<Rigidbody2DComponent> rgb;
+	std::shared_ptr<Audio2DComponent> au2d;
 
 	//	Test Entity 1
 	e = scene->entityManager->CreateEntity(PLAYER);
@@ -346,9 +347,33 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	t = scene->componentManager->CreateTransformComponent(e);
 	t->position = D3DXVECTOR2(500,500);
 	t->scale = D3DXVECTOR2(1,1);
+	t->rotation = 1;
 
 	rgb = scene->componentManager->CreateRigidbody2DComponent(e);
 	rgb->friction = 0.5f;
+
+	// Test audio entity
+	e = scene->entityManager->CreateEntity(ENEMY);
+	
+	c = scene->componentManager->CreateSprite2DRendererComponent(e);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
+	spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
+	spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
+	spriteInfo1.totalRows = 1;
+	spriteInfo1.totalCols = 1;
+	c->InitSpriteInfo(spriteInfo1);
+	
+	t = scene->componentManager->CreateTransformComponent(e);
+	t->position = D3DXVECTOR2(500,500);
+	t->scale = D3DXVECTOR2(1,1);
+	t->rotation = 1;
+
+	rgb = scene->componentManager->CreateRigidbody2DComponent(e);
+	rgb->friction = 0.5f;
+
+	// scene = current scene, call componentManager to create Audio2DComponent, e = parent entity
+	au2d = scene->componentManager->CreateAudio2DComponent(e);
+	au2d->sound = 
 	
 }
 #pragma endregion

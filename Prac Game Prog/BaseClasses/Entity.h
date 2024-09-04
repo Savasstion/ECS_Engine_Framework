@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "../Components/AudioComponent.h"
 #include "../Components/NameComponent.h"
 #include "../Components/RendererComponent.h"
 #include "../Components/TransformComponent.h"
@@ -10,12 +12,13 @@
 #include "../Components/RigidbodyComponent.h"
 #include "../Enums/TagEnum.h"
 
+
 typedef std::vector<std::shared_ptr<ColliderComponent>> Colliders;
 typedef std::shared_ptr<TransformComponent> Transform;
 typedef std::shared_ptr<NameComponent> Name;
 typedef std::shared_ptr<RendererComponent> Renderer;
 typedef std::shared_ptr<RigidbodyComponent> Rigidbody;
-
+typedef std::vector<std::shared_ptr<AudioComponent>> Audio;
 
 class Entity
 {
@@ -28,7 +31,8 @@ public:
     Renderer renderer;
     Colliders colliders;
     Rigidbody rigidbody;
-
+    Audio audio;
+    
     //  every subclass should have a Start and Update function that calls parent's Start and Update first then its own logic.
     void Start();
     void Update();

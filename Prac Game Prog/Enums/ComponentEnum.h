@@ -6,6 +6,7 @@ enum ComponentEnum
     NAME,
     SPRITE2D_RENDERER,
     BOX_COLLIDER,
-    RIGIDBODY2D
+    RIGIDBODY2D,
+    AUDIO2D
     
 };

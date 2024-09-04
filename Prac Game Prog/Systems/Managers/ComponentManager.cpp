@@ -108,6 +108,16 @@ std::shared_ptr<Rigidbody2DComponent> ComponentManager::CreateRigidbody2DCompone
     return c;
 }
 
+std::shared_ptr<Audio2DComponent> ComponentManager::CreateAudio2DComponent(std::shared_ptr<Entity> parent)
+{
+    auto c = std::make_shared<Audio2DComponent>();
+    c->parent = parent;
+    parent->audio.push_back(c);
+    componentsToAdd.push_back(c);
+    componentMap[AUDIO2D].push_back(c);
+    return c;
+}
+
 ComponentVector& ComponentManager::GetComponents()
 {
     return components;

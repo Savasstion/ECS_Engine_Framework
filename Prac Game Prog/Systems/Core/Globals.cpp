@@ -18,3 +18,6 @@ D3DXVECTOR3 mousePos = D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0);
 LPD3DXSPRITE spriteBrush = nullptr;
 LPD3DXFONT fontInterface = nullptr;
 LPD3DXLINE lineInterface = nullptr;
+
+FMOD::System* audioSystem;	//	virtual sound card
+FMOD::Channel* channel = 0;
