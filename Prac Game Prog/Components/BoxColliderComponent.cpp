@@ -1,6 +1,7 @@
 #include "BoxColliderComponent.h"
 
-BoxColliderComponent::BoxColliderComponent()
+BoxColliderComponent::BoxColliderComponent() 
+    : tag(ColliderTag::Player)
 {
     Component(BOX_COLLIDER);
     this->box.top = 0;
@@ -9,7 +10,8 @@ BoxColliderComponent::BoxColliderComponent()
     this->box.bottom = 0;
 }
 
-BoxColliderComponent::BoxColliderComponent(RECT box)
+BoxColliderComponent::BoxColliderComponent(RECT box, ColliderTag tag) 
+    : tag(tag)
 {
     Component(BOX_COLLIDER);
     this->box = box;
