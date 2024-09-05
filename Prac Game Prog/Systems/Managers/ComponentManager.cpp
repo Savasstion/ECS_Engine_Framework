@@ -112,7 +112,7 @@ std::shared_ptr<Audio2DComponent> ComponentManager::CreateAudio2DComponent(std::
 {
     auto c = std::make_shared<Audio2DComponent>();
     c->parent = parent;
-    parent->audio.push_back(c);
+    parent->audios.push_back(c);
     componentsToAdd.push_back(c);
     componentMap[AUDIO2D].push_back(c);
     return c;

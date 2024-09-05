@@ -31,7 +31,7 @@ public:
     Renderer renderer;
     Colliders colliders;
     Rigidbody rigidbody;
-    Audios audio;
+    Audios audios;
     
     //  every subclass should have a Start and Update function that calls parent's Start and Update first then its own logic.
     void Start();

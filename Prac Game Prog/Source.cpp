@@ -40,6 +40,9 @@ SceneManager sceneManager;
 float thrust = 3.5f;
 float rotationSpeed = .1f;
 
+// Audio
+Audio au;
+std::shared_ptr<Entity> audioEntity;
 
 #pragma endregion
 
@@ -257,12 +260,12 @@ void Update(int framesToUpdate)
 		forceApplied.x = sin(t->rotation) * thrust;
 		forceApplied.y = -cos(t->rotation) * thrust;
 		rgb->ApplyForce(forceApplied);
-		
+		au.PlaySound(audioEntity->audios[0]);
 	}
 
 	if (diKeys[DIK_S] & 0x80)
 	{
-		
+	
 	}
 
 	if (diKeys[DIK_A] & 0x80)
@@ -316,7 +319,6 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	std::shared_ptr<Entity> e;
 	std::shared_ptr<Rigidbody2DComponent> rgb;
 	std::shared_ptr<Audio2DComponent> au2d;
-	std::shared_ptr<Audios> au = std::make_shared<Audios>();
 
 	//	Test Entity 1
 	e = scene->entityManager->CreateEntity(PLAYER);
@@ -356,9 +358,9 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	rgb->friction = 0.5f;
 
 	// Test audio entity
-	e = scene->entityManager->CreateEntity(ENEMY);
+	audioEntity = scene->entityManager->CreateEntity(ENEMY);
 	// Sprite component
-	c = scene->componentManager->CreateSprite2DRendererComponent(e);
+	c = scene->componentManager->CreateSprite2DRendererComponent(audioEntity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
 	spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
 	spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
@@ -367,25 +369,22 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	c->InitSpriteInfo(spriteInfo1);
 
 	// Sprite transform
-	t = scene->componentManager->CreateTransformComponent(e);
+	t = scene->componentManager->CreateTransformComponent(audioEntity);
 	t->position = D3DXVECTOR2(500,500);
 	t->scale = D3DXVECTOR2(1,1);
 	t->rotation = 1;
 
 	// Physics stuff
-	rgb = scene->componentManager->CreateRigidbody2DComponent(e);
+	rgb = scene->componentManager->CreateRigidbody2DComponent(audioEntity);
 	rgb->friction = 0.5f;
 
 	// Audio stuff
 	// scene = current scene, call componentManager to create Audio2DComponent, e = parent entity
-	au2d = scene->componentManager->CreateAudio2DComponent(e);
-	au2d->LoadSound("Assets/Sounds/ak47-gunshot.mp3", false,false);
-	au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
+	au2d = scene->componentManager->CreateAudio2DComponent(audioEntity);
+	//au2dBgm = scene->componentManager->CreateAudio2DComponent(audioEntity);
+	au2d->LoadSound("Assets/Sounds/ak47-gunshot.mp3", false,false); // [0]
+	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
 
-	// Initialize and play audio
-	au->InitAudio();
-	au->PlaySound(au2d);
-	
 	//	pls determine freq then set it
 	//au2d->setFrequency()
 	
@@ -407,6 +406,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	Graphics::CreateD3DDevice();
 	LoadInitialTextures();
 	CreateDirectInput();
+	au.InitAudio();
 
 	FrameTimer* gameTimer = new FrameTimer();
 	gameTimer->Init(60);
@@ -431,7 +431,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		//Draw!!!!
 		Graphics::RenderScene(sceneManager.currentScene);
 		//play sound
-		
+		au.UpdateSound();
 
 
 		//	Print RGB value of screen on console
