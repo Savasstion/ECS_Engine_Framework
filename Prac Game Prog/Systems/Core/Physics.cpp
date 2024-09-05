@@ -30,18 +30,18 @@ void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
         rgb->parent->transform->position += rgb->velocity;
 }
 
-void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders)
-{
-    //  you may now need to do research on how to check collisions for the whole vector of colliders
-
-    for (auto c : colliders)
-    {
-        //  this is how you can get a colliderComponent from the vector(arraylist)
-        auto collider = std::dynamic_pointer_cast<BoxColliderComponent>(c);
-        
-    }
-    
-}
+// void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders)
+// {
+//     //  you may now need to do research on how to check collisions for the whole vector of colliders
+//
+//     for (auto c : colliders)
+//     {
+//         //  this is how you can get a colliderComponent from the vector(arraylist)
+//         auto collider = std::dynamic_pointer_cast<BoxColliderComponent>(c);
+//         
+//     }
+//     
+// }
 
 void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders) {
     // Brute force collision detection (improve with spatial partitioning for large numbers of objects)
@@ -74,7 +74,9 @@ void Physics::ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::s
         D3DXVECTOR2 normal = rbB->parent->transform->position - rbA->parent->transform->position;
         D3DXVec2Normalize(&normal, &normal);
 
-        float relativeVelocity = D3DXVec2Dot(&(rbB->velocity - rbA->velocity), &normal);
+        D3DXVECTOR2 direction = rbB->velocity - rbA->velocity;
+        
+        float relativeVelocity = D3DXVec2Dot(&direction, &normal);
         float e = 1.0f;  // Coefficient of restitution (1 = perfectly elastic, 0 = perfectly inelastic)
 
         float j = -(1 + e) * relativeVelocity / (1 / rbA->mass + 1 / rbB->mass);
