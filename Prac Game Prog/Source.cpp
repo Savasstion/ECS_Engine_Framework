@@ -11,6 +11,7 @@
 #include "Systems/Core/Graphics.h"
 #include "Systems/Core/Physics.h"
 #include "Systems/Managers/SceneManager.h"
+#include "Systems/Core/Audio.h"
 
 
 #pragma region GLOBAL_VAR
@@ -256,6 +257,7 @@ void Update(int framesToUpdate)
 		forceApplied.x = sin(t->rotation) * thrust;
 		forceApplied.y = -cos(t->rotation) * thrust;
 		rgb->ApplyForce(forceApplied);
+		
 	}
 
 	if (diKeys[DIK_S] & 0x80)
@@ -314,6 +316,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	std::shared_ptr<Entity> e;
 	std::shared_ptr<Rigidbody2DComponent> rgb;
 	std::shared_ptr<Audio2DComponent> au2d;
+	std::shared_ptr<Audio> au = std::make_shared<Audio>();
 
 	//	Test Entity 1
 	e = scene->entityManager->CreateEntity(PLAYER);
@@ -354,7 +357,6 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 
 	// Test audio entity
 	e = scene->entityManager->CreateEntity(ENEMY);
-
 	// Sprite component
 	c = scene->componentManager->CreateSprite2DRendererComponent(e);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
@@ -378,7 +380,12 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	// scene = current scene, call componentManager to create Audio2DComponent, e = parent entity
 	au2d = scene->componentManager->CreateAudio2DComponent(e);
 	au2d->LoadSound("Assets/Sounds/ak47-gunshot.mp3", false,false);
-	au2d->setVolume(1);
+	au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
+
+	// Initialize and play audio
+	au->InitAudio();
+	au->PlaySound(au2d);
+	
 	//	pls determine freq then set it
 	//au2d->setFrequency()
 	
@@ -424,6 +431,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		//Draw!!!!
 		Graphics::RenderScene(sceneManager.currentScene);
 		//play sound
+		
 
 
 		//	Print RGB value of screen on console
