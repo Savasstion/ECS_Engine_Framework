@@ -316,7 +316,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	std::shared_ptr<Entity> e;
 	std::shared_ptr<Rigidbody2DComponent> rgb;
 	std::shared_ptr<Audio2DComponent> au2d;
-	std::shared_ptr<Audio> au = std::make_shared<Audio>();
+	std::shared_ptr<Audios> au = std::make_shared<Audios>();
 
 	//	Test Entity 1
 	e = scene->entityManager->CreateEntity(PLAYER);

@@ -18,7 +18,7 @@ typedef std::shared_ptr<TransformComponent> Transform;
 typedef std::shared_ptr<NameComponent> Name;
 typedef std::shared_ptr<RendererComponent> Renderer;
 typedef std::shared_ptr<RigidbodyComponent> Rigidbody;
-typedef std::vector<std::shared_ptr<AudioComponent>> Audio;
+typedef std::vector<std::shared_ptr<AudioComponent>> Audios;
 
 class Entity
 {
@@ -31,7 +31,7 @@ public:
     Renderer renderer;
     Colliders colliders;
     Rigidbody rigidbody;
-    Audio audio;
+    Audios audio;
     
     //  every subclass should have a Start and Update function that calls parent's Start and Update first then its own logic.
     void Start();
