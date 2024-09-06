@@ -50,6 +50,21 @@ D3DXVECTOR2 Sprite2DRendererComponent::GetSpriteCenter()
     return D3DXVECTOR2(x,y);
 }
 
+void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
+{
+    static int frameCounter = 0;
+    frameCounter += framesToUpdate;
+    int colIndex = frameCounter % (spriteInfo.maxSheetIndex+1);
+
+    if(frameCounter % (spriteInfo.maxSheetIndex+1) == 0)
+        frameCounter = 0;
+    
+    spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
+    spriteRect.top = currentDirection * spriteInfo.spriteHeight;
+    spriteRect.right = spriteRect.left + spriteInfo.spriteWidth;
+    spriteRect.bottom = spriteRect.top + spriteInfo.spriteHeight;
+}
+
 
 
 

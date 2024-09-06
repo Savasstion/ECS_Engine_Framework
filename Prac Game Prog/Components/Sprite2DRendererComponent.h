@@ -16,6 +16,9 @@ public:
     //  default = 0 so if an animated sprite doesn't change directions, it will not offset to a separate row
     int currentDirection = 0;
     D3DXVECTOR2 spriteRenderPos;
+    //  int intendedAnimationFPS;
+    bool isAnimated;
+    
 
     Sprite2DRendererComponent();
     Sprite2DRendererComponent(Sprite spriteInfo);
@@ -28,4 +31,5 @@ public:
     void SetSpriteInfo(Sprite newSpriteInfo){this->spriteInfo = newSpriteInfo;}
     D3DXVECTOR2 GetSpriteRenderPos();
     D3DXVECTOR2 GetSpriteCenter();
+    void UpdateSpriteAnimation(int framesToUpdate);
 };
