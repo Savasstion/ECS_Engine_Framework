@@ -85,6 +85,11 @@ std::shared_ptr<Entity> EntityManager::GetEntity(TagEnum tag)
     return entityMap[tag][0];
 }
 
+std::shared_ptr<Entity> EntityManager::GetEntity(TagEnum tag, int index)
+{
+    return entityMap[tag][index];
+}
+
 void EntityManager::DestroyAllEntities()
 {
     for(auto e : entities)

@@ -28,6 +28,7 @@ public:
     EntityVector& GetEntities();
     EntityVector& GetEntities(TagEnum tag);
     std::shared_ptr<Entity> GetEntity(TagEnum tag);
+    std::shared_ptr<Entity> GetEntity(TagEnum tag, int index);
     void DestroyAllEntities();
 
 
