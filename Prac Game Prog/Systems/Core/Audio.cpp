@@ -12,7 +12,7 @@ void Audio::PlaySound(std::shared_ptr<AudioComponent> au)
     //                                       au->channelGroup, au->isPaused (i think isPause shouldnt be used)
     result = audioSystem->playSound(au2d->sound, 0, false, &channel);
     //TODO: need to set freq and volume
-    channel->setVolume(au2d->getVolume());
+    channel->setVolume(au2d->GetVolume());
     //channel->setFrequency(au2d->getFrequency());
     channel->setFrequency(48000);
 }

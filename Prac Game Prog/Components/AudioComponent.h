@@ -13,8 +13,8 @@ public:
 
 	virtual ~AudioComponent() = default; // Virtual destructor
 	void LoadSound(std::string sourcePath, boolean isLooping,boolean isStream);
-	float getVolume(){return volume;}
-	float getFrequency(){return frequency;}
+	float GetVolume(){return volume;}
+	float GetFrequency(){return frequency;}
 	void setVolume(float volume){this->volume = volume;}
 	void setFrequency(long frequency){this->frequency = frequency;}
 	
