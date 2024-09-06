@@ -11,6 +11,6 @@ public:
 
     // Methods for initializing, playing, and updating audio
     void InitAudio();
-    void PlaySound(std::shared_ptr<AudioComponent> au);
+    void PlaySound(std::shared_ptr<AudioComponent> au, float spritePosX, float screenWidth);
     void UpdateSound();
 };

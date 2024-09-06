@@ -273,6 +273,10 @@ void Update(int framesToUpdate, float deltaTime)
 
 	if (diKeys[DIK_S] & 0x80)
 	{
+		D3DXVECTOR2 forceApplied;
+		forceApplied.x = -sin(t->rotation) * thrust;
+		forceApplied.y = cos(t->rotation) * thrust;
+		rgb->ApplyForce(forceApplied);
 		isMoving = true;
 	}
 
@@ -294,7 +298,7 @@ void Update(int framesToUpdate, float deltaTime)
 
 	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
 	{
-		au.PlaySound(audioEntity->audios[0]);
+		au.PlaySound(audioEntity->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
 		timeSinceLastSound = 0.0f; // Reset the timer
 	}
 
@@ -437,7 +441,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	AddIntoScene(sceneManager.currentScene);
 
 	// Play background music in loop
-	au.PlaySound(audioEntity->audios[1]);
+	au.PlaySound(audioEntity->audios[1], 0, 0);
 	
 	while (GameIsRunning()) //game loop i guess
 	{
