@@ -25,3 +25,10 @@ int FrameTimer::GetFramesToUpdate()
     
     return framesToUpdate;
 }
+
+float FrameTimer::GetDeltaTime()
+{
+    // Calculate deltaTime in seconds
+    float deltaTimeInSeconds = static_cast<float>(deltaTime) / timerFreq.QuadPart;
+    return deltaTimeInSeconds;
+}

@@ -43,6 +43,9 @@ float rotationSpeed = .1f;
 // Audio
 Audio au;
 std::shared_ptr<Entity> audioEntity;
+float timeSinceLastSound = 0.0f; // Track time since the last sound was played
+const float soundInterval = 0.1f; // Time interval between sounds in seconds
+
 
 #pragma endregion
 
@@ -196,8 +199,14 @@ void GetInput()
 	
 }
 
-void Update(int framesToUpdate) 
+void Update(int framesToUpdate, float deltaTime)
 {
+	bool isMoving = false;
+	static bool wasMoving = false; // Track the previous movement state
+
+	// Update timeSinceLastSound
+	timeSinceLastSound += deltaTime;
+
 	//	Acquire the device.
 	dInputKeyboardDevice->Acquire();
 	dInputMouseDevice->Acquire();
@@ -253,29 +262,40 @@ void Update(int framesToUpdate)
 	auto t = e->transform;
 	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
 	
-	
 	if (diKeys[DIK_W] & 0x80)
 	{
 		D3DXVECTOR2 forceApplied;
 		forceApplied.x = sin(t->rotation) * thrust;
 		forceApplied.y = -cos(t->rotation) * thrust;
 		rgb->ApplyForce(forceApplied);
-		au.PlaySound(audioEntity->audios[0]);
+		isMoving = true;
 	}
 
 	if (diKeys[DIK_S] & 0x80)
 	{
-	
+		isMoving = true;
 	}
 
 	if (diKeys[DIK_A] & 0x80)
 	{
 		t->rotation -= framesToUpdate * rotationSpeed;
+		isMoving = true;
 	}
 
 	if (diKeys[DIK_D] & 0x80)
 	{
 		t->rotation += framesToUpdate * rotationSpeed;
+		isMoving = true;
+	}
+
+	// Play sound only when movement starts and regulate it with deltaTime
+	static float timeSinceLastSound = 0.0f;
+	timeSinceLastSound += deltaTime;
+
+	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
+	{
+		au.PlaySound(audioEntity->audios[0]);
+		timeSinceLastSound = 0.0f; // Reset the timer
 	}
 
 	auto e1 = sceneManager.currentScene->entityManager->GetEntity(ENEMY);
@@ -319,6 +339,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	std::shared_ptr<Entity> e;
 	std::shared_ptr<Rigidbody2DComponent> rgb;
 	std::shared_ptr<Audio2DComponent> au2d;
+	std::shared_ptr<Audio2DComponent> au2dBgm;
 
 	//	Test Entity 1
 	e = scene->entityManager->CreateEntity(PLAYER);
@@ -381,8 +402,9 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	// Audio stuff
 	// scene = current scene, call componentManager to create Audio2DComponent, e = parent entity
 	au2d = scene->componentManager->CreateAudio2DComponent(audioEntity);
-	//au2dBgm = scene->componentManager->CreateAudio2DComponent(audioEntity);
-	au2d->LoadSound("Assets/Sounds/ak47-gunshot.mp3", false,false); // [0]
+	au2dBgm = scene->componentManager->CreateAudio2DComponent(audioEntity);
+	au2d->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
+	au2dBgm->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
 	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
 
 	//	pls determine freq then set it
@@ -407,11 +429,15 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	LoadInitialTextures();
 	CreateDirectInput();
 	au.InitAudio();
+	
 
 	FrameTimer* gameTimer = new FrameTimer();
 	gameTimer->Init(60);
 	//	may change how to do this in the future
 	AddIntoScene(sceneManager.currentScene);
+
+	// Play background music in loop
+	au.PlaySound(audioEntity->audios[1]);
 	
 	while (GameIsRunning()) //game loop i guess
 	{
@@ -427,7 +453,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		Physics::DoScenePhysics(sceneManager.currentScene);
 		//AI
 		//game update/logic
-		Update(gameTimer->GetFramesToUpdate());
+		Update(gameTimer->GetFramesToUpdate(), gameTimer->GetDeltaTime());
 		//Draw!!!!
 		Graphics::RenderScene(sceneManager.currentScene);
 		//play sound
