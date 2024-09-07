@@ -12,11 +12,19 @@ void Physics::DoAllCycleOfMotion(std::vector<std::shared_ptr<Component>> rbg2DCo
     for (auto c : rbg2DComponents)
     {
         auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(c);
-        DoCycleOfMotion(rgb);
+        auto velocity = DoCycleOfMotion(rgb);
+
+        auto colliders = rgb->parent->colliders;
+        for (auto c : colliders)
+        {
+           // auto boxC = std::dynamic_pointer_cast<BoxColliderComponent>(c);
+            c->UpdateColliderPos(velocity);
+            
+        }
     }
 }
 
-void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
+D3DXVECTOR2 Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
 {
     rgb->velocity += rgb->acceleration;
     rgb->velocity *= (1.0f - rgb->friction);
@@ -28,6 +36,9 @@ void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
 
     if (rgb->parent->transform != nullptr)
         rgb->parent->transform->position += rgb->velocity;
+
+    rgb->acceleration = D3DXVECTOR2(0,0);
+    return rgb->velocity;
 }
 
 // void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders)

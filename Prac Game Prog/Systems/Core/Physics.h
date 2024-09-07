@@ -13,7 +13,7 @@ public:
 
     static void DoScenePhysics(std::shared_ptr<Scene> scene);
     static void DoAllCycleOfMotion(std::vector<std::shared_ptr<Component>> rbg2DComponents);    //  for 2D
-    static void DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb);
+    static D3DXVECTOR2 DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb);
     static void HandleAllCollision(std::vector<std::shared_ptr<Component>> collider);
 
 private:

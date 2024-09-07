@@ -11,5 +11,5 @@ Rigidbody2DComponent::Rigidbody2DComponent()
 
 void Rigidbody2DComponent::ApplyForce(D3DXVECTOR2 force)
 {
-    acceleration = force / mass;
+    acceleration += force / mass;
 }
