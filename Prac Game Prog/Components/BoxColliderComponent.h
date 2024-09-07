@@ -15,6 +15,8 @@ public:
     ColliderTag tag;
     BoxColliderComponent();
     BoxColliderComponent(RECT box, ColliderTag tag = ColliderTag::Player);
+    void SetBox(RECT box){this->box = box;}
+    void SetColliderTag(ColliderTag tag){this->tag = tag;}
     virtual ~BoxColliderComponent() = default;  // Virtual destructor
     
 };
