@@ -5,7 +5,7 @@
 #include  "../../Components/Rigidbody2DComponent.h"
 #include "../../Components/BoxColliderComponent.h"
 #include "../../BaseClasses/Scene.h"
-#include "Globals.h"
+
 
 class Physics
 {
