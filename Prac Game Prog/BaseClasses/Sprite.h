@@ -10,7 +10,8 @@ public:
     int totalRows, totalCols;
     int sheetWidth, sheetHeight;
     int sheetGap = 0;
-    int maxSheetIndex = 0;
+    int maxRows = 0;
+    int maxCols = 0;
     
     bool isAnimated = false;
 

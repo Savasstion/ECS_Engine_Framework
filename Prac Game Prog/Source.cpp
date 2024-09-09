@@ -292,6 +292,13 @@ void Update(int framesToUpdate, float deltaTime)
 		isMoving = true;
 	}
 
+	// Sprite Animation Update
+	auto sprites = sceneManager.currentScene->componentManager->GetComponents(SPRITE2D_RENDERER);
+	for (auto component : sprites) {
+		auto sprite2d = std::dynamic_pointer_cast<Sprite2DRendererComponent>(component);
+		sprite2d->UpdateSpriteAnimation(framesToUpdate);
+	}
+
 	// Play sound only when movement starts and regulate it with deltaTime
 	static float timeSinceLastSound = 0.0f;
 	timeSinceLastSound += deltaTime;
@@ -337,84 +344,101 @@ void Update(int framesToUpdate, float deltaTime)
 Sprite spriteInfo, spriteInfo1; //	TODO: make an sprite asset vector
 void AddIntoScene(std::shared_ptr<Scene> scene)
 {
-	
-	std::shared_ptr<Sprite2DRendererComponent> c;
-	std::shared_ptr<TransformComponent> t;
-	std::shared_ptr<Entity> e;
-	std::shared_ptr<Rigidbody2DComponent> rgb;
-	std::shared_ptr<Audio2DComponent> au2d;
-	std::shared_ptr<Audio2DComponent> au2dBgm;
+	std::shared_ptr<Sprite2DRendererComponent> spriteComponent;
+	std::shared_ptr<TransformComponent> transformComponent;
+	std::shared_ptr<Entity> entity;
+	std::shared_ptr<Rigidbody2DComponent> rigidbodyComponent;
+	std::shared_ptr<Audio2DComponent> audioComponent;
+	std::shared_ptr<Audio2DComponent> audioBGM;
 
-	//	Test Entity 1
-	e = scene->entityManager->CreateEntity(PLAYER);
-	
-	c = scene->componentManager->CreateSprite2DRendererComponent(e);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/mousePointer.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 40;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 23;
-	spriteInfo.totalRows = 1;
-	spriteInfo.totalCols = 1;
-	c->InitSpriteInfo(spriteInfo);
-	
-	t = scene->componentManager->CreateTransformComponent(e);
-	t->position = D3DXVECTOR2(500,100);
-	t->scale = D3DXVECTOR2(2,2);
+	////	Test Entity 1
+	//e = scene->entityManager->CreateEntity(PLAYER);
+	//
+	//c = scene->componentManager->CreateSprite2DRendererComponent(e);
+	//D3DXCreateTextureFromFile(d3dDevice, "Assets/mousePointer.png", &spriteInfo.texture);
+	//spriteInfo.sheetHeight = spriteInfo.spriteHeight = 40;
+	//spriteInfo.sheetWidth = spriteInfo.spriteWidth = 23;
+	//spriteInfo.totalRows = 1;
+	//spriteInfo.totalCols = 1;
+	//c->InitSpriteInfo(spriteInfo);
+	//
+	//t = scene->componentManager->CreateTransformComponent(e);
+	//t->position = D3DXVECTOR2(500,100);
+	//t->scale = D3DXVECTOR2(2,2);
 
-	rgb = scene->componentManager->CreateRigidbody2DComponent(e);
-	rgb->friction = 0.5f;
-	
-	//	Test Entity 2
-	e = scene->entityManager->CreateEntity(ENEMY);
-	
-	c = scene->componentManager->CreateSprite2DRendererComponent(e);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
-	spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
-	spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
-	spriteInfo1.totalRows = 1;
-	spriteInfo1.totalCols = 1;
-	c->InitSpriteInfo(spriteInfo1);
-	
-	t = scene->componentManager->CreateTransformComponent(e);
-	t->position = D3DXVECTOR2(500,500);
-	t->scale = D3DXVECTOR2(1,1);
-	t->rotation = 1;
+	//rgb = scene->componentManager->CreateRigidbody2DComponent(e);
+	//rgb->friction = 0.5f;
+	//
 
-	rgb = scene->componentManager->CreateRigidbody2DComponent(e);
-	rgb->friction = 0.5f;
+
+	////	Test Entity 2
+	//e = scene->entityManager->CreateEntity(ENEMY);
+	//
+	//c = scene->componentManager->CreateSprite2DRendererComponent(e);
+	//D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
+	//spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
+	//spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
+	//spriteInfo1.totalRows = 1;
+	//spriteInfo1.totalCols = 1;
+	//c->InitSpriteInfo(spriteInfo1);
+	//
+	//t = scene->componentManager->CreateTransformComponent(e);
+	//t->position = D3DXVECTOR2(500,500);
+	//t->scale = D3DXVECTOR2(1,1);
+	//t->rotation = 1;
+
+	//rgb = scene->componentManager->CreateRigidbody2DComponent(e);
+	//rgb->friction = 0.5f;
 
 	// Test audio entity
 	audioEntity = scene->entityManager->CreateEntity(ENEMY);
 	// Sprite component
-	c = scene->componentManager->CreateSprite2DRendererComponent(audioEntity);
+	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(audioEntity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
 	spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
 	spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
 	spriteInfo1.totalRows = 1;
 	spriteInfo1.totalCols = 1;
-	c->InitSpriteInfo(spriteInfo1);
+	spriteComponent->InitSpriteInfo(spriteInfo1);
 
 	// Sprite transform
-	t = scene->componentManager->CreateTransformComponent(audioEntity);
-	t->position = D3DXVECTOR2(500,500);
-	t->scale = D3DXVECTOR2(1,1);
-	t->rotation = 1;
+	transformComponent = scene->componentManager->CreateTransformComponent(audioEntity);
+	transformComponent->position = D3DXVECTOR2(500,500);
+	transformComponent->scale = D3DXVECTOR2(1,1);
+	transformComponent->rotation = 1;
 
 	// Physics stuff
-	rgb = scene->componentManager->CreateRigidbody2DComponent(audioEntity);
-	rgb->friction = 0.5f;
+	rigidbodyComponent = scene->componentManager->CreateRigidbody2DComponent(audioEntity);
+	rigidbodyComponent->friction = 0.5f;
 
 	// Audio stuff
 	// scene = current scene, call componentManager to create Audio2DComponent, e = parent entity
-	au2d = scene->componentManager->CreateAudio2DComponent(audioEntity);
-	au2dBgm = scene->componentManager->CreateAudio2DComponent(audioEntity);
-	au2d->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
-	au2dBgm->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
+	audioComponent = scene->componentManager->CreateAudio2DComponent(audioEntity);
+	audioBGM = scene->componentManager->CreateAudio2DComponent(audioEntity);
+	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
+	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
 	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
 
 	//	pls determine freq then set it
 	//au2d->setFrequency()
-	
-	
+
+	entity = scene->entityManager->CreateEntity(PLAYER);
+
+	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/militia.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 48;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 32;
+	spriteInfo.totalRows = 4;
+	spriteInfo.totalCols = 4;
+	spriteInfo.isAnimated = true;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+
+	transformComponent = scene->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(500, 100);
+	transformComponent->scale = D3DXVECTOR2(2, 2);
+
+	rigidbodyComponent = scene->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->friction = 0.5f;
 }
 #pragma endregion
 //	use int main if you want to have a console to print out message

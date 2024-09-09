@@ -75,8 +75,8 @@
     <LibraryPath>$(DXSDK_DIR)lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(DXSDK_DIR)include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;$(DXSDK_DIR)include\;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x86;$(DXSDK_DIR)lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -365,6 +365,8 @@
     </ClCompile>
     <ClCompile Include="BaseClasses\Scene.cpp" />
     <ClCompile Include="BaseClasses\Sprite.cpp" />
+    <ClCompile Include="Components\Audio2DComponent.cpp" />
+    <ClCompile Include="Components\AudioComponent.cpp" />
     <ClCompile Include="Components\BoxColliderComponent.cpp" />
     <ClCompile Include="Components\ColliderComponent.cpp" />
     <ClCompile Include="Components\NameComponent.cpp" />
@@ -448,6 +450,7 @@
     </ClCompile>
     <ClCompile Include="Components\TransformComponent.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Systems\Core\Audio.cpp" />
     <ClCompile Include="Systems\Core\Globals.cpp" />
     <ClCompile Include="Systems\Core\Graphics.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -524,6 +527,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Systems\Core\Physics.cpp" />
     <ClCompile Include="Systems\Core\WindowProcedure.cpp" />
     <ClCompile Include="Systems\Managers\ComponentManager.cpp" />
     <ClCompile Include="Systems\Managers\EntityManager.cpp">
@@ -610,6 +614,8 @@
     <ClInclude Include="BaseClasses\FrameTimer.h" />
     <ClInclude Include="BaseClasses\Scene.h" />
     <ClInclude Include="BaseClasses\Sprite.h" />
+    <ClInclude Include="Components\Audio2DComponent.h" />
+    <ClInclude Include="Components\AudioComponent.h" />
     <ClInclude Include="Components\BoxColliderComponent.h" />
     <ClInclude Include="Components\ColliderComponent.h" />
     <ClInclude Include="Components\NameComponent.h" />
@@ -620,12 +626,18 @@
     <ClInclude Include="Components\TransformComponent.h" />
     <ClInclude Include="Enums\ComponentEnum.h" />
     <ClInclude Include="Enums\TagEnum.h" />
+    <ClInclude Include="Systems\Core\Audio.h" />
     <ClInclude Include="Systems\Core\Globals.h" />
     <ClInclude Include="Systems\Core\Graphics.h" />
+    <ClInclude Include="Systems\Core\Physics.h" />
     <ClInclude Include="Systems\Core\WindowProcedure.h" />
     <ClInclude Include="Systems\Managers\ComponentManager.h" />
     <ClInclude Include="Systems\Managers\EntityManager.h" />
     <ClInclude Include="Systems\Managers\SceneManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fmod.dll" />
+    <None Include="fmodL.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
