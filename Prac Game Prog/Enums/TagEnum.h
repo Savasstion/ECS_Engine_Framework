@@ -9,6 +9,7 @@ enum TagEnum
     NPC_NEUTRAL,
     PROJECTILE,
     OBSTACLE,
-    PICKABLE
+    PICKABLE,
+    UI
     
 };
