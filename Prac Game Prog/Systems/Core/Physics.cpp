@@ -1,9 +1,14 @@
 #include "Physics.h"
 
-void Physics::DoScenePhysics(std::shared_ptr<Scene> scene)
+float Physics::globalGravityConstant = 4.0f;
+
+void Physics::DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate)
 {
-    DoAllCycleOfMotion(scene->componentManager->GetComponents(RIGIDBODY2D));
-    HandleAllCollision(scene->componentManager->GetComponents(BOX_COLLIDER));
+    for(int i = 0; i < framesToUpdate;i++)
+    {
+            DoAllCycleOfMotion(scene->componentManager->GetComponents(RIGIDBODY2D));
+            HandleAllCollision(scene->componentManager->GetComponents(BOX_COLLIDER));
+    }
 }
 
 //For Rigidbody 2D
@@ -12,33 +17,48 @@ void Physics::DoAllCycleOfMotion(std::vector<std::shared_ptr<Component>> rbg2DCo
     for (auto c : rbg2DComponents)
     {
         auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(c);
-        auto velocity = DoCycleOfMotion(rgb);
+        DoCycleOfMotion(rgb);
 
-        auto colliders = rgb->parent->colliders;
-        for (auto c : colliders)
-        {
-           // auto boxC = std::dynamic_pointer_cast<BoxColliderComponent>(c);
-            c->UpdateColliderPos(velocity);
-            
-        }
+       
     }
 }
 
-D3DXVECTOR2 Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
+void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
 {
-    rgb->velocity += rgb->acceleration;
-    rgb->velocity *= (1.0f - rgb->friction);
 
+    if (rgb->mass != 0.0f) {
+        rgb->acceleration = rgb->forceApplied / rgb->mass;
+    } else {
+        rgb->acceleration = D3DXVECTOR2(0, 0); // Prevent division by zero
+    }
+
+    //rgb->acceleration +=  rgb->forceApplied /  rgb->mass;
+
+    //  caps acceleration to max acceleration;
+    if (rgb->acceleration.x > rgb->maxAcceleration.x)
+        rgb->acceleration.x = rgb->maxAcceleration.x;
+    if (rgb->acceleration.y > rgb->maxAcceleration.y)
+        rgb->acceleration.y = rgb->maxAcceleration.y;
+    
+    //  caps velocity to max velocity
     if (rgb->velocity.x > rgb->maxVelocity.x)
         rgb->velocity.x = rgb->maxVelocity.x;
     if (rgb->velocity.y > rgb->maxVelocity.y)
         rgb->velocity.y = rgb->maxVelocity.y;
+    
+
+     D3DXVECTOR2 frictionForce = CalculateFrictionForce(rgb->velocity, rgb->friction, rgb->mass);
+
+    rgb->acceleration += frictionForce / rgb->mass;
+
+    rgb->velocity += rgb->acceleration;
 
     if (rgb->parent->transform != nullptr)
         rgb->parent->transform->position += rgb->velocity;
 
-    rgb->acceleration = D3DXVECTOR2(0,0);
-    return rgb->velocity;
+    rgb->forceApplied = D3DXVECTOR2(0,0);   //resets force being applied on entity
+    //rgb->acceleration = D3DXVECTOR2(0,0);
+    //rgb->velocity = D3DXVECTOR2(0,0); 
 }
 
 // void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders)
@@ -127,4 +147,32 @@ void Physics::ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::s
             rbB->velocity *= 0.5f;
         }
     }
+}
+
+D3DXVECTOR2 Physics::CalculateFrictionForce(D3DXVECTOR2 velocity, float friction, float mass)
+{
+    // Calculate the friction force opposing the motion
+        if (D3DXVec2Length(&velocity) == 0.0f)
+        {
+            return D3DXVECTOR2(0, 0);  // No friction if there's no movement
+        }
+
+        // Calculate the normal force (mass * gravity)
+        float normalForce = mass * globalGravityConstant;
+
+        // Calculate kinetic friction magnitude
+        float frictionMagnitude = friction * normalForce;
+
+        D3DXVECTOR2 normalizedVelocity;
+        D3DXVec2Normalize(&normalizedVelocity, &velocity);
+    
+        // Friction force is opposite the direction of velocity
+        D3DXVECTOR2 frictionForce = -frictionMagnitude * normalizedVelocity;
+
+        // Prevent friction from reversing velocity (optional stability check)
+        if (D3DXVec2Length(&frictionForce) > D3DXVec2Length(&velocity) * mass) {
+            frictionForce = -velocity * mass;
+        }
+
+        return frictionForce;
 }

@@ -37,7 +37,7 @@ RECT textRect;
 SceneManager sceneManager;
 
 //GAMEPLAY STUFF // TODO : do it someehere else in the future
-float thrust = 3.5f;
+float thrust = 1.5f;
 float rotationSpeed = .1f;
 
 // Audio
@@ -472,16 +472,18 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		//	Run all systems
 		sceneManager.currentScene->entityManager->UpdateEntityList();
 		sceneManager.currentScene->componentManager->UpdateComponentList();
+		int framesToUpdate = gameTimer->GetFramesToUpdate();
+		float deltaTime = gameTimer->GetDeltaTime();
 		//TODO: DO ANIM, PHYSICS COMPONENTS 
 		
 		//get input
 		GetInput();
 		//do physics
 		//DoPhysics();
-		Physics::DoScenePhysics(sceneManager.currentScene);
+		Physics::DoScenePhysics(sceneManager.currentScene, framesToUpdate);
 		//AI
 		//game update/logic
-		Update(gameTimer->GetFramesToUpdate(), gameTimer->GetDeltaTime());
+		Update(framesToUpdate, deltaTime);
 		//Draw!!!!
 		Graphics::RenderScene(sceneManager.currentScene);
 		//play sound
