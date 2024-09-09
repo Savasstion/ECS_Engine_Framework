@@ -58,7 +58,7 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
         frameCounter += framesToUpdate;
         int colIndex = frameCounter % (spriteInfo.maxCols + 1);
 
-        if (frameCounter % (spriteInfo.maxSheetRows + 1) == 0)
+        if (frameCounter % (spriteInfo.maxRows + 1) == 0)
             frameCounter = 0;
 
         spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
