@@ -37,7 +37,7 @@ RECT textRect;
 SceneManager sceneManager;
 
 //GAMEPLAY STUFF // TODO : do it someehere else in the future
-float thrust = 1.5f;
+float thrust = 3.5f;
 float rotationSpeed = .1f;
 
 // Audio
@@ -211,6 +211,7 @@ void Update(int framesToUpdate, float deltaTime)
 	dInputKeyboardDevice->Acquire();
 	dInputMouseDevice->Acquire();
 
+#pragma region MOUSE_INPUTS
 	//	MOUSE INPUT EVENT
 	mousePos.x += mouseState.lX;
 	mousePos.y += mouseState.lY;
@@ -225,6 +226,9 @@ void Update(int framesToUpdate, float deltaTime)
 		std::cout << "RIGHT CLICK" << std::endl;
 	}
 
+#pragma endregion
+
+#pragma region KEYBOARD_INPUTS
 	//	KEYBOARD INPUT EVENT
 	if (diKeys[DIK_ESCAPE] & 0x80)
 	{
@@ -257,40 +261,80 @@ void Update(int framesToUpdate, float deltaTime)
 		}
 	}
 
+#pragma region PLAYER_KEYBOARD_INPUTS
 	// player inputs
 	auto e = sceneManager.currentScene->entityManager->GetEntity(PLAYER);
 	auto t = e->transform;
 	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
-	
+	D3DXVECTOR2 forceApplied = D3DXVECTOR2(0,0);
 	if (diKeys[DIK_W] & 0x80)
 	{
-		D3DXVECTOR2 forceApplied;
-		forceApplied.x = sin(t->rotation) * thrust;
-		forceApplied.y = -cos(t->rotation) * thrust;
-		rgb->ApplyForce(forceApplied);
+		forceApplied += D3DXVECTOR2(0,-1);
+		//forceApplied.x = sin(t->rotation) * thrust;
+		//forceApplied.y = -cos(t->rotation) * thrust;
+		
 		isMoving = true;
 	}
 
 	if (diKeys[DIK_S] & 0x80)
 	{
-		D3DXVECTOR2 forceApplied;
-		forceApplied.x = -sin(t->rotation) * thrust;
-		forceApplied.y = cos(t->rotation) * thrust;
-		rgb->ApplyForce(forceApplied);
+		forceApplied += D3DXVECTOR2(0,1);
 		isMoving = true;
 	}
 
 	if (diKeys[DIK_A] & 0x80)
 	{
-		t->rotation -= framesToUpdate * rotationSpeed;
+		//t->rotation -= framesToUpdate * rotationSpeed;
+		forceApplied += D3DXVECTOR2(-1,0);
 		isMoving = true;
 	}
 
 	if (diKeys[DIK_D] & 0x80)
 	{
-		t->rotation += framesToUpdate * rotationSpeed;
+		forceApplied += D3DXVECTOR2(1,0);
 		isMoving = true;
 	}
+
+	D3DXVec2Normalize(&forceApplied,&forceApplied);
+	rgb->ApplyForce(forceApplied * thrust * framesToUpdate);
+
+	auto e1 = sceneManager.currentScene->entityManager->GetEntity(ENEMY);
+	auto t1 = e1->transform;
+	auto rgb1 = std::dynamic_pointer_cast<Rigidbody2DComponent>(e1->rigidbody);
+	D3DXVECTOR2 forceApplied1 = D3DXVECTOR2(0,0);
+	if (diKeys[DIK_UP] & 0x80)
+	{
+		forceApplied1 += D3DXVECTOR2(0,-1);
+		//forceApplied.x = sin(t->rotation) * thrust;
+		//forceApplied.y = -cos(t->rotation) * thrust;
+		
+		isMoving = true;
+	}
+
+	if (diKeys[DIK_DOWN] & 0x80)
+	{
+		forceApplied1 += D3DXVECTOR2(0,1);
+		isMoving = true;
+	}
+
+	if (diKeys[DIK_LEFT] & 0x80)
+	{
+		//t->rotation -= framesToUpdate * rotationSpeed;
+		forceApplied1 += D3DXVECTOR2(-1,0);
+		isMoving = true;
+	}
+
+	if (diKeys[DIK_RIGHT] & 0x80)
+	{
+		forceApplied1 += D3DXVECTOR2(1,0);
+		isMoving = true;
+	}
+	
+	D3DXVec2Normalize(&forceApplied1,&forceApplied1);
+	rgb1->ApplyForce(forceApplied1 * thrust * framesToUpdate);
+#pragma endregion
+	
+#pragma endregion
 
 	// Sprite Animation Update
 	auto sprites = sceneManager.currentScene->componentManager->GetComponents(SPRITE2D_RENDERER);
@@ -309,34 +353,7 @@ void Update(int framesToUpdate, float deltaTime)
 		timeSinceLastSound = 0.0f; // Reset the timer
 	}
 
-	auto e1 = sceneManager.currentScene->entityManager->GetEntity(ENEMY);
-	auto t1 = e1->transform;
-	auto rgb1 = std::dynamic_pointer_cast<Rigidbody2DComponent>(e1->rigidbody);
 	
-	if (diKeys[DIK_UP] & 0x80)
-	{
-		D3DXVECTOR2 forceApplied;
-		forceApplied.x = sin(t1->rotation) * thrust;
-		forceApplied.y = -cos(t1->rotation) * thrust;
-		rgb1->ApplyForce(forceApplied);
-	}
-
-	if (diKeys[DIK_DOWN] & 0x80)
-	{
-		
-	}
-
-	if (diKeys[DIK_LEFT] & 0x80)
-	{
-		t1->rotation -= framesToUpdate * rotationSpeed;
-	}
-
-	if (diKeys[DIK_RIGHT] & 0x80)
-	{
-		t1->rotation += framesToUpdate * rotationSpeed;
-	}
-	
-	//myClock->UpdateClockTime();
 }
 
 #pragma region TESTING_FUNCTIONS

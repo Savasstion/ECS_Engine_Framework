@@ -1,5 +1,7 @@
 #include "Globals.h"
 
+int intendedFPS = 60;
+
 HWND g_hWnd = nullptr;
 HINSTANCE hInstance = GetModuleHandle(nullptr);
 WNDCLASS wndClass = WNDCLASS();

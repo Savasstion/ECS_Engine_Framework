@@ -5,11 +5,12 @@
 #include  "../../Components/Rigidbody2DComponent.h"
 #include "../../Components/BoxColliderComponent.h"
 #include "../../BaseClasses/Scene.h"
+#include "Globals.h"
 
 class Physics
 {
 public:
-    static float globalGravityConstant;
+    static const float globalGravityConstant;
 
     static void DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate);
     static void DoAllCycleOfMotion(std::vector<std::shared_ptr<Component>> rbg2DComponents);    //  for 2D

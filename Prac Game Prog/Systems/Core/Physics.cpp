@@ -1,13 +1,13 @@
 #include "Physics.h"
 
-float Physics::globalGravityConstant = 4.0f;
+const float Physics::globalGravityConstant = 4.0f;
 
 void Physics::DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate)
 {
-    for(int i = 0; i < framesToUpdate;i++)
+    for(int i =0;i<framesToUpdate;i++)
     {
-            DoAllCycleOfMotion(scene->componentManager->GetComponents(RIGIDBODY2D));
-            HandleAllCollision(scene->componentManager->GetComponents(BOX_COLLIDER));
+        DoAllCycleOfMotion(scene->componentManager->GetComponents(RIGIDBODY2D));
+        HandleAllCollision(scene->componentManager->GetComponents(BOX_COLLIDER));
     }
 }
 
@@ -31,34 +31,24 @@ void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
     } else {
         rgb->acceleration = D3DXVECTOR2(0, 0); // Prevent division by zero
     }
-
-    //rgb->acceleration +=  rgb->forceApplied /  rgb->mass;
-
-    //  caps acceleration to max acceleration;
-    if (rgb->acceleration.x > rgb->maxAcceleration.x)
-        rgb->acceleration.x = rgb->maxAcceleration.x;
-    if (rgb->acceleration.y > rgb->maxAcceleration.y)
-        rgb->acceleration.y = rgb->maxAcceleration.y;
     
-    //  caps velocity to max velocity
-    if (rgb->velocity.x > rgb->maxVelocity.x)
-        rgb->velocity.x = rgb->maxVelocity.x;
-    if (rgb->velocity.y > rgb->maxVelocity.y)
-        rgb->velocity.y = rgb->maxVelocity.y;
-    
-
      D3DXVECTOR2 frictionForce = CalculateFrictionForce(rgb->velocity, rgb->friction, rgb->mass);
 
     rgb->acceleration += frictionForce / rgb->mass;
 
     rgb->velocity += rgb->acceleration;
+    
+    //  caps velocity to max velocity
+    if (D3DXVec2Length(&rgb->velocity) > D3DXVec2Length(&rgb->maxVelocity))
+    {
+        D3DXVec2Normalize(&rgb->velocity,&rgb->velocity);
+        rgb->velocity *= D3DXVec2Length(&rgb->maxVelocity);
+    }
 
     if (rgb->parent->transform != nullptr)
         rgb->parent->transform->position += rgb->velocity;
 
     rgb->forceApplied = D3DXVECTOR2(0,0);   //resets force being applied on entity
-    //rgb->acceleration = D3DXVECTOR2(0,0);
-    //rgb->velocity = D3DXVECTOR2(0,0); 
 }
 
 // void Physics::HandleCollision(std::vector<std::shared_ptr<Component>> colliders)
