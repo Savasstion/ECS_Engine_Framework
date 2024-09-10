@@ -14,8 +14,6 @@
 #include "Systems/Managers/SceneManager.h"
 #include "Systems/Core/Audio.h"
 
-#include "Enums/DirectionEnum.h"
-
 
 #pragma region GLOBAL_VAR
 HRESULT hr;
@@ -50,8 +48,6 @@ const float soundInterval = 0.1f; // Time interval between sounds in seconds
 //testing vars
 std::shared_ptr<Entity> audioEntity;
 
-//Imported Enum DirectionEnums.h
-Direction currentDirection;
 
 #pragma endregion
 
@@ -283,7 +279,7 @@ void Update(int framesToUpdate, float deltaTime)
 		isMoving = true;
 
 		//Sprite Animation
-		currentDirection = UP;
+		
 	}
 
 	if (diKeys[DIK_S] & 0x80)
@@ -292,7 +288,6 @@ void Update(int framesToUpdate, float deltaTime)
 		isMoving = true;
 
 		//Sprite Animation
-		currentDirection = DOWN;
 	}
 
 	if (diKeys[DIK_A] & 0x80)
@@ -302,7 +297,7 @@ void Update(int framesToUpdate, float deltaTime)
 		isMoving = true;
 
 		//Sprite Animation
-		currentDirection = LEFT;
+
 	}
 
 	if (diKeys[DIK_D] & 0x80)
@@ -311,7 +306,7 @@ void Update(int framesToUpdate, float deltaTime)
 		isMoving = true;
 
 		//Sprite Animation
-		currentDirection = RIGHT;
+		
 	}
 
 	D3DXVec2Normalize(&forceApplied,&forceApplied);
@@ -360,7 +355,7 @@ void Update(int framesToUpdate, float deltaTime)
 	for (auto component : sprites) {
 		//std::cout << "Animating" << '\n';
 		auto sprite2d = std::dynamic_pointer_cast<Sprite2DRendererComponent>(component);
-		sprite2d->UpdateSpriteAnimationDirection(framesToUpdate, currentDirection);
+		sprite2d->UpdateSpriteAnimation(framesToUpdate);
 	}
 
 	// Play sound only when movement starts and regulate it with deltaTime
@@ -471,6 +466,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	spriteInfo.totalRows = 4;
 	spriteInfo.totalCols = 4;
 	spriteInfo.isAnimated = true;
+	spriteInfo1.isDirectional = true;
 	spriteInfo.upDirectionValue = 3;
 	spriteInfo.leftDirectionValue = 1;
 	spriteInfo.rightDirectionValue = 2;
