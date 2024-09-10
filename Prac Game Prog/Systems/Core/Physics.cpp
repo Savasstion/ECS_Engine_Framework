@@ -1,5 +1,9 @@
 #include "Physics.h"
 
+#include "../../Components/Polygon2DColliderComponent.h"
+#undef min
+#undef max 
+
 const float Physics::globalGravityConstant = 4.0f;
 
 void Physics::DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate)
@@ -52,12 +56,98 @@ void Physics::DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb)
 }
 
 
-void Physics::HandleAllCollision(std::shared_ptr<Scene> scene) {
+void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
+{
+    //  Check for Polygon2D collisions
+    {
+        auto components = scene->componentManager->GetComponents(POLYGON2D_COLLIDER);
 
+        for(size_t i = 0; i < components.size(); i++)
+        {
+            auto polygon2dColliderA = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[i]);
+            auto polygon2dColliderB = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[(i + 1) % components.size()]);   //circular loop
 
+            auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld());
 
+            if(isCollided)
+            {
+                std::cout<<"COLLISION_DETECTED!"<<'\n';
+            }
+        }
 
+    }
+     
+}
+
+void Physics::ProjectVerticesOntoAxis(std::vector<D3DXVECTOR2> vertices, D3DXVECTOR2 axis, float* minValue, float* maxValue)
+{
     
+    *minValue = std::numeric_limits<float>::max();
+    *maxValue = std::numeric_limits<float>::min();
+
+    for(int i = 0; i < vertices.size(); i++)
+    {
+    D3DXVECTOR2 v = vertices[i];
+        float projection = D3DXVec2Dot(&v,&axis);
+
+        if(projection < *minValue) {*minValue = projection;}
+        if(projection > *maxValue) {*maxValue = projection;}
+    }
+    
+}
+
+bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std::vector<D3DXVECTOR2> verticesB)
+{   //  SAT (Separating Axis Theorem)
+    //  Taken reference from Two-Bit Coding on YouTube
+    //  Note : make sure only pass it convex polygons, TODO: take account for non-convex polygons
+    
+    for(size_t i = 0; i < verticesA.size(); i++)
+    {
+        D3DXVECTOR2 vA = verticesA[i];
+        D3DXVECTOR2 vB = verticesA[(i + 1) % verticesA.size()]; //  circular loop of vertices
+
+        //  get direction vector from vA to vB
+        D3DXVECTOR2 edge = vB- vA;
+        
+        //  get axis
+        //  swap x and y and get the sin component of the new x (put in new x for clockwise normals, put in new y for counter-clockwise)
+        D3DXVECTOR2 axis = D3DXVECTOR2(-edge.y, edge.x);
+
+        //  we project the vertices onto the axis for a number line to check mins and maxes
+        float minA, maxA, minB, maxB;
+        ProjectVerticesOntoAxis(verticesA, axis, &minA, &maxA);
+        ProjectVerticesOntoAxis(verticesB, axis, &minB, &maxB);
+
+        if(minA >= maxB || minB >= maxA)
+        {   //  if true, means there is a gap between the two polygons
+            return false;
+        }
+    }
+
+    for(size_t i = 0; i < verticesB.size(); i++)
+    {
+        D3DXVECTOR2 vA = verticesB[i];
+        D3DXVECTOR2 vB = verticesB[(i + 1) % verticesB.size()]; //  circular loop of vertices
+
+        //  get direction vector from vA to vB
+        D3DXVECTOR2 edge = vB- vA;
+        
+        //  get axis
+        //  swap x and y and get the sin component of the new x (put in new x for clockwise normals, put in new y for counter-clockwise)
+        D3DXVECTOR2 axis = D3DXVECTOR2(-edge.y, edge.x);
+
+        //  we project the vertices onto the axis for a number line to check mins and maxes
+        float minA, maxA, minB, maxB;
+        ProjectVerticesOntoAxis(verticesA, axis, &minA, &maxA);
+        ProjectVerticesOntoAxis(verticesB, axis, &minB, &maxB);
+
+        if(minA >= maxB || minB >= maxA)
+        {   //  if true, means there is a gap between the two polygons
+            return false;
+        }
+    }
+
+    return true;
 }
 
 //  Greg's previous attempt

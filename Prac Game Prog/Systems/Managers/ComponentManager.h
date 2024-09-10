@@ -7,6 +7,7 @@
 #include "../../Components/Sprite2DRendererComponent.h"
 #include "../../Enums/ComponentEnum.h"
 #include "../../Components/Audio2DComponent.h"
+#include "../../Components/Polygon2DColliderComponent.h"
 #include "../Core/Globals.h"
 
 
@@ -34,6 +35,7 @@ public:
     std::shared_ptr<BoxColliderComponent> CreateBoxColliderComponent(std::shared_ptr<Entity> parent);
     std::shared_ptr<Rigidbody2DComponent> CreateRigidbody2DComponent(std::shared_ptr<Entity> parent);
     std::shared_ptr<Audio2DComponent> CreateAudio2DComponent(std::shared_ptr<Entity> parent);
+    std::shared_ptr<Polygon2DColliderComponent> CreatePolygon2DColliderComponent(std::shared_ptr<Entity> parent);
     ComponentVector& GetComponents();
     ComponentVector& GetComponents(ComponentEnum componentTag);
     void DestroyAllComponents();

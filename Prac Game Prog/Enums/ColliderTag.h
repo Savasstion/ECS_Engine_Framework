@@ -2,7 +2,7 @@
 
 enum ColliderTag
 {
-    DEFAULT,
+    DEFAULT_COLLIDER,
     UI_BUTTON
     
 };

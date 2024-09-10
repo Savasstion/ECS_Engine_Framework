@@ -11,7 +11,7 @@ BoxColliderComponent::BoxColliderComponent()
     this->box.left = 0;
     this->box.right = 0;
     this->box.bottom = 0;
-    this->tag = ColliderTag::Enemy;
+    this->tag = ColliderTag::DEFAULT_COLLIDER;
 }
 
 BoxColliderComponent::BoxColliderComponent(RECT box, ColliderTag tag) 

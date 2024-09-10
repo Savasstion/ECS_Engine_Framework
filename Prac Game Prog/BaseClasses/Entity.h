@@ -23,7 +23,7 @@ typedef std::vector<std::shared_ptr<AudioComponent>> Audios;
 class Entity
 {
     size_t uid = 0;
-    TagEnum tag = DEFAULT;
+    TagEnum tag = TagEnum::DEFAULT_TAG;
     bool isActive = true;
 public:
     Transform transform;

@@ -118,6 +118,16 @@ std::shared_ptr<Audio2DComponent> ComponentManager::CreateAudio2DComponent(std::
     return c;
 }
 
+std::shared_ptr<Polygon2DColliderComponent> ComponentManager::CreatePolygon2DColliderComponent(std::shared_ptr<Entity> parent)
+{
+    auto c = std::make_shared<Polygon2DColliderComponent>();
+    c->parent = parent;
+    parent->colliders.push_back(c);
+    componentsToAdd.push_back(c);
+    componentMap[POLYGON2D_COLLIDER].push_back(c);
+    return c;
+}
+
 ComponentVector& ComponentManager::GetComponents()
 {
     return components;

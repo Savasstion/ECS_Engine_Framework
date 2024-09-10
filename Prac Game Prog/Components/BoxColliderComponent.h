@@ -17,7 +17,7 @@ public:
     RECT box;
     ColliderTag tag;
     BoxColliderComponent();
-    BoxColliderComponent(RECT box, ColliderTag tag = ColliderTag::DEFAULT);
+    BoxColliderComponent(RECT box, ColliderTag tag = ColliderTag::DEFAULT_COLLIDER);
     void SetBox(RECT box, D3DXVECTOR2 centerPos);
     void SetColliderTag(ColliderTag tag){this->tag = tag;}
     void UpdateColliderPos(D3DXVECTOR2 velocity) override;

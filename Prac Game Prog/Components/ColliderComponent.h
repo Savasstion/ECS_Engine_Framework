@@ -12,6 +12,5 @@ public:
     virtual ~ColliderComponent() = default;  // Virtual destructor
     virtual void UpdateColliderPos(D3DXVECTOR2 parentPos);
 
-    void SetRelativePosition(D3DXVECTOR2 pos){this->relativePos = pos;}
-    D3DXVECTOR2 GetRelativePosition(){return this->relativePos;}
+
 };

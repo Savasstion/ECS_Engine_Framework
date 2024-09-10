@@ -2,7 +2,7 @@
 
 enum TagEnum
 {
-    DEFAULT,
+    DEFAULT_TAG,
     PLAYER,
     ENEMY,
     NPC_FRIENDLY,

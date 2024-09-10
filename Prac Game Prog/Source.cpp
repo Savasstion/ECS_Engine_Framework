@@ -5,6 +5,7 @@
 #include "BaseClasses/Clock.h"
 #include "BaseClasses/FrameTimer.h"
 #include "BaseClasses/Sprite.h"
+#include "Components/Polygon2DColliderComponent.h"
 #include "Components/Rigidbody2DComponent.h"
 #include "Components/Sprite2DRendererComponent.h"
 #include "Systems/Managers/EntityManager.h"
@@ -366,6 +367,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	std::shared_ptr<TransformComponent> transformComponent;
 	std::shared_ptr<Entity> entity;
 	std::shared_ptr<Rigidbody2DComponent> rigidbodyComponent;
+	std::shared_ptr<Polygon2DColliderComponent> polygon2dColliderComponent;
 	std::shared_ptr<Audio2DComponent> audioComponent;
 	std::shared_ptr<Audio2DComponent> audioBGM;
 
@@ -457,6 +459,8 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 
 	rigidbodyComponent = scene->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->friction = 0.5f;
+	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24)});
 
 	//UI stuff
 	//Resume Button
@@ -472,6 +476,8 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	transformComponent = scene->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(1000, 200);
 	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
+	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-313, -215), D3DXVECTOR2(313, -215), D3DXVECTOR2(313, 215), D3DXVECTOR2(-313, 215)});
 
 	//Volume Button
 	entity = scene->entityManager->CreateEntity(UI);
