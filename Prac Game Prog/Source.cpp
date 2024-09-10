@@ -503,7 +503,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	transformComponent->position = D3DXVECTOR2(1000, 200);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -45), D3DXVECTOR2(128, 0), D3DXVECTOR2(128, 45), D3DXVECTOR2(0, 45)});
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(128, 45), D3DXVECTOR2(128, -45), D3DXVECTOR2(-64, 45)});
 	//	for testing
 	collider2 = polygon2dColliderComponent;
 
