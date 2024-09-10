@@ -53,8 +53,10 @@ D3DXVECTOR2 Sprite2DRendererComponent::GetSpriteCenter()
 void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
 {
     static int frameCounter = 0;
+
     if (this->isAnimated)
     {
+        //std::cout << "Animating 2" << '\n';
         frameCounter += framesToUpdate;
         int colIndex = frameCounter % (spriteInfo.maxCols + 1);
 
@@ -66,7 +68,46 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
         spriteRect.right = spriteRect.left + spriteInfo.spriteWidth;
         spriteRect.bottom = spriteRect.top + spriteInfo.spriteHeight;
     }
-    
+}
+
+void Sprite2DRendererComponent::UpdateSpriteAnimationDirection(int framesToUpdate, Direction direction)
+{
+    static int frameCounter = 0;
+
+    if (this->isAnimated)
+    {
+        std::cout << "Animating 2" << '\n';
+        frameCounter += framesToUpdate;
+        int colIndex = frameCounter % (spriteInfo.maxCols + 1);
+
+        int rowIndex = 0;
+        switch (direction) {
+            case UP:
+                rowIndex = this->upDirectionValue;
+                std::cout << "Animating UP" << '\n';
+                break;
+            case LEFT:
+                rowIndex = this->leftDirectionValue;
+                std::cout << "Animating LEFT" << '\n';
+                break;
+            case RIGHT:
+                rowIndex = this->rightDirectionValue;
+                std::cout << "Animating RIGHT" << '\n';
+                break;
+            case DOWN:
+                rowIndex = this->downDirectionValue;
+                std::cout << "Animating DOWN" << '\n';
+                break;
+        }
+
+        if (frameCounter % (spriteInfo.maxRows + 1) == 0)
+            frameCounter = 0;
+
+        spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
+        spriteRect.top = rowIndex * spriteInfo.spriteHeight;
+        spriteRect.right = spriteRect.left + spriteInfo.spriteWidth;
+        spriteRect.bottom = spriteRect.top + spriteInfo.spriteHeight;
+    }
 }
 
 

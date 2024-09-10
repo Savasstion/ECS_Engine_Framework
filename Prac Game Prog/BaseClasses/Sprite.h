@@ -18,5 +18,8 @@ public:
     int spriteHeight;
     int spriteWidth;
 
-
+    int upDirectionValue;
+    int leftDirectionValue;
+    int rightDirectionValue;
+    int downDirectionValue;
 };

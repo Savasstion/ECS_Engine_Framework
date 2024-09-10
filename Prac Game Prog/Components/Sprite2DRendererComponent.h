@@ -3,22 +3,24 @@
 #include "../BaseClasses/FrameTimer.h"
 #include "../BaseClasses/Sprite.h"
 
+#include "../Enums/DirectionEnum.h"
+
 class Sprite2DRendererComponent : public RendererComponent
 {
-private :
-    //Entity parent;
-    //  used to choose sprite sheet row
-    enum Direction{DOWN, UP, RIGHT, LEFT};
 public:
     Sprite spriteInfo;
     //  Sprite rect to cut out specific parts of sprite sheet
     RECT spriteRect;
-    //  default = 0 so if an animated sprite doesn't change directions, it will not offset to a separate row
-    int currentDirection = 0;
     D3DXVECTOR2 spriteRenderPos;
     //  int intendedAnimationFPS;
     bool isAnimated;
     
+    //default directions
+    Direction currentDirection;
+    int upDirectionValue = 0;
+    int leftDirectionValue = 1;
+    int rightDirectionValue = 2;
+    int downDirectionValue = 3;
 
     Sprite2DRendererComponent();
     Sprite2DRendererComponent(Sprite spriteInfo);
@@ -32,4 +34,5 @@ public:
     D3DXVECTOR2 GetSpriteRenderPos();
     D3DXVECTOR2 GetSpriteCenter();
     void UpdateSpriteAnimation(int framesToUpdate);
+    void UpdateSpriteAnimationDirection(int framesToUpdate, Direction direction);
 };

@@ -14,6 +14,8 @@
 #include "Systems/Managers/SceneManager.h"
 #include "Systems/Core/Audio.h"
 
+#include "Enums/DirectionEnum.h"
+
 
 #pragma region GLOBAL_VAR
 HRESULT hr;
@@ -33,8 +35,6 @@ LPDIRECT3DTEXTURE9 numbersTexture = nullptr;
 RECT spriteRect;
 RECT textRect;
 
-
-
 SceneManager sceneManager;
 
 //GAMEPLAY STUFF // TODO : do it someehere else in the future
@@ -50,6 +50,8 @@ const float soundInterval = 0.1f; // Time interval between sounds in seconds
 //testing vars
 std::shared_ptr<Entity> audioEntity;
 
+//Imported Enum DirectionEnums.h
+Direction currentDirection;
 
 #pragma endregion
 
@@ -205,6 +207,7 @@ void GetInput()
 
 void Update(int framesToUpdate, float deltaTime)
 {
+	
 	bool isMoving = false;
 	static bool wasMoving = false; // Track the previous movement state
 
@@ -278,12 +281,18 @@ void Update(int framesToUpdate, float deltaTime)
 		//forceApplied.y = -cos(t->rotation) * thrust;
 		
 		isMoving = true;
+
+		//Sprite Animation
+		currentDirection = UP;
 	}
 
 	if (diKeys[DIK_S] & 0x80)
 	{
 		forceApplied += D3DXVECTOR2(0,1);
 		isMoving = true;
+
+		//Sprite Animation
+		currentDirection = DOWN;
 	}
 
 	if (diKeys[DIK_A] & 0x80)
@@ -291,12 +300,18 @@ void Update(int framesToUpdate, float deltaTime)
 		//t->rotation -= framesToUpdate * rotationSpeed;
 		forceApplied += D3DXVECTOR2(-1,0);
 		isMoving = true;
+
+		//Sprite Animation
+		currentDirection = LEFT;
 	}
 
 	if (diKeys[DIK_D] & 0x80)
 	{
 		forceApplied += D3DXVECTOR2(1,0);
 		isMoving = true;
+
+		//Sprite Animation
+		currentDirection = RIGHT;
 	}
 
 	D3DXVec2Normalize(&forceApplied,&forceApplied);
@@ -340,11 +355,12 @@ void Update(int framesToUpdate, float deltaTime)
 	
 #pragma endregion
 
-	// Sprite Animation Update
+	// Sprite Animation Update															
 	auto sprites = sceneManager.currentScene->componentManager->GetComponents(SPRITE2D_RENDERER);
 	for (auto component : sprites) {
+		//std::cout << "Animating" << '\n';
 		auto sprite2d = std::dynamic_pointer_cast<Sprite2DRendererComponent>(component);
-		sprite2d->UpdateSpriteAnimation(framesToUpdate);
+		sprite2d->UpdateSpriteAnimationDirection(framesToUpdate, currentDirection);
 	}
 
 	// Play sound only when movement starts and regulate it with deltaTime
@@ -445,6 +461,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	//	pls determine freq then set it
 	//au2d->setFrequency()
 
+	//MILITIA
 	entity = scene->entityManager->CreateEntity(PLAYER);
 
 	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
@@ -454,6 +471,10 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	spriteInfo.totalRows = 4;
 	spriteInfo.totalCols = 4;
 	spriteInfo.isAnimated = true;
+	spriteInfo.upDirectionValue = 3;
+	spriteInfo.leftDirectionValue = 1;
+	spriteInfo.rightDirectionValue = 2;
+	spriteInfo.downDirectionValue = 0;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 
 	transformComponent = scene->componentManager->CreateTransformComponent(entity);
