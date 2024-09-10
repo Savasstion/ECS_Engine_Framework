@@ -166,6 +166,7 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
     lineInterface->Begin();
 
     //Draw colliders
+    //TODO: softcode it in the future, for now i needed a quick visual 
     auto verticesA = collider1->GetColliderVerticesInWorld();
     verticesA.push_back(verticesA[0]);  //to complete loop
     auto verticesB = collider2->GetColliderVerticesInWorld();
