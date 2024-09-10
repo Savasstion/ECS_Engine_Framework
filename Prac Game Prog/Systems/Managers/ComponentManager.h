@@ -25,10 +25,7 @@ public:
     ComponentMap componentMap;
     size_t totalComponents = 0;
     
-    void Start();
     void UpdateComponentList();
-    void DoAllComponentStartups();
-    void DoAllComponentUpdates();
     std::shared_ptr<TransformComponent> CreateTransformComponent(std::shared_ptr<Entity> parent);
     std::shared_ptr<NameComponent> CreateNameComponent(std::shared_ptr<Entity> parent);
     std::shared_ptr<Sprite2DRendererComponent> CreateSprite2DRendererComponent(std::shared_ptr<Entity> parent);

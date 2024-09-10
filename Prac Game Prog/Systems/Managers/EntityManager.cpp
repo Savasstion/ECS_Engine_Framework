@@ -1,9 +1,5 @@
 #include "EntityManager.h"
 
-void EntityManager::Start()
-{
-    DoAllEntityStartups();
-}
 
 void EntityManager::UpdateEntityList()
 {
@@ -13,11 +9,7 @@ void EntityManager::UpdateEntityList()
         entities.push_back(e);
         entityMap[e->GetTag()].push_back(e);
     }
-
-    for(auto e : entitiesToAdd)
-    {
-        e->Start();
-    }
+    
     entitiesToAdd.clear();
 
     //  check all entities if not active, remove from main lists
@@ -32,26 +24,7 @@ void EntityManager::UpdateEntityList()
             entityMap[e->GetTag()].erase(std::remove(entityMap[e->GetTag()].begin(), entityMap[e->GetTag()].end(), e), entityMap[e->GetTag()].end());
         }
     }
-
-        
-}
-
-void EntityManager::DoAllEntityStartups()
-{
-    //  Do all entities' Start function
-    for(auto e : entities)
-    {
-        e->Start();
-    }
-}
-
-void EntityManager::DoAllEntityUpdates()
-{
-    //  do all entity updates
-    for(auto e : entities)
-    {
-        e->Update();
-    }
+    
 }
 
 std::shared_ptr<Entity> EntityManager::CreateEntity(TagEnum tag)

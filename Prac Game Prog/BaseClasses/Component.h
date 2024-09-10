@@ -15,8 +15,6 @@ public:
     virtual ~Component() = default;  // Virtual destructor
     Component();
     Component(ComponentEnum componentType);
-    void Start();
-    void Update();
     ComponentEnum GetComponentTag(){return componentType;}
     bool GetIsActive(){return isActive;}
     void Destroy();

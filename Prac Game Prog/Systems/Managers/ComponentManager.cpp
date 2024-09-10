@@ -5,10 +5,6 @@
 #include "../../Components/BoxColliderComponent.h"
 #include "../../Components/Sprite2DRendererComponent.h"
 
-void ComponentManager::Start()
-{
-   DoAllComponentStartups();
-}
 
 void ComponentManager::UpdateComponentList()
 {
@@ -19,10 +15,7 @@ void ComponentManager::UpdateComponentList()
         componentMap[c->GetComponentTag()].push_back(c);
     }
 
-    for(auto c : componentsToAdd)
-    {
-        c->Start();
-    }
+
     componentsToAdd.clear();
 
     //  check all entities if not active, remove from main lists
@@ -39,22 +32,6 @@ void ComponentManager::UpdateComponentList()
     
 }
 
-void ComponentManager::DoAllComponentStartups()
-{
-    for(auto c : components)
-    {
-        c->Start();
-    }
-}
-
-void ComponentManager::DoAllComponentUpdates()
-{
-    //  do all entity updates
-    for(auto c : components)
-    {
-        c->Update();
-    }
-}
 
 std::shared_ptr<TransformComponent> ComponentManager::CreateTransformComponent(std::shared_ptr<Entity> parent)
 {

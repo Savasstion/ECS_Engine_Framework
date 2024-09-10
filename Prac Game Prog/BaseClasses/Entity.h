@@ -34,8 +34,6 @@ public:
     Audios audios;
     
     //  every subclass should have a Start and Update function that calls parent's Start and Update first then its own logic.
-    void Start();
-    void Update();
     /* TODO : make constructor private so only EntityManager can create Entities    */
     Entity(size_t uid, TagEnum tag);
     Entity(size_t uid, TagEnum tag, std::string name, D3DXVECTOR2 scale, float rotation, D3DXVECTOR2 position);

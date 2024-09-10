@@ -74,6 +74,8 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                 if(isCollided)
                 {
                     std::cout<<"COLLISION_DETECTED!"<<'\n';
+
+                    
                 }
             }
         }

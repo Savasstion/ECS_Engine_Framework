@@ -1,15 +1,6 @@
 #include "Entity.h"
 #include "../Components/Sprite2DRendererComponent.h"
 
-void Entity::Start()
-{
-    
-}
-
-void Entity::Update()
-{
-}
-
 Entity::Entity(size_t uid, TagEnum tag)
 {
     this->uid = uid;
@@ -45,10 +36,13 @@ D3DXMATRIX Entity::GetTransformMatrix()
 
 void Entity::ClearPointers()
 {
-    transform = nullptr;
-    name = nullptr;
-    renderer = nullptr;
-    colliders.clear();
+    transform->Destroy();
+    name->Destroy();
+    renderer->Destroy();
+    for(auto c : colliders)
+    {
+        c->Destroy();
+    }
 }
 
 
