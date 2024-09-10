@@ -490,16 +490,16 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/resumebutton.png", &spriteInfo.texture);
 	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 128;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
 	spriteInfo.totalRows = 1;
 	spriteInfo.totalCols = 1;
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = scene->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(1000, 200);
+	transformComponent->position = D3DXVECTOR2(200, 200);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(128, 45), D3DXVECTOR2(128, -45), D3DXVECTOR2(-64, 45)});
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
 	//	for testing
 	collider2 = polygon2dColliderComponent;
 
@@ -507,30 +507,37 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	entity = scene->entityManager->CreateEntity(UI);
 	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/volumebutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 430;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 625;
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
 	spriteInfo.totalRows = 1;
 	spriteInfo.totalCols = 1;
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = scene->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(1000, 300);
-	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
+	transformComponent->position = D3DXVECTOR2(200, 300);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	
 
 	//Fullscreen Button
 	entity = scene->entityManager->CreateEntity(UI);
 	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 88;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 128;
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
 	spriteInfo.totalRows = 1;
 	spriteInfo.totalCols = 1;
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = scene->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(1000, 400);
+	transformComponent->position = D3DXVECTOR2(200, 400);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
-
+	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	
+	// Main Menu buttons
+	// adding later
 }
 #pragma endregion
 //	use int main if you want to have a console to print out message
