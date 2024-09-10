@@ -3,8 +3,6 @@
 #include "../BaseClasses/FrameTimer.h"
 #include "../BaseClasses/Sprite.h"
 
-#include "../Enums/DirectionEnum.h"
-
 class Sprite2DRendererComponent : public RendererComponent
 {
 public:
@@ -12,15 +10,6 @@ public:
     //  Sprite rect to cut out specific parts of sprite sheet
     RECT spriteRect;
     D3DXVECTOR2 spriteRenderPos;
-    //  int intendedAnimationFPS;
-    bool isAnimated;
-    
-    //default directions
-    Direction currentDirection;
-    int upDirectionValue = 0;
-    int leftDirectionValue = 1;
-    int rightDirectionValue = 2;
-    int downDirectionValue = 3;
 
     Sprite2DRendererComponent();
     Sprite2DRendererComponent(Sprite spriteInfo);
@@ -34,5 +23,4 @@ public:
     D3DXVECTOR2 GetSpriteRenderPos();
     D3DXVECTOR2 GetSpriteCenter();
     void UpdateSpriteAnimation(int framesToUpdate);
-    void UpdateSpriteAnimationDirection(int framesToUpdate, Direction direction);
 };

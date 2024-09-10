@@ -10,16 +10,21 @@ public:
     int totalRows, totalCols;
     int sheetWidth, sheetHeight;
     int sheetGap = 0;
-    int maxRows = 0;
-    int maxCols = 0;
-    
+
+    int maxRows = 1; //how many rows
+    int maxCols = 1; //images per row
+    int maxFrames = 1; //total frames
+
     bool isAnimated = false;
+    bool isDirectional = false;
 
     int spriteHeight;
     int spriteWidth;
 
-    int upDirectionValue;
-    int leftDirectionValue;
-    int rightDirectionValue;
-    int downDirectionValue;
+    int currentDirection = 0;
+
+    int upDirectionValue = 0;
+    int leftDirectionValue = 1;
+    int rightDirectionValue = 2;
+    int downDirectionValue = 3;
 };

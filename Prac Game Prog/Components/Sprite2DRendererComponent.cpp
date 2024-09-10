@@ -31,8 +31,6 @@ void Sprite2DRendererComponent::InitSpriteInfo(Sprite spriteInfo)
     spriteRect.bottom = spriteInfo.sheetHeight;
     spriteRect.left = 0;
     spriteRect.right = spriteInfo.spriteWidth;
-
-
 }
 
 D3DXVECTOR2 Sprite2DRendererComponent::GetSpriteRenderPos()
@@ -54,59 +52,60 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
 {
     static int frameCounter = 0;
 
-    if (this->isAnimated)
+    if (spriteInfo.isAnimated)
     {
-        //std::cout << "Animating 2" << '\n';
-        frameCounter += framesToUpdate;
-        int colIndex = frameCounter % (spriteInfo.maxCols + 1);
+        if (spriteInfo.isDirectional)
+        {
+            std::cout << "Animating Directional" << '\n';
 
-        if (frameCounter % (spriteInfo.maxRows + 1) == 0)
-            frameCounter = 0;
+            frameCounter += framesToUpdate;
+            int colIndex = frameCounter % (spriteInfo.maxCols + 1);
+            int rowIndex = 0;
 
-        spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
-        spriteRect.top = currentDirection * spriteInfo.spriteHeight;
-        spriteRect.right = spriteRect.left + spriteInfo.spriteWidth;
-        spriteRect.bottom = spriteRect.top + spriteInfo.spriteHeight;
-    }
-}
-
-void Sprite2DRendererComponent::UpdateSpriteAnimationDirection(int framesToUpdate, Direction direction)
-{
-    static int frameCounter = 0;
-
-    if (this->isAnimated)
-    {
-        std::cout << "Animating 2" << '\n';
-        frameCounter += framesToUpdate;
-        int colIndex = frameCounter % (spriteInfo.maxCols + 1);
-
-        int rowIndex = 0;
-        switch (direction) {
-            case UP:
-                rowIndex = this->upDirectionValue;
+            if (spriteInfo.currentDirection == spriteInfo.upDirectionValue)
+            {
+                rowIndex = spriteInfo.upDirectionValue;
                 std::cout << "Animating UP" << '\n';
-                break;
-            case LEFT:
-                rowIndex = this->leftDirectionValue;
+            }
+            if (spriteInfo.currentDirection == spriteInfo.leftDirectionValue)
+            {
+                rowIndex = spriteInfo.leftDirectionValue;
                 std::cout << "Animating LEFT" << '\n';
-                break;
-            case RIGHT:
-                rowIndex = this->rightDirectionValue;
+            }
+            if (spriteInfo.currentDirection == spriteInfo.rightDirectionValue)
+            {
+                rowIndex = spriteInfo.rightDirectionValue;
                 std::cout << "Animating RIGHT" << '\n';
-                break;
-            case DOWN:
-                rowIndex = this->downDirectionValue;
+            }
+            if (spriteInfo.currentDirection == spriteInfo.rightDirectionValue)
+            {
+                rowIndex = spriteInfo.downDirectionValue;
                 std::cout << "Animating DOWN" << '\n';
-                break;
+            }
+
+            if (frameCounter % (spriteInfo.maxRows + 1) == 0)
+                frameCounter = 0;
+
+            spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
+            spriteRect.top = rowIndex * spriteInfo.spriteHeight;
+            spriteRect.right = spriteRect.left + spriteInfo.spriteWidth;
+            spriteRect.bottom = spriteRect.top + spriteInfo.spriteHeight;
         }
+        else
+        {
+            std::cout << "Animating Non-Directional" << '\n';
+            frameCounter += framesToUpdate;
+            int colIndex = frameCounter % spriteInfo.maxFrames % (spriteInfo.maxCols);
+            int rowIndex = frameCounter % spriteInfo.maxFrames / (spriteInfo.maxRows);
 
-        if (frameCounter % (spriteInfo.maxRows + 1) == 0)
-            frameCounter = 0;
+            if (frameCounter % (spriteInfo.maxRows + 1) == 0)
+                frameCounter = 0;
 
-        spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
-        spriteRect.top = rowIndex * spriteInfo.spriteHeight;
-        spriteRect.right = spriteRect.left + spriteInfo.spriteWidth;
-        spriteRect.bottom = spriteRect.top + spriteInfo.spriteHeight;
+            spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
+            spriteRect.top = rowIndex * spriteInfo.spriteHeight;
+            spriteRect.right = spriteRect.left + spriteInfo.spriteWidth;
+            spriteRect.bottom = spriteRect.top + spriteInfo.spriteHeight;
+        }        
     }
 }
 
