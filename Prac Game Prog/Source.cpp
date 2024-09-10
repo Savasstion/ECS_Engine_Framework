@@ -472,17 +472,17 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	entity = scene->entityManager->CreateEntity(UI);
 	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/resumebutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 430;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 625;
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 128;
 	spriteInfo.totalRows = 1;
 	spriteInfo.totalCols = 1;
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = scene->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(1000, 200);
-	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-313, -215), D3DXVECTOR2(313, -215), D3DXVECTOR2(313, 215), D3DXVECTOR2(-313, 215)});
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(0, 0), D3DXVECTOR2(128, 0), D3DXVECTOR2(128, 45), D3DXVECTOR2(0, 45)});
 	//	for testing
 	collider2 = polygon2dColliderComponent;
 
@@ -504,15 +504,15 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	entity = scene->entityManager->CreateEntity(UI);
 	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 430;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 625;
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 88;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 128;
 	spriteInfo.totalRows = 1;
 	spriteInfo.totalCols = 1;
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = scene->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(1000, 400);
-	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
 
 }
 #pragma endregion
