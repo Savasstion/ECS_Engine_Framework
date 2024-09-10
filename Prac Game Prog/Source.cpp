@@ -422,7 +422,7 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	transformComponent = scene->componentManager->CreateTransformComponent(audioEntity);
 	transformComponent->position = D3DXVECTOR2(500,500);
 	transformComponent->scale = D3DXVECTOR2(1,1);
-	transformComponent->rotation = 1;
+	transformComponent->rotation = 0.0f;
 
 	// Physics stuff
 	rigidbodyComponent = scene->componentManager->CreateRigidbody2DComponent(audioEntity);

@@ -13,9 +13,9 @@ public:
     static const float globalGravityConstant;
 
     static void DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate);
-    static void DoAllCycleOfMotion(std::vector<std::shared_ptr<Component>> rbg2DComponents);    //  for 2D
-    static void DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb);
-    static void HandleAllCollision(std::vector<std::shared_ptr<Component>> collider);
+    static void DoAllCycleOfMotion(std::shared_ptr<Scene> scene);    //  for 2D
+    static void DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb);
+    static void HandleAllCollision(std::shared_ptr<Scene> scene);
 
 private:
     static bool CheckCollision(std::shared_ptr<BoxColliderComponent> a, std::shared_ptr<BoxColliderComponent> b);

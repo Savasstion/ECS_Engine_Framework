@@ -6,24 +6,24 @@ void Physics::DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate)
 {
     for(int i =0;i<framesToUpdate;i++)
     {
-        DoAllCycleOfMotion(scene->componentManager->GetComponents(RIGIDBODY2D));
-        HandleAllCollision(scene->componentManager->GetComponents(BOX_COLLIDER));
+        DoAllCycleOfMotion(scene);
+        HandleAllCollision(scene);
     }
 }
 
-//For Rigidbody 2D
-void Physics::DoAllCycleOfMotion(std::vector<std::shared_ptr<Component>> rbg2DComponents)
+
+void Physics::DoAllCycleOfMotion(std::shared_ptr<Scene> scene)
 {
-    for (auto c : rbg2DComponents)
+    //  do Rigidbody2D cycle of motion
+    auto rgb2Ds = scene->componentManager->GetComponents(RIGIDBODY2D);
+    for (auto c : rgb2Ds)
     {
         auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(c);
-        DoCycleOfMotion(rgb);
-
-       
+        DoCycleOfMotion2D(rgb);
     }
 }
 
-void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
+void Physics::DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb)
 {
 
     if (rgb->mass != 0.0f) {
@@ -64,21 +64,26 @@ void Physics::DoCycleOfMotion(std::shared_ptr<Rigidbody2DComponent> rgb)
 //     
 // }
 
-void Physics::HandleAllCollision(std::vector<std::shared_ptr<Component>> colliders) {
-    for (size_t i = 0; i < colliders.size(); ++i) {
-        for (size_t j = i + 1; j < colliders.size(); ++j) {
-            auto colliderA = std::dynamic_pointer_cast<BoxColliderComponent>(colliders[i]);
-            auto colliderB = std::dynamic_pointer_cast<BoxColliderComponent>(colliders[j]);
+void Physics::HandleAllCollision(std::shared_ptr<Scene> scene) {
 
-            if (CheckCollision(colliderA, colliderB)) {
-                if (ShouldCollide(colliderA, colliderB)) {
-                    auto rbA = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderA->parent->rigidbody);
-                    auto rbB = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderB->parent->rigidbody);
-                    ResolveCollision(rbA, rbB);
-                }
-            }
-        }
-    }
+
+
+
+
+    // for (size_t i = 0; i < colliders.size(); ++i) {
+    //     for (size_t j = i + 1; j < colliders.size(); ++j) {
+    //         auto colliderA = std::dynamic_pointer_cast<BoxColliderComponent>(colliders[i]);
+    //         auto colliderB = std::dynamic_pointer_cast<BoxColliderComponent>(colliders[j]);
+    //
+    //         if (CheckCollision(colliderA, colliderB)) {
+    //             if (ShouldCollide(colliderA, colliderB)) {
+    //                 auto rbA = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderA->parent->rigidbody);
+    //                 auto rbB = std::dynamic_pointer_cast<Rigidbody2DComponent>(colliderB->parent->rigidbody);
+    //                 ResolveCollision(rbA, rbB);
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 bool Physics::CheckCollision(std::shared_ptr<BoxColliderComponent> a, std::shared_ptr<BoxColliderComponent> b) {
