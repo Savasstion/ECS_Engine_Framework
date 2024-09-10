@@ -361,6 +361,7 @@ void Update(int framesToUpdate, float deltaTime)
 Sprite spriteInfo, spriteInfo1; //	TODO: make an sprite asset vector
 void AddIntoScene(std::shared_ptr<Scene> scene)
 {
+	//	buffers for temporary assignment of data to the components
 	std::shared_ptr<Sprite2DRendererComponent> spriteComponent;
 	std::shared_ptr<TransformComponent> transformComponent;
 	std::shared_ptr<Entity> entity;

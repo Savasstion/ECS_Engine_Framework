@@ -370,6 +370,7 @@
     <ClCompile Include="Components\BoxColliderComponent.cpp" />
     <ClCompile Include="Components\ColliderComponent.cpp" />
     <ClCompile Include="Components\NameComponent.cpp" />
+    <ClCompile Include="Components\Polygon2DColliderComponent.cpp" />
     <ClCompile Include="Components\RendererComponent.cpp" />
     <ClCompile Include="Components\Rigidbody2DComponent.cpp" />
     <ClCompile Include="Components\RigidbodyComponent.cpp" />
@@ -619,6 +620,7 @@
     <ClInclude Include="Components\BoxColliderComponent.h" />
     <ClInclude Include="Components\ColliderComponent.h" />
     <ClInclude Include="Components\NameComponent.h" />
+    <ClInclude Include="Components\Polygon2DColliderComponent.h" />
     <ClInclude Include="Components\RendererComponent.h" />
     <ClInclude Include="Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Components\RigidbodyComponent.h" />

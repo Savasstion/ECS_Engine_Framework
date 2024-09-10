@@ -2,6 +2,8 @@
 #include "ColliderComponent.h"
 #include "d3d9.h"
 
+//  Greg's Collider
+//  TODO: get this working one day
 enum class ColliderTag {
     Player,
     Enemy,
