@@ -65,13 +65,16 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
         for(size_t i = 0; i < components.size(); i++)
         {
             auto polygon2dColliderA = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[i]);
-            auto polygon2dColliderB = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[(i + 1) % components.size()]);   //circular loop
-
-            auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld());
-
-            if(isCollided)
+            for(size_t j = i+1; j < components.size(); j++)
             {
-                std::cout<<"COLLISION_DETECTED!"<<'\n';
+                auto polygon2dColliderB = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[j]);  
+
+                auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld());
+
+                if(isCollided)
+                {
+                    std::cout<<"COLLISION_DETECTED!"<<'\n';
+                }
             }
         }
 
