@@ -164,14 +164,18 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
 	
     //	note : if u put line::Begin() must end immediately after use cuz it will mess with spriteBrush somehow
     lineInterface->Begin();
-    lineInterface->End();
 
-    //	Draw Mouse Pointer
-    //spriteRect.left = 0;
-    //spriteRect.top = 0;
-    //spriteRect.right = 23;
-    //spriteRect.bottom = 40;
-    //spriteBrush->Draw(mousePointerTexture, &spriteRect, nullptr, &mousePos, D3DCOLOR_XRGB(255, 255, 255));
+    //Draw colliders
+    auto verticesA = collider1->GetColliderVerticesInWorld();
+    verticesA.push_back(verticesA[0]);  //to complete loop
+    auto verticesB = collider2->GetColliderVerticesInWorld();
+    verticesB.push_back(verticesB[0]);  //to complete loop
+    
+    lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(0, 255, 0) );
+    lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(0, 255, 0) );
+    
+    lineInterface->End();
+    
 	
     spriteBrush->End();
 

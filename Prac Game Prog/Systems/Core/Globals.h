@@ -33,6 +33,10 @@
 #include "fmod.hpp"
 //	FMOD VC LIB
 #pragma comment(lib, "fmod_vc.lib")
+
+//for testing
+#include "../../Components/Polygon2DColliderComponent.h"
+
 #pragma endregion
 
 #ifndef GLOBAL_H
@@ -76,7 +80,10 @@ extern LPD3DXLINE lineInterface;
 
 // Audio stuff
 extern FMOD::System* audioSystem;	//	virtual sound card
-extern FMOD::Channel* channel;	//	
+extern FMOD::Channel* channel;	//
+
+//for testing purposes
+extern std::shared_ptr<Polygon2DColliderComponent> collider1, collider2;
 
 #endif // GLOBAL_H
     

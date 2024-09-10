@@ -43,9 +43,12 @@ float rotationSpeed = .1f;
 
 // Audio
 Audio au;
-std::shared_ptr<Entity> audioEntity;
 float timeSinceLastSound = 0.0f; // Track time since the last sound was played
 const float soundInterval = 0.1f; // Time interval between sounds in seconds
+
+
+//testing vars
+std::shared_ptr<Entity> audioEntity;
 
 
 #pragma endregion
@@ -461,6 +464,8 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	rigidbodyComponent->friction = 0.5f;
 	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24)});
+	//	for testing
+	collider1 = polygon2dColliderComponent;
 
 	//UI stuff
 	//Resume Button
@@ -478,6 +483,8 @@ void AddIntoScene(std::shared_ptr<Scene> scene)
 	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
 	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-313, -215), D3DXVECTOR2(313, -215), D3DXVECTOR2(313, 215), D3DXVECTOR2(-313, 215)});
+	//	for testing
+	collider2 = polygon2dColliderComponent;
 
 	//Volume Button
 	entity = scene->entityManager->CreateEntity(UI);
