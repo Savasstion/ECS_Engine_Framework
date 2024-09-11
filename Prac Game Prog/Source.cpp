@@ -8,12 +8,13 @@
 #include "Components/Polygon2DColliderComponent.h"
 #include "Components/Rigidbody2DComponent.h"
 #include "Components/Sprite2DRendererComponent.h"
+#include "Scripts/EventScripts/PrintStringEventScript.h"
 #include "Systems/Managers/EntityManager.h"
 #include "Systems/Core/Graphics.h"
 #include "Systems/Core/Physics.h"
 #include "Systems/Managers/SceneManager.h"
 #include "Systems/Core/Audio.h"
-
+#include "Scenes/SceneGlobals/MainMenuGlobals.h"
 
 #pragma region GLOBAL_VAR
 HRESULT hr;
@@ -35,18 +36,8 @@ RECT textRect;
 
 SceneManager sceneManager;
 
-//GAMEPLAY STUFF // TODO : do it someehere else in the future
-float thrust = 3.5f;
-float rotationSpeed = .1f;
-
-// Audio
-Audio au;
-float timeSinceLastSound = 0.0f; // Track time since the last sound was played
-const float soundInterval = 0.1f; // Time interval between sounds in seconds
-
-
 //testing vars
-std::shared_ptr<Entity> audioEntity;
+
 
 
 #pragma endregion
@@ -201,344 +192,11 @@ void GetInput()
 	
 }
 
-void Update(int framesToUpdate, float deltaTime)
-{
-	
-	bool isMoving = false;
-	static bool wasMoving = false; // Track the previous movement state
-
-	// Update timeSinceLastSound
-	timeSinceLastSound += deltaTime;
-
-	//	Acquire the device.
-	dInputKeyboardDevice->Acquire();
-	dInputMouseDevice->Acquire();
-
-#pragma region MOUSE_INPUTS
-	//	MOUSE INPUT EVENT
-	mousePos.x += mouseState.lX;
-	mousePos.y += mouseState.lY;
-
-	if (mouseState.rgbButtons[0] & 0x80) 
-	{
-		std::cout << "LEFT CLICK" << std::endl;
-	}
-
-	if (mouseState.rgbButtons[1] & 0x80)
-	{
-		std::cout << "RIGHT CLICK" << std::endl;
-	}
-
-#pragma endregion
-
-#pragma region KEYBOARD_INPUTS
-	//	KEYBOARD INPUT EVENT
-	if (diKeys[DIK_ESCAPE] & 0x80)
-	{
-		
-	}
-
-	if (diKeys[DIK_F] & 0x80)
-	{
-		//destory sprite brush since it holds d3ddevice
-		spriteBrush->Release();
-		spriteBrush = nullptr;
-		lineInterface->Release();
-		lineInterface = nullptr;
-		fontInterface->Release();
-		fontInterface = nullptr;
-		//change the Presentation Params for the D3DDevice and then reset it to take effect
-		if (d3dPP.Windowed) {
-			//if windowed, set to fullscreen
-			d3dPP.Windowed = false;
-		}
-		else
-		{
-			//else, set to windowed
-			d3dPP.Windowed = true;
-		}
-		hr = d3dDevice->Reset(&d3dPP);
-		if (FAILED(hr))
-		{
-			std::cout << "Error : " << DXGetErrorString(hr) << "\nDescription : " << DXGetErrorDescription(hr) << '\n';
-		}
-	}
-
-#pragma region PLAYER_KEYBOARD_INPUTS
-	// player inputs
-	auto e = sceneManager.currentScene->entityManager->GetEntity(PLAYER);
-	auto t = e->transform;
-	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
-	D3DXVECTOR2 forceApplied = D3DXVECTOR2(0,0);
-	if (diKeys[DIK_W] & 0x80)
-	{
-		forceApplied += D3DXVECTOR2(0,-1);
-		//forceApplied.x = sin(t->rotation) * thrust;
-		//forceApplied.y = -cos(t->rotation) * thrust;
-		
-		isMoving = true;
-
-		//Sprite Animation
-		
-	}
-
-	if (diKeys[DIK_S] & 0x80)
-	{
-		forceApplied += D3DXVECTOR2(0,1);
-		isMoving = true;
-
-		//Sprite Animation
-	}
-
-	if (diKeys[DIK_A] & 0x80)
-	{
-		//t->rotation -= framesToUpdate * rotationSpeed;
-		forceApplied += D3DXVECTOR2(-1,0);
-		isMoving = true;
-
-		//Sprite Animation
-
-	}
-
-	if (diKeys[DIK_D] & 0x80)
-	{
-		forceApplied += D3DXVECTOR2(1,0);
-		isMoving = true;
-
-		//Sprite Animation
-		
-	}
-
-	D3DXVec2Normalize(&forceApplied,&forceApplied);
-	rgb->ApplyForce(forceApplied * thrust * framesToUpdate);
-
-	auto e1 = sceneManager.currentScene->entityManager->GetEntity(ENEMY);
-	auto t1 = e1->transform;
-	auto rgb1 = std::dynamic_pointer_cast<Rigidbody2DComponent>(e1->rigidbody);
-	D3DXVECTOR2 forceApplied1 = D3DXVECTOR2(0,0);
-	if (diKeys[DIK_UP] & 0x80)
-	{
-		forceApplied1 += D3DXVECTOR2(0,-1);
-		//forceApplied.x = sin(t->rotation) * thrust;
-		//forceApplied.y = -cos(t->rotation) * thrust;
-		
-		isMoving = true;
-	}
-
-	if (diKeys[DIK_DOWN] & 0x80)
-	{
-		forceApplied1 += D3DXVECTOR2(0,1);
-		isMoving = true;
-	}
-
-	if (diKeys[DIK_LEFT] & 0x80)
-	{
-		//t->rotation -= framesToUpdate * rotationSpeed;
-		forceApplied1 += D3DXVECTOR2(-1,0);
-		isMoving = true;
-	}
-
-	if (diKeys[DIK_RIGHT] & 0x80)
-	{
-		forceApplied1 += D3DXVECTOR2(1,0);
-		isMoving = true;
-	}
-	
-	D3DXVec2Normalize(&forceApplied1,&forceApplied1);
-	rgb1->ApplyForce(forceApplied1 * thrust * framesToUpdate);
-#pragma endregion
-	
-#pragma endregion
-
-	// Sprite Animation Update															
-	auto sprites = sceneManager.currentScene->componentManager->GetComponents(SPRITE2D_RENDERER);
-	for (auto component : sprites) {
-		//std::cout << "Animating" << '\n';
-		auto sprite2d = std::dynamic_pointer_cast<Sprite2DRendererComponent>(component);
-		sprite2d->UpdateSpriteAnimation(framesToUpdate);
-	}
-
-	// Play sound only when movement starts and regulate it with deltaTime
-	static float timeSinceLastSound = 0.0f;
-	timeSinceLastSound += deltaTime;
-
-	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
-	{
-		au.PlaySound(audioEntity->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
-		timeSinceLastSound = 0.0f; // Reset the timer
-	}
-
-	
-}
 
 #pragma region TESTING_FUNCTIONS
 //	TESTING OUT A SCENE MANAGER
-Sprite spriteInfo, spriteInfo1; //	TODO: make an sprite asset vector
-void AddIntoScene(std::shared_ptr<Scene> scene)
-{
-	//	buffers for temporary assignment of data to the components
-	std::shared_ptr<Sprite2DRendererComponent> spriteComponent;
-	std::shared_ptr<TransformComponent> transformComponent;
-	std::shared_ptr<Entity> entity;
-	std::shared_ptr<Rigidbody2DComponent> rigidbodyComponent;
-	std::shared_ptr<Polygon2DColliderComponent> polygon2dColliderComponent;
-	std::shared_ptr<Audio2DComponent> audioComponent;
-	std::shared_ptr<Audio2DComponent> audioBGM;
-
-	////	Test Entity 1
-	//e = scene->entityManager->CreateEntity(PLAYER);
-	//
-	//c = scene->componentManager->CreateSprite2DRendererComponent(e);
-	//D3DXCreateTextureFromFile(d3dDevice, "Assets/mousePointer.png", &spriteInfo.texture);
-	//spriteInfo.sheetHeight = spriteInfo.spriteHeight = 40;
-	//spriteInfo.sheetWidth = spriteInfo.spriteWidth = 23;
-	//spriteInfo.totalRows = 1;
-	//spriteInfo.totalCols = 1;
-	//c->InitSpriteInfo(spriteInfo);
-	//
-	//t = scene->componentManager->CreateTransformComponent(e);
-	//t->position = D3DXVECTOR2(500,100);
-	//t->scale = D3DXVECTOR2(2,2);
-
-	//rgb = scene->componentManager->CreateRigidbody2DComponent(e);
-	//rgb->friction = 0.5f;
-	//
 
 
-	////	Test Entity 2
-	//e = scene->entityManager->CreateEntity(ENEMY);
-	//
-	//c = scene->componentManager->CreateSprite2DRendererComponent(e);
-	//D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
-	//spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
-	//spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
-	//spriteInfo1.totalRows = 1;
-	//spriteInfo1.totalCols = 1;
-	//c->InitSpriteInfo(spriteInfo1);
-	//
-	//t = scene->componentManager->CreateTransformComponent(e);
-	//t->position = D3DXVECTOR2(500,500);
-	//t->scale = D3DXVECTOR2(1,1);
-	//t->rotation = 1;
-
-	//rgb = scene->componentManager->CreateRigidbody2DComponent(e);
-	//rgb->friction = 0.5f;
-
-	// Test audio entity
-	audioEntity = scene->entityManager->CreateEntity(ENEMY);
-	// Sprite component
-	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(audioEntity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
-	spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
-	spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
-	spriteInfo1.totalRows = 1;
-	spriteInfo1.totalCols = 1;
-	spriteComponent->InitSpriteInfo(spriteInfo1);
-
-	// Sprite transform
-	transformComponent = scene->componentManager->CreateTransformComponent(audioEntity);
-	transformComponent->position = D3DXVECTOR2(500,500);
-	transformComponent->scale = D3DXVECTOR2(1,1);
-	transformComponent->rotation = 0.0f;
-
-	// Physics stuff
-	rigidbodyComponent = scene->componentManager->CreateRigidbody2DComponent(audioEntity);
-	rigidbodyComponent->friction = 0.5f;
-
-	// Audio stuff
-	// scene = current scene, call componentManager to create Audio2DComponent, e = parent entity
-	audioComponent = scene->componentManager->CreateAudio2DComponent(audioEntity);
-	audioBGM = scene->componentManager->CreateAudio2DComponent(audioEntity);
-	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
-	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
-	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
-
-	//	pls determine freq then set it
-	//au2d->setFrequency()
-
-	//MILITIA
-	entity = scene->entityManager->CreateEntity(PLAYER);
-
-	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/militia.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 48;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 32;
-	spriteInfo.totalRows = 4;
-	spriteInfo.totalCols = 4;
-	spriteInfo.isAnimated = true;
-	spriteInfo1.isDirectional = true;
-	spriteInfo.upDirectionValue = 3;
-	spriteInfo.leftDirectionValue = 1;
-	spriteInfo.rightDirectionValue = 2;
-	spriteInfo.downDirectionValue = 0;
-	spriteComponent->InitSpriteInfo(spriteInfo);
-
-	transformComponent = scene->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(500, 100);
-	transformComponent->scale = D3DXVECTOR2(2, 2);
-
-	rigidbodyComponent = scene->componentManager->CreateRigidbody2DComponent(entity);
-	rigidbodyComponent->friction = 0.5f;
-	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24)});
-	//	for testing
-	collider1 = polygon2dColliderComponent;
-
-	//UI stuff
-	//Resume Button
-	entity = scene->entityManager->CreateEntity(UI);
-	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/resumebutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	spriteInfo.totalRows = 1;
-	spriteInfo.totalCols = 1;
-	spriteInfo.isAnimated = false;
-	spriteComponent->InitSpriteInfo(spriteInfo);
-	transformComponent = scene->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 200);
-	transformComponent->scale = D3DXVECTOR2(1, 1);
-	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
-	//	for testing
-	collider2 = polygon2dColliderComponent;
-
-	//Volume Button
-	entity = scene->entityManager->CreateEntity(UI);
-	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/volumebutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	spriteInfo.totalRows = 1;
-	spriteInfo.totalCols = 1;
-	spriteInfo.isAnimated = false;
-	spriteComponent->InitSpriteInfo(spriteInfo);
-	transformComponent = scene->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 300);
-	transformComponent->scale = D3DXVECTOR2(1, 1);
-	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
-	
-
-	//Fullscreen Button
-	entity = scene->entityManager->CreateEntity(UI);
-	spriteComponent = scene->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	spriteInfo.totalRows = 1;
-	spriteInfo.totalCols = 1;
-	spriteInfo.isAnimated = false;
-	spriteComponent->InitSpriteInfo(spriteInfo);
-	transformComponent = scene->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 400);
-	transformComponent->scale = D3DXVECTOR2(1, 1);
-	polygon2dColliderComponent = scene->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
-	
-	// Main Menu buttons
-	// adding later
-}
 #pragma endregion
 //	use int main if you want to have a console to print out message
 //int main() 
@@ -555,16 +213,16 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	Graphics::CreateD3DDevice();
 	LoadInitialTextures();
 	CreateDirectInput();
-	au.InitAudio();
+	audioManager.InitAudio();
 	
 
 	FrameTimer* gameTimer = new FrameTimer();
 	gameTimer->Init(60);
 	//	may change how to do this in the future
-	AddIntoScene(sceneManager.currentScene);
+	sceneManager.currentScene->AddIntoScene();
 
 	// Play background music in loop
-	au.PlaySound(audioEntity->audios[1], 0, 0);
+	audioManager.PlayAudio(audioEntity->audios[1], 0, 0);
 	
 	while (GameIsRunning()) //game loop i guess
 	{
@@ -582,11 +240,11 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		Physics::DoScenePhysics(sceneManager.currentScene, framesToUpdate);
 		//AI
 		//game update/logic
-		Update(framesToUpdate, deltaTime);
+		sceneManager.currentScene->UpdateScene(framesToUpdate, deltaTime);
 		//Draw!!!!
 		Graphics::RenderScene(sceneManager.currentScene);
 		//play sound
-		au.UpdateSound();
+		audioManager.UpdateSound();
 
 
 		//	Print RGB value of screen on console

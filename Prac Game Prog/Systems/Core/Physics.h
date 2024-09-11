@@ -6,6 +6,7 @@
 #include "../../Components/BoxColliderComponent.h"
 #include "../../BaseClasses/Scene.h"
 #include <limits>
+#include <set>
 
 
 class Physics
@@ -21,8 +22,12 @@ public:
     //  Collision
     static bool CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std::vector<D3DXVECTOR2> verticesB);
 
-
 private:
+    //  check if there are elements from current Set missing in prev Set
+    //  if so, means exit collision event should occur for those elements
+    std::set<std::shared_ptr<ColliderComponent>> currentTriggeredColliders;
+    std::set<std::shared_ptr<ColliderComponent>> prevTriggeredColliders;   
+    
     //  Motion
     static void DoAllCycleOfMotion(std::shared_ptr<Scene> scene);    
     static void DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb);

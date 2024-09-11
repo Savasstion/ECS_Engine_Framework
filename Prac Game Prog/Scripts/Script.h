@@ -3,6 +3,8 @@
 class Script
 {
 public:
-    virtual void Start();
+    bool isInitialized = false;
+    
+    void Start(){isInitialized = true;} //pls override in child class whilst also calling parent Start()
     virtual void Update();
 };

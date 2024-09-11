@@ -73,8 +73,27 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
 
                 if(isCollided)
                 {
-                    std::cout<<"COLLISION_DETECTED!"<<'\n';
+                    //std::cout<<"COLLISION_DETECTED!"<<'\n';
+                    
+                    //  Do polygon2dColliderA collision event
+                    if(polygon2dColliderA->collsionEventScript != nullptr)
+                    {
+                        polygon2dColliderA->collisionEvent->ownerCollider = polygon2dColliderA;
+                        polygon2dColliderA->collisionEvent->incomingCollider = polygon2dColliderB;
+                        polygon2dColliderA->AddCollisionListener();
+                        polygon2dColliderA->collisionEvent->TriggerEvent();
+                    }
 
+                    //  Do polygon2dColliderB collision event
+                    if(polygon2dColliderB->collsionEventScript != nullptr)
+                    {
+                        polygon2dColliderB->collisionEvent->ownerCollider = polygon2dColliderB;
+                        polygon2dColliderB->collisionEvent->incomingCollider = polygon2dColliderA;
+                        polygon2dColliderB->AddCollisionListener();
+                        polygon2dColliderB->collisionEvent->TriggerEvent();
+                    }
+                    
+                    //  Do Physics Response
                     
                 }
             }
@@ -154,6 +173,7 @@ bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std
 
     return true;
 }
+
 
 D3DXVECTOR2 Physics::CalculateFrictionForce(D3DXVECTOR2 velocity, float friction, float mass)
 {

@@ -6,7 +6,7 @@ void Audio::InitAudio()
     result = audioSystem->init(32, FMOD_INIT_NORMAL, extraDriverData);
 }
 
-void Audio::PlaySound(std::shared_ptr<AudioComponent> au, float spriteX, float screenWidth)
+void Audio::PlayAudio(std::shared_ptr<AudioComponent> au, float spriteX, float screenWidth)
 {
     auto au2d = std::dynamic_pointer_cast<Audio2DComponent>(au);
     //                                       au->channelGroup, au->isPaused (i think isPause shouldnt be used)
