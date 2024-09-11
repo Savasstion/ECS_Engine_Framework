@@ -211,7 +211,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	//	ensure window is created successfully then make D3D9 device
 	Graphics::SpawnWindow();
 	Graphics::CreateD3DDevice();
-	LoadInitialTextures();
+	//LoadInitialTextures();
 	CreateDirectInput();
 	audioManager.InitAudio();
 	
@@ -253,7 +253,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 
 	std::cout << "Starting Clean up" << '\n';
 	Graphics::CleanupDirectXInterfaces();
-	CLeanupLoadedTextures();
+	//CLeanupLoadedTextures();
 	Graphics::CleanupD3DDevice();
 	Graphics::CleanupWindow();
 

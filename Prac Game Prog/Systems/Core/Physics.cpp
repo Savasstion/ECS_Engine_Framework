@@ -80,8 +80,9 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                     {
                         polygon2dColliderA->collisionEvent->ownerCollider = polygon2dColliderA;
                         polygon2dColliderA->collisionEvent->incomingCollider = polygon2dColliderB;
-                        polygon2dColliderA->AddCollisionListener();
+                        auto listenerIDA = polygon2dColliderA->AddCollisionListener();
                         polygon2dColliderA->collisionEvent->TriggerEvent();
+                        polygon2dColliderA->collisionEvent->RemoveListener(listenerIDA);
                     }
 
                     //  Do polygon2dColliderB collision event
@@ -89,8 +90,10 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                     {
                         polygon2dColliderB->collisionEvent->ownerCollider = polygon2dColliderB;
                         polygon2dColliderB->collisionEvent->incomingCollider = polygon2dColliderA;
-                        polygon2dColliderB->AddCollisionListener();
+                        auto listenerIDB = polygon2dColliderB->AddCollisionListener();
                         polygon2dColliderB->collisionEvent->TriggerEvent();
+                        polygon2dColliderA->collisionEvent->RemoveListener(listenerIDB);
+                    
                     }
                     
                     //  Do Physics Response

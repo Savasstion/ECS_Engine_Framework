@@ -1,10 +1,11 @@
 #include "ColliderComponent.h"
 
 
-
-void ColliderComponent::AddCollisionListener()
+long ColliderComponent::AddCollisionListener()
 {
-    collisionEvent->AddListener(std::bind(&EventScript::RunScript, collsionEventScript, collisionEvent->ownerCollider, collisionEvent->incomingCollider));
+    long id = Event::GetNewEventListenerID();
+    collisionEvent->AddListener(id,std::bind(&EventScript::RunScript, collsionEventScript, collisionEvent->ownerCollider, collisionEvent->incomingCollider));
+    return id;
 }
 
 void ColliderComponent::UpdateColliderPos(D3DXVECTOR2 velocity)
