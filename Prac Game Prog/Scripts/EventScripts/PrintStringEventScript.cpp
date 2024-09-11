@@ -6,7 +6,8 @@ void PrintStringEventScript::RunScript(std::shared_ptr<ColliderComponent> ownerC
                                        std::shared_ptr<ColliderComponent> incomingCollider)
 {
     EventScript::RunScript(ownerCollider, incomingCollider);
-    std::cout << "Blow up world\n";
+    //std::cout << "Blow up world\n";
+    
 }
 
 void PrintStringEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider,

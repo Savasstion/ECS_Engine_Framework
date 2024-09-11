@@ -34,7 +34,7 @@ LPDIRECT3DTEXTURE9 numbersTexture = nullptr;
 RECT spriteRect;
 RECT textRect;
 
-SceneManager sceneManager;
+std::shared_ptr<SceneManager> sceneManager = std::make_shared<SceneManager>();
 
 //testing vars
 
@@ -219,7 +219,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	FrameTimer* gameTimer = new FrameTimer();
 	gameTimer->Init(60);
 	//	may change how to do this in the future
-	sceneManager.currentScene->AddIntoScene();
+	sceneManager->currentScene->AddIntoScene();
 
 	// Play background music in loop
 	audioManager.PlayAudio(audioEntity->audios[1], 0, 0);
@@ -227,8 +227,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	while (GameIsRunning()) //game loop i guess
 	{
 		//	Run all systems
-		sceneManager.currentScene->entityManager->UpdateEntityList();
-		sceneManager.currentScene->componentManager->UpdateComponentList();
+		sceneManager->currentScene->entityManager->UpdateEntityList();
+		sceneManager->currentScene->componentManager->UpdateComponentList();
 		int framesToUpdate = gameTimer->GetFramesToUpdate();
 		float deltaTime = gameTimer->GetDeltaTime();
 		//TODO: DO ANIM, PHYSICS COMPONENTS 
@@ -237,18 +237,34 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		GetInput();
 		//do physics
 		//DoPhysics();
-		Physics::DoScenePhysics(sceneManager.currentScene, framesToUpdate);
+		Physics::DoScenePhysics(sceneManager->currentScene, framesToUpdate);
 		//AI
 		//game update/logic
-		sceneManager.currentScene->UpdateScene(framesToUpdate, deltaTime);
+		//remove sceneManager param soon maybe, for now it is a testing var
+		sceneManager->currentScene->UpdateScene(framesToUpdate, deltaTime, sceneManager);
 		//Draw!!!!
-		Graphics::RenderScene(sceneManager.currentScene);
+		Graphics::RenderScene(sceneManager->currentScene);
 		//play sound
 		audioManager.UpdateSound();
 
 
-		//	Print RGB value of screen on console
-		//std::cout << "R = " << R << ", G = " << G << ", B = " << B << '\n';
+		std::cout<<sceneManager->currentScene->entityManager->GetEntity(PLAYER)->transform->position.x<<'\n';
+			
+
+		if(sceneManager->currentScene->isSwitchScene)
+		{
+			SceneEnum num;
+			static bool flip = true;
+			if(flip)
+				num = MAIN_MENU;
+			else
+			{
+				num = PAUSE_MENU;
+			}
+			flip = !flip;
+			
+			sceneManager->currentScene->SwitchScene(sceneManager, num);
+		}
 	}
 
 	std::cout << "Starting Clean up" << '\n';

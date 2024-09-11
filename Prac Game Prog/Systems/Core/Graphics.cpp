@@ -165,16 +165,16 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
     //	note : if u put line::Begin() must end immediately after use cuz it will mess with spriteBrush somehow
     lineInterface->Begin();
 
-    //Draw colliders
-    //TODO: softcode it in the future, for now i needed a quick visual 
-    auto verticesA = collider1->GetColliderVerticesInWorld();
-    verticesA.push_back(verticesA[0]);  //to complete loop
-    auto verticesB = collider2->GetColliderVerticesInWorld();
-    verticesB.push_back(verticesB[0]);  //to complete loop
-    
-    lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(0, 255, 0) );
-    lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(0, 255, 0) );
-    
+    // //Draw colliders
+    // //TODO: softcode it in the future, for now i needed a quick visual 
+    // auto verticesA = collider1->GetColliderVerticesInWorld();
+    // verticesA.push_back(verticesA[0]);  //to complete loop
+    // auto verticesB = collider2->GetColliderVerticesInWorld();
+    // verticesB.push_back(verticesB[0]);  //to complete loop
+    //
+    // lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(0, 255, 0) );
+    // lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(0, 255, 0) );
+    //
     lineInterface->End();
     
 	
@@ -207,7 +207,8 @@ void Graphics::DrawAll2DSprites(std::vector<std::shared_ptr<Component>> sprite2D
     for(std::shared_ptr<Component> r : sprite2DRendererComponents)
     {
         std::shared_ptr<Sprite2DRendererComponent> c = std::dynamic_pointer_cast<Sprite2DRendererComponent>(r);
-        D3DXMATRIX mat = c->parent->GetTransformMatrix();
+        D3DXMATRIX mat;
+        mat = c->parent->GetTransformMatrix();
         spriteBrush->SetTransform(&mat);
         spriteBrush->Draw(c->spriteInfo.texture,&c->spriteRect,NULL,NULL,D3DCOLOR_XRGB(255, 255, 255));
 		

@@ -1,14 +1,15 @@
-#include "MainMenuScene.h"
+#include "PauseMenuScene.h"
 
 #include "../Systems/Managers/SceneManager.h"
 
-MainMenuScene::MainMenuScene()
+
+PauseMenuScene::PauseMenuScene()
 {
-    Scene(MAIN_MENU);
-    
+    Scene(PAUSE_MENU);
 }
 
-// void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime)
+// void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime)
+//
 // {
 //     //  ypdate stuff
 //     
@@ -117,12 +118,6 @@ MainMenuScene::MainMenuScene()
 // 		
 // 	}
 //
-// 	if (diKeys[DIK_L] & 0x80)
-// 	{
-// 		//Switch scene
-// 		
-// 	}
-//
 // 	D3DXVec2Normalize(&forceApplied,&forceApplied);
 // 	rgb->ApplyForce(forceApplied * thrust * framesToUpdate);
 //
@@ -186,8 +181,7 @@ MainMenuScene::MainMenuScene()
 //     
 // }
 
-void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
-
+void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 {
     //  ypdate stuff
     
@@ -296,13 +290,6 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 		
 	}
 
-	//testing
-	if (diKeys[DIK_L] & 0x80)
-	{
-		
-		isSwitchScene = true;
-	}
-
 	D3DXVec2Normalize(&forceApplied,&forceApplied);
 	rgb->ApplyForce(forceApplied * thrust * framesToUpdate);
 
@@ -337,6 +324,13 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 		forceApplied1 += D3DXVECTOR2(1,0);
 		isMoving = true;
 	}
+
+	//testing
+	if (diKeys[DIK_L] & 0x80)
+	{
+		
+		isSwitchScene = true;
+	}
 	
 	D3DXVec2Normalize(&forceApplied1,&forceApplied1);
 	rgb1->ApplyForce(forceApplied1 * thrust * framesToUpdate);
@@ -361,13 +355,10 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 		audioManager.PlayAudio(audioEntity->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
 		timeSinceLastSound = 0.0f; // Reset the timer
 	}
-
 	
-    
 }
 
-void MainMenuScene::AddIntoScene()
-
+void PauseMenuScene::AddIntoScene()
 {
 	//	buffers for temporary assignment of data to the components
 	std::shared_ptr<Sprite2DRendererComponent> spriteComponent;
@@ -428,7 +419,7 @@ void MainMenuScene::AddIntoScene()
 	spriteComponent->InitSpriteInfo(spriteInfo);
 
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(500, 100);
+	transformComponent->position = D3DXVECTOR2(1500, 100);
 	transformComponent->scale = D3DXVECTOR2(2, 2);
 
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
@@ -443,7 +434,7 @@ void MainMenuScene::AddIntoScene()
 	//Resume Button
 	entity = this->entityManager->CreateEntity(UI);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/play.png", &spriteInfo.texture);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/resumebutton.png", &spriteInfo.texture);
 	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
 	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
 	spriteInfo.totalRows = 1;
@@ -495,3 +486,5 @@ void MainMenuScene::AddIntoScene()
 	// Main Menu buttons
 	// adding later
 }
+
+

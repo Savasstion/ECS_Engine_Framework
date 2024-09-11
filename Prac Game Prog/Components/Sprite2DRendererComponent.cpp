@@ -56,7 +56,7 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
     {
         if (spriteInfo.isDirectional)
         {
-            std::cout << "Animating Directional" << '\n';
+            //std::cout << "Animating Directional" << '\n';
 
             frameCounter += framesToUpdate;
             int colIndex = frameCounter % (spriteInfo.maxCols + 1);
@@ -65,22 +65,22 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
             if (spriteInfo.currentDirection == spriteInfo.upDirectionValue)
             {
                 rowIndex = spriteInfo.upDirectionValue;
-                std::cout << "Animating UP" << '\n';
+                //std::cout << "Animating UP" << '\n';
             }
             if (spriteInfo.currentDirection == spriteInfo.leftDirectionValue)
             {
                 rowIndex = spriteInfo.leftDirectionValue;
-                std::cout << "Animating LEFT" << '\n';
+                //std::cout << "Animating LEFT" << '\n';
             }
             if (spriteInfo.currentDirection == spriteInfo.rightDirectionValue)
             {
                 rowIndex = spriteInfo.rightDirectionValue;
-                std::cout << "Animating RIGHT" << '\n';
+                //std::cout << "Animating RIGHT" << '\n';
             }
             if (spriteInfo.currentDirection == spriteInfo.rightDirectionValue)
             {
                 rowIndex = spriteInfo.downDirectionValue;
-                std::cout << "Animating DOWN" << '\n';
+                //std::cout << "Animating DOWN" << '\n';
             }
 
             if (frameCounter % (spriteInfo.maxRows + 1) == 0)
@@ -93,7 +93,7 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
         }
         else
         {
-            std::cout << "Animating Non-Directional" << '\n';
+            //std::cout << "Animating Non-Directional" << '\n';
             frameCounter += framesToUpdate;
             int colIndex = frameCounter % spriteInfo.maxFrames % (spriteInfo.maxCols);
             int rowIndex = frameCounter % spriteInfo.maxFrames / (spriteInfo.maxRows);
