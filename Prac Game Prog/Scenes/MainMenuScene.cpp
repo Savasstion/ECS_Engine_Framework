@@ -186,9 +186,13 @@ MainMenuScene::MainMenuScene()
 //     
 // }
 
-void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 
+void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 {
+	//update cooldowns
+	// full screen cooldown
+	if (fullscreenTimer <= fullscreenCooldown) fullscreenTimer += deltaTime;
+
     //  ypdate stuff
     
 	bool isMoving = false;
@@ -227,27 +231,32 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 
 	if (diKeys[DIK_F] & 0x80)
 	{
-		//destory sprite brush since it holds d3ddevice
-		spriteBrush->Release();
-		spriteBrush = nullptr;
-		lineInterface->Release();
-		lineInterface = nullptr;
-		fontInterface->Release();
-		fontInterface = nullptr;
-		//change the Presentation Params for the D3DDevice and then reset it to take effect
-		if (d3dPP.Windowed) {
-			//if windowed, set to fullscreen
-			d3dPP.Windowed = false;
-		}
-		else
+		if (fullscreenTimer >= fullscreenCooldown) //fullscreen
 		{
-			//else, set to windowed
-			d3dPP.Windowed = true;
-		}
-		HRESULT hr = d3dDevice->Reset(&d3dPP);
-		if (FAILED(hr))
-		{
-			std::cout << "Error : " << DXGetErrorString(hr) << "\nDescription : " << DXGetErrorDescription(hr) << '\n';
+			fullscreenTimer = 0.0f;
+			std::cout << "Fullscreened" << '\n';
+			//destory sprite brush since it holds d3ddevice
+			spriteBrush->Release();
+			spriteBrush = nullptr;
+			lineInterface->Release();
+			lineInterface = nullptr;
+			fontInterface->Release();
+			fontInterface = nullptr;
+			//change the Presentation Params for the D3DDevice and then reset it to take effect
+			if (d3dPP.Windowed) {
+				//if windowed, set to fullscreen
+				d3dPP.Windowed = false;
+			}
+			else
+			{
+				//else, set to windowed
+				d3dPP.Windowed = true;
+			}
+			HRESULT hr = d3dDevice->Reset(&d3dPP);
+			if (FAILED(hr))
+			{
+				std::cout << "Error : " << DXGetErrorString(hr) << "\nDescription : " << DXGetErrorDescription(hr) << '\n';
+			}
 		}
 	}
 

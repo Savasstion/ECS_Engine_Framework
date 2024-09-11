@@ -181,10 +181,13 @@ PauseMenuScene::PauseMenuScene()
 //     
 // }
 
+
 void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 {
-    //  ypdate stuff
-    
+	//update cooldowns
+	// full screen cooldown
+	if (fullscreenTimer <= fullscreenCooldown) fullscreenTimer += deltaTime;
+
 	bool isMoving = false;
 	static bool wasMoving = false; // Track the previous movement state
 
@@ -221,28 +224,34 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 
 	if (diKeys[DIK_F] & 0x80)
 	{
-		//destory sprite brush since it holds d3ddevice
-		spriteBrush->Release();
-		spriteBrush = nullptr;
-		lineInterface->Release();
-		lineInterface = nullptr;
-		fontInterface->Release();
-		fontInterface = nullptr;
-		//change the Presentation Params for the D3DDevice and then reset it to take effect
-		if (d3dPP.Windowed) {
-			//if windowed, set to fullscreen
-			d3dPP.Windowed = false;
-		}
-		else
+		if (fullscreenTimer >= fullscreenCooldown) //fullscreen
 		{
-			//else, set to windowed
-			d3dPP.Windowed = true;
+			fullscreenTimer = 0.0f;
+			std::cout << "Fullscreened" << '\n';
+			//destory sprite brush since it holds d3ddevice
+			spriteBrush->Release();
+			spriteBrush = nullptr;
+			lineInterface->Release();
+			lineInterface = nullptr;
+			fontInterface->Release();
+			fontInterface = nullptr;
+			//change the Presentation Params for the D3DDevice and then reset it to take effect
+			if (d3dPP.Windowed) {
+				//if windowed, set to fullscreen
+				d3dPP.Windowed = false;
+			}
+			else
+			{
+				//else, set to windowed
+				d3dPP.Windowed = true;
+			}
+			HRESULT hr = d3dDevice->Reset(&d3dPP);
+			if (FAILED(hr))
+			{
+				std::cout << "Error : " << DXGetErrorString(hr) << "\nDescription : " << DXGetErrorDescription(hr) << '\n';
+			}
 		}
-		HRESULT hr = d3dDevice->Reset(&d3dPP);
-		if (FAILED(hr))
-		{
-			std::cout << "Error : " << DXGetErrorString(hr) << "\nDescription : " << DXGetErrorDescription(hr) << '\n';
-		}
+		
 	}
 
 #pragma region PLAYER_KEYBOARD_INPUTS

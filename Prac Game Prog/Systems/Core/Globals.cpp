@@ -26,3 +26,6 @@ FMOD::Channel* channel = 0;
 
 std::shared_ptr<Polygon2DColliderComponent> collider1 = nullptr;
 std::shared_ptr<Polygon2DColliderComponent> collider2 = nullptr;
+
+float fullscreenCooldown = 1.0f;
+float fullscreenTimer = 0.0f;
