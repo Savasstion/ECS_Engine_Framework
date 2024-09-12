@@ -1,10 +1,10 @@
 #include "Physics.h"
-
-#include "../../Components/Polygon2DColliderComponent.h"
 #undef min
 #undef max 
 
 const float Physics::globalGravityConstant = 1.0f;
+std::set<std::shared_ptr<ColliderComponent>> Physics::currentTriggeredColliders;
+std::set<std::shared_ptr<ColliderComponent>> Physics::prevTriggeredColliders;   
 
 void Physics::DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate)
 {
@@ -61,7 +61,7 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
     //  Check for Polygon2D collisions
     {
         auto components = scene->componentManager->GetComponents(POLYGON2D_COLLIDER);
-
+        
         for(size_t i = 0; i < components.size(); i++)
         {
             auto polygon2dColliderA = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[i]);
@@ -73,6 +73,9 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
 
                 if(isCollided)
                 {
+                    currentTriggeredColliders.insert(polygon2dColliderA);
+                    currentTriggeredColliders.insert(polygon2dColliderB);
+                    
                     //std::cout<<"COLLISION_DETECTED!"<<'\n';
                     
                     //  Do polygon2dColliderA collision event
@@ -96,12 +99,21 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                         // polygon2dColliderB->collisionEvent->RemoveListener(listenerIDB);
                         polygon2dColliderB->collsionEventScript->RunScript(polygon2dColliderB, polygon2dColliderA);
                     }
+
+                    
                     
                     //  Do Physics Response
                     
                 }
             }
         }
+
+        DoAllExitCollisions();
+
+        // Update prevSet to be the current state
+        prevTriggeredColliders = currentTriggeredColliders;
+        // Clear currentSet for the next update cycle
+        currentTriggeredColliders.clear();
 
     }
      
@@ -122,6 +134,19 @@ void Physics::ProjectVerticesOntoAxis(std::vector<D3DXVECTOR2> vertices, D3DXVEC
         if(projection > *maxValue) {*maxValue = projection;}
     }
     
+}
+
+void Physics::DoAllExitCollisions()
+{
+    //  Do All Exit Collision events
+    // Iterate over prevSet to find colliders no longer in currentSet
+    for (auto collider : prevTriggeredColliders) {
+        if (currentTriggeredColliders.find(collider) == currentTriggeredColliders.end()) {
+            // If collider is not found in currentSet, it means collision has exited
+            if( collider->collsionEventScript != nullptr)
+                collider->collsionEventScript->DoExitCollisionScript(collider);
+        }
+    }
 }
 
 bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std::vector<D3DXVECTOR2> verticesB)

@@ -7,6 +7,8 @@
 #include "../../BaseClasses/Scene.h"
 #include <limits>
 #include <set>
+#include <algorithm>
+#include "../../Components/Polygon2DColliderComponent.h"
 
 
 class Physics
@@ -25,8 +27,8 @@ public:
 private:
     //  check if there are elements from current Set missing in prev Set
     //  if so, means exit collision event should occur for those elements
-    std::set<std::shared_ptr<ColliderComponent>> currentTriggeredColliders;
-    std::set<std::shared_ptr<ColliderComponent>> prevTriggeredColliders;   
+    static std::set<std::shared_ptr<ColliderComponent>> currentTriggeredColliders;
+    static std::set<std::shared_ptr<ColliderComponent>> prevTriggeredColliders;   
     
     //  Motion
     static void DoAllCycleOfMotion(std::shared_ptr<Scene> scene);    
@@ -34,6 +36,7 @@ private:
     //  Collision
     static void HandleAllCollision(std::shared_ptr<Scene> scene);
     static void ProjectVerticesOntoAxis(std::vector<D3DXVECTOR2> vertices, D3DXVECTOR2 axis, float* minValue, float* maxValue);
+    static void DoAllExitCollisions();
     //static bool CheckCollision(std::shared_ptr<BoxColliderComponent> a, std::shared_ptr<BoxColliderComponent> b);
     //static bool ShouldCollide(std::shared_ptr<BoxColliderComponent> a, std::shared_ptr<BoxColliderComponent> b);
     //static void ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::shared_ptr<Rigidbody2DComponent> rbB);

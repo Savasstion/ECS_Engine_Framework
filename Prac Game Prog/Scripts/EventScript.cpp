@@ -16,8 +16,7 @@ void EventScript::DoEnterCollisionScript(std::shared_ptr<ColliderComponent> owne
     isDoneOnce = true;
 }
 
-void EventScript::DoExitCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider,
-    std::shared_ptr<ColliderComponent> incomingCollider)
+void EventScript::DoExitCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider)
 {
     isDoneOnce = false; //reset
 }
