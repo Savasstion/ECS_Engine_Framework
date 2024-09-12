@@ -386,6 +386,24 @@ void MainMenuScene::AddIntoScene()
 	std::shared_ptr<Polygon2DColliderComponent> polygon2dColliderComponent;
 	std::shared_ptr<Audio2DComponent> audioComponent;
 	std::shared_ptr<Audio2DComponent> audioBGM;
+
+	//Parallax background attempt 
+	
+	//Background
+	entity = this->entityManager->CreateEntity(BACKGROUND);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/city 7/7.png", &spriteInfoMainMenu.texture);
+	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = SCREEN_HEIGHT;
+	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = SCREEN_WIDTH;
+	spriteInfoMainMenu.totalRows = 1;
+	spriteInfoMainMenu.totalCols = 1;
+	spriteInfoMainMenu.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2));
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+	//polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	//polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
 	
 	// Test audio entity
 	audioEntityMainMenu = this->entityManager->CreateEntity(ENEMY);
@@ -408,13 +426,6 @@ void MainMenuScene::AddIntoScene()
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(audioEntityMainMenu);
 	rigidbodyComponent->friction = 0.5f;
 
-	// Audio stuff
-	// this = current this, call componentManager to create Audio2DComponent, e = parent entity
-	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
-	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
-	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
-	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
-	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
 
 	//	pls determine freq then set it
 	//au2d->setFrequency()
@@ -447,12 +458,19 @@ void MainMenuScene::AddIntoScene()
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>(); //child class of EventScript btw
 	//	for testing
 	collider1 = polygon2dColliderComponent;
+	// Audio stuff
+	// this = current this, call componentManager to create Audio2DComponent, e = parent entity
+	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
+	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
+	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false, false);  // [0]
+	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
+	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
 
 	//UI stuff
 	//Resume Button
 	entity = this->entityManager->CreateEntity(UI);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/play.png", &spriteInfoMainMenu.texture);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/playbutton.png", &spriteInfoMainMenu.texture);
 	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 45;
 	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 127;
 	spriteInfoMainMenu.totalRows = 1;
@@ -460,7 +478,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 200);
+	transformComponent->position = D3DXVECTOR2(200, 700);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
@@ -468,10 +486,10 @@ void MainMenuScene::AddIntoScene()
 	//	for testing
 	collider2 = polygon2dColliderComponent;
 
-	//Volume Button
+	//Options Button
 	entity = this->entityManager->CreateEntity(UI);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/volumebutton.png", &spriteInfoMainMenu.texture);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/optionsbutton.png", &spriteInfoMainMenu.texture);
 	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 45;
 	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 127;
 	spriteInfoMainMenu.totalRows = 1;
@@ -479,16 +497,16 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 300);
+	transformComponent->position = D3DXVECTOR2(200, 800);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
 	
 
-	//Fullscreen Button
+	//Quit Button
 	entity = this->entityManager->CreateEntity(UI);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfoMainMenu.texture);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/quitbutton.png", &spriteInfoMainMenu.texture);
 	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 45;
 	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 127;
 	spriteInfoMainMenu.totalRows = 1;
@@ -496,10 +514,12 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 400);
+	transformComponent->position = D3DXVECTOR2(200, 900);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+
+	
 	
 	// Main Menu buttons
 	// adding later

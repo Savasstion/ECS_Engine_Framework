@@ -10,6 +10,7 @@ enum TagEnum
     PROJECTILE,
     OBSTACLE,
     PICKABLE,
-    UI
+    UI,
+    BACKGROUND
     
 };
