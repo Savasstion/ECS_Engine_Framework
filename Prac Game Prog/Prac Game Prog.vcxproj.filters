@@ -90,6 +90,33 @@
     <ClCompile Include="Systems\Core\Physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Components\Polygon2DColliderComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\SceneGlobals\MainMenuGlobals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\SceneGlobals\PauseMenuGlobals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MainMenuScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\PauseMenuScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\EventScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Script.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\EventScripts\PrintStringEventScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseClasses\CollisionEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseClasses\Clock.h">
@@ -168,6 +195,39 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Systems\Core\Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Polygon2DColliderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MainMenuScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\SceneGlobals\MainMenuGlobals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\SceneGlobals\PauseMenuGlobals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\PauseMenuScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\EventScripts\PrintStringEventScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Script.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\EventScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseClasses\CollisionEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums\ColliderTag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums\SceneEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

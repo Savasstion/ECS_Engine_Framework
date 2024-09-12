@@ -212,6 +212,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="BaseClasses\CollisionEvent.cpp" />
     <ClCompile Include="BaseClasses\Component.cpp" />
     <ClCompile Include="BaseClasses\Entity.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -450,6 +451,13 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Components\TransformComponent.cpp" />
+    <ClCompile Include="Scenes\MainMenuScene.cpp" />
+    <ClCompile Include="Scenes\PauseMenuScene.cpp" />
+    <ClCompile Include="Scenes\SceneGlobals\MainMenuGlobals.cpp" />
+    <ClCompile Include="Scenes\SceneGlobals\PauseMenuGlobals.cpp" />
+    <ClCompile Include="Scripts\EventScript.cpp" />
+    <ClCompile Include="Scripts\EventScripts\PrintStringEventScript.cpp" />
+    <ClCompile Include="Scripts\Script.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Systems\Core\Audio.cpp" />
     <ClCompile Include="Systems\Core\Globals.cpp" />
@@ -610,6 +618,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseClasses\Clock.h" />
+    <ClInclude Include="BaseClasses\CollisionEvent.h" />
     <ClInclude Include="BaseClasses\Component.h" />
     <ClInclude Include="BaseClasses\Entity.h" />
     <ClInclude Include="BaseClasses\FrameTimer.h" />
@@ -626,8 +635,17 @@
     <ClInclude Include="Components\RigidbodyComponent.h" />
     <ClInclude Include="Components\Sprite2DRendererComponent.h" />
     <ClInclude Include="Components\TransformComponent.h" />
+    <ClInclude Include="Enums\ColliderTag.h" />
     <ClInclude Include="Enums\ComponentEnum.h" />
+    <ClInclude Include="Enums\SceneEnum.h" />
     <ClInclude Include="Enums\TagEnum.h" />
+    <ClInclude Include="Scenes\MainMenuScene.h" />
+    <ClInclude Include="Scenes\PauseMenuScene.h" />
+    <ClInclude Include="Scenes\SceneGlobals\MainMenuGlobals.h" />
+    <ClInclude Include="Scenes\SceneGlobals\PauseMenuGlobals.h" />
+    <ClInclude Include="Scripts\EventScript.h" />
+    <ClInclude Include="Scripts\EventScripts\PrintStringEventScript.h" />
+    <ClInclude Include="Scripts\Script.h" />
     <ClInclude Include="Systems\Core\Audio.h" />
     <ClInclude Include="Systems\Core\Globals.h" />
     <ClInclude Include="Systems\Core\Graphics.h" />
