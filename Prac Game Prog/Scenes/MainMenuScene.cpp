@@ -199,7 +199,7 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	static bool wasMoving = false; // Track the previous movement state
 
 	// Update timeSinceLastSound
-	timeSinceLastSound += deltaTime;
+	timeSinceLastSoundMainMenu += deltaTime;
 
 	//	Acquire the device.
 	dInputKeyboardDevice->Acquire();
@@ -313,7 +313,7 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	}
 
 	D3DXVec2Normalize(&forceApplied,&forceApplied);
-	rgb->ApplyForce(forceApplied * thrust * framesToUpdate);
+	rgb->ApplyForce(forceApplied * mainMenuThrust * framesToUpdate);
 
 	auto e1 = this->entityManager->GetEntity(ENEMY);
 	auto t1 = e1->transform;
@@ -348,7 +348,7 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	}
 	
 	D3DXVec2Normalize(&forceApplied1,&forceApplied1);
-	rgb1->ApplyForce(forceApplied1 * thrust * framesToUpdate);
+	rgb1->ApplyForce(forceApplied1 * mainMenuThrust * framesToUpdate);
 #pragma endregion
 	
 #pragma endregion
@@ -367,7 +367,7 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 
 	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
 	{
-		audioManager.PlayAudio(audioEntity->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
+		audioManager.PlayAudio(audioEntityMainMenu->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
 		timeSinceLastSound = 0.0f; // Reset the timer
 	}
 
@@ -388,30 +388,30 @@ void MainMenuScene::AddIntoScene()
 	std::shared_ptr<Audio2DComponent> audioBGM;
 	
 	// Test audio entity
-	audioEntity = this->entityManager->CreateEntity(ENEMY);
+	audioEntityMainMenu = this->entityManager->CreateEntity(ENEMY);
 	// Sprite component
-	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(audioEntity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1.texture);
-	spriteInfo1.sheetHeight = spriteInfo1.spriteHeight = 64;
-	spriteInfo1.sheetWidth = spriteInfo1.spriteWidth = 64;
-	spriteInfo1.totalRows = 1;
-	spriteInfo1.totalCols = 1;
-	spriteComponent->InitSpriteInfo(spriteInfo1);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(audioEntityMainMenu);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1MainMenu.texture);
+	spriteInfo1MainMenu.sheetHeight = spriteInfo1MainMenu.spriteHeight = 64;
+	spriteInfo1MainMenu.sheetWidth = spriteInfo1MainMenu.spriteWidth = 64;
+	spriteInfo1MainMenu.totalRows = 1;
+	spriteInfo1MainMenu.totalCols = 1;
+	spriteComponent->InitSpriteInfo(spriteInfo1MainMenu);
 
 	// Sprite transform
-	transformComponent = this->componentManager->CreateTransformComponent(audioEntity);
+	transformComponent = this->componentManager->CreateTransformComponent(audioEntityMainMenu);
 	transformComponent->position = D3DXVECTOR2(500,500);
 	transformComponent->scale = D3DXVECTOR2(1,1);
 	transformComponent->rotation = 0.0f;
 
 	// Physics stuff
-	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(audioEntity);
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(audioEntityMainMenu);
 	rigidbodyComponent->friction = 0.5f;
 
 	// Audio stuff
 	// this = current this, call componentManager to create Audio2DComponent, e = parent entity
-	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntity);
-	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntity);
+	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
+	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
 	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
 	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
 	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
@@ -423,18 +423,18 @@ void MainMenuScene::AddIntoScene()
 	entity = this->entityManager->CreateEntity(PLAYER);
 
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/militia.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 48;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 32;
-	spriteInfo.totalRows = 4;
-	spriteInfo.totalCols = 4;
-	spriteInfo.isAnimated = true;
-	spriteInfo1.isDirectional = true;
-	spriteInfo.upDirectionValue = 3;
-	spriteInfo.leftDirectionValue = 1;
-	spriteInfo.rightDirectionValue = 2;
-	spriteInfo.downDirectionValue = 0;
-	spriteComponent->InitSpriteInfo(spriteInfo);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/militia.png", &spriteInfoMainMenu.texture);
+	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 48;
+	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 32;
+	spriteInfoMainMenu.totalRows = 4;
+	spriteInfoMainMenu.totalCols = 4;
+	spriteInfoMainMenu.isAnimated = true;
+	spriteInfo1MainMenu.isDirectional = true;
+	spriteInfoMainMenu.upDirectionValue = 3;
+	spriteInfoMainMenu.leftDirectionValue = 1;
+	spriteInfoMainMenu.rightDirectionValue = 2;
+	spriteInfoMainMenu.downDirectionValue = 0;
+	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(500, 100);
@@ -452,13 +452,13 @@ void MainMenuScene::AddIntoScene()
 	//Resume Button
 	entity = this->entityManager->CreateEntity(UI);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/play.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	spriteInfo.totalRows = 1;
-	spriteInfo.totalCols = 1;
-	spriteInfo.isAnimated = false;
-	spriteComponent->InitSpriteInfo(spriteInfo);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/play.png", &spriteInfoMainMenu.texture);
+	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 45;
+	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 127;
+	spriteInfoMainMenu.totalRows = 1;
+	spriteInfoMainMenu.totalCols = 1;
+	spriteInfoMainMenu.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(200, 200);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
@@ -471,13 +471,13 @@ void MainMenuScene::AddIntoScene()
 	//Volume Button
 	entity = this->entityManager->CreateEntity(UI);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/volumebutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	spriteInfo.totalRows = 1;
-	spriteInfo.totalCols = 1;
-	spriteInfo.isAnimated = false;
-	spriteComponent->InitSpriteInfo(spriteInfo);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/volumebutton.png", &spriteInfoMainMenu.texture);
+	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 45;
+	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 127;
+	spriteInfoMainMenu.totalRows = 1;
+	spriteInfoMainMenu.totalCols = 1;
+	spriteInfoMainMenu.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(200, 300);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
@@ -488,13 +488,13 @@ void MainMenuScene::AddIntoScene()
 	//Fullscreen Button
 	entity = this->entityManager->CreateEntity(UI);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	spriteInfo.totalRows = 1;
-	spriteInfo.totalCols = 1;
-	spriteInfo.isAnimated = false;
-	spriteComponent->InitSpriteInfo(spriteInfo);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfoMainMenu.texture);
+	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 45;
+	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 127;
+	spriteInfoMainMenu.totalRows = 1;
+	spriteInfoMainMenu.totalCols = 1;
+	spriteInfoMainMenu.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(200, 400);
 	transformComponent->scale = D3DXVECTOR2(1, 1);

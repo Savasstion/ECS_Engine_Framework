@@ -14,7 +14,7 @@
 #include "Systems/Core/Physics.h"
 #include "Systems/Managers/SceneManager.h"
 #include "Systems/Core/Audio.h"
-#include "Scenes/SceneGlobals/MainMenuGlobals.h"
+
 
 #pragma region GLOBAL_VAR
 HRESULT hr;
@@ -246,8 +246,14 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		Graphics::RenderScene(sceneManager->currentScene);
 		//play sound
 		audioManager.UpdateSound();
-
-
+		
+std::string sceneNameStr = "";
+if(sceneManager->currentScene->sceneName == MAIN_MENU)
+	sceneNameStr = "Main_Menu";
+else
+	sceneNameStr = "Pause_Menu";
+		
+		//std::cout<<sceneNameStr<<'\n';
 		std::cout<<sceneManager->currentScene->entityManager->GetEntity(PLAYER)->transform->position.x<<'\n';
 			
 

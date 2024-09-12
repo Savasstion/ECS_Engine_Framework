@@ -1,6 +1,6 @@
 #pragma once
 #include "../BaseClasses/Scene.h"
-#include "../Scenes/SceneGlobals/MainMenuGlobals.h"
+#include "../Scenes/SceneGlobals/PauseMenuGlobals.h"
 #include "../Scripts/EventScripts/PrintStringEventScript.h"
 
 

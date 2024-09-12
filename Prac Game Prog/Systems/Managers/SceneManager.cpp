@@ -20,18 +20,18 @@ void SceneManager::LoadScene(SceneEnum scene_enum)
                 auto menu = std::make_shared<PauseMenuScene>();
                 menu->sceneName = PAUSE_MENU;
                 auto entityManager = sceneEntityMap[menu->sceneName];
-                if(entityManager != NULL)
-                {
-                    menu->entityManager = entityManager;
-                }else
-                {
-                    menu->AddIntoScene();
-                }
+                // if(entityManager != NULL)
+                // {
+                //     menu->entityManager = entityManager;
+                // }else
+                // {
+                //     menu->AddIntoScene();
+                // }
                 auto componentManager = sceneComponentMap[menu->sceneName];
-                if(componentManager != NULL)
-                {
-                    menu->componentManager = componentManager;
-                }
+                // if(componentManager != NULL)
+                // {
+                //     menu->componentManager = componentManager;
+                // }
 
                 sceneStack.push(menu);
             }
@@ -40,19 +40,19 @@ void SceneManager::LoadScene(SceneEnum scene_enum)
             {
                 auto menu = std::make_shared<MainMenuScene>();
                 menu->sceneName = MAIN_MENU;
-                auto entityManager = sceneEntityMap[menu->sceneName];
-                if(entityManager != NULL)
-                {
-                    menu->entityManager = entityManager;
-                }else
-                {
-                    menu->AddIntoScene();
-                }
-                auto componentManager = sceneComponentMap[menu->sceneName];
-                if(componentManager != NULL)
-                {
-                    menu->componentManager = componentManager;
-                }
+                // auto entityManager = sceneEntityMap[menu->sceneName];
+                // if(entityManager != NULL)
+                // {
+                //     menu->entityManager = entityManager;
+                // }else
+                // {
+                //     menu->AddIntoScene();
+                // }
+                // auto componentManager = sceneComponentMap[menu->sceneName];
+                // if(componentManager != NULL)
+                // {
+                //     menu->componentManager = componentManager;
+                // }
 
                 sceneStack.push(menu);
             }
