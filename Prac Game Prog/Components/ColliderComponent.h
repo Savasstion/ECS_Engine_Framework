@@ -13,7 +13,7 @@ public:
     //std::shared_ptr<CollisionEvent> collisionEvent = std::make_shared<CollisionEvent>();
     std::shared_ptr<EventScript> collsionEventScript;
 
-    long AddCollisionListener();
+    //long AddCollisionListener();
     virtual ~ColliderComponent() = default;  // Virtual destructor
     virtual void UpdateColliderPos(D3DXVECTOR2 parentPos);
 
