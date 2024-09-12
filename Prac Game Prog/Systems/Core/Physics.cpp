@@ -58,6 +58,11 @@ void Physics::DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb)
 
 void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
 {
+    // Update prevSet to be the current state
+    prevTriggeredColliders = currentTriggeredColliders;
+    // Clear currentSet for the next update cycle
+    currentTriggeredColliders.clear();
+    
     //  Check for Polygon2D collisions
     {
         auto components = scene->componentManager->GetComponents(POLYGON2D_COLLIDER);
@@ -110,10 +115,7 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
 
         DoAllExitCollisions();
 
-        // Update prevSet to be the current state
-        prevTriggeredColliders = currentTriggeredColliders;
-        // Clear currentSet for the next update cycle
-        currentTriggeredColliders.clear();
+
 
     }
      
