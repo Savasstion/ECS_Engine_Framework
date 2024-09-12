@@ -10,7 +10,7 @@ class ColliderComponent : public Component
 public:
     D3DXVECTOR2 relativePos = D3DXVECTOR2(0,0);
     bool isVisible = false;
-    std::shared_ptr<CollisionEvent> collisionEvent = std::make_shared<CollisionEvent>();
+    //std::shared_ptr<CollisionEvent> collisionEvent = std::make_shared<CollisionEvent>();
     std::shared_ptr<EventScript> collsionEventScript;
 
     long AddCollisionListener();

@@ -78,22 +78,23 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                     //  Do polygon2dColliderA collision event
                     if(polygon2dColliderA->collsionEventScript != nullptr)
                     {
-                        polygon2dColliderA->collisionEvent->ownerCollider = polygon2dColliderA;
-                        polygon2dColliderA->collisionEvent->incomingCollider = polygon2dColliderB;
-                        auto listenerIDA = polygon2dColliderA->AddCollisionListener();
-                        polygon2dColliderA->collisionEvent->TriggerEvent();
-                        polygon2dColliderA->collisionEvent->RemoveListener(listenerIDA);
+                        // polygon2dColliderA->collisionEvent->ownerCollider = polygon2dColliderA;
+                        // polygon2dColliderA->collisionEvent->incomingCollider = polygon2dColliderB;
+                        // auto listenerIDA = polygon2dColliderA->AddCollisionListener();
+                        // polygon2dColliderA->collisionEvent->TriggerEvent();
+                        // polygon2dColliderA->collisionEvent->RemoveListener(listenerIDA);
+                        polygon2dColliderA->collsionEventScript->RunScript(polygon2dColliderA, polygon2dColliderB);
                     }
 
                     //  Do polygon2dColliderB collision event
                     if(polygon2dColliderB->collsionEventScript != nullptr)
                     {
-                        polygon2dColliderB->collisionEvent->ownerCollider = polygon2dColliderB;
-                        polygon2dColliderB->collisionEvent->incomingCollider = polygon2dColliderA;
-                        auto listenerIDB = polygon2dColliderB->AddCollisionListener();
-                        polygon2dColliderB->collisionEvent->TriggerEvent();
-                        polygon2dColliderA->collisionEvent->RemoveListener(listenerIDB);
-                    
+                        // polygon2dColliderB->collisionEvent->ownerCollider = polygon2dColliderB;
+                        // polygon2dColliderB->collisionEvent->incomingCollider = polygon2dColliderA;
+                        // auto listenerIDB = polygon2dColliderB->AddCollisionListener();
+                        // polygon2dColliderB->collisionEvent->TriggerEvent();
+                        // polygon2dColliderB->collisionEvent->RemoveListener(listenerIDB);
+                        polygon2dColliderB->collsionEventScript->RunScript(polygon2dColliderB, polygon2dColliderA);
                     }
                     
                     //  Do Physics Response
