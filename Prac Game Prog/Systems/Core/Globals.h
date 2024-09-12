@@ -67,7 +67,7 @@ extern LPDIRECTINPUT8 dInput;
 extern LPDIRECTINPUTDEVICE8  dInputKeyboardDevice;
 extern LPDIRECTINPUTDEVICE8 dInputMouseDevice;
 //	Key input buffer
-extern BYTE  diKeys[256];
+extern BYTE diKeys[256];
 extern DIMOUSESTATE mouseState;
 extern D3DXVECTOR3 mousePos;
 
@@ -85,8 +85,8 @@ extern FMOD::Channel* channel;	//
 //for testing purposes
 extern std::shared_ptr<Polygon2DColliderComponent> collider1, collider2;
 
-extern float fullscreenCooldown;
-extern float fullscreenTimer;
+extern bool fullscreenPressed;
+extern bool fullscreenTriggered;
 
 #endif // GLOBAL_H
     

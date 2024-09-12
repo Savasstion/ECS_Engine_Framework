@@ -8,7 +8,9 @@ class PauseMenuScene : public Scene
 {
 public:
     PauseMenuScene();
-    virtual ~PauseMenuScene() = default; //  virtual destructor
+    virtual ~PauseMenuScene() = default;
+    void ToggleFullscreen();
+    //  virtual destructor
     void UpdateScene(int framesToUpdate,float deltaTime, std::shared_ptr<SceneManager> scene_manager)override;
     void AddIntoScene()override;
 
