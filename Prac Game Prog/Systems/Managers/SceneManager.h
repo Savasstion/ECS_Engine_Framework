@@ -20,7 +20,7 @@ public:
     //  for demo purpose, only one scene first, scene stack TO BE implemented
     //std::shared_ptr<Scene> AddNewScene()
     void LoadScene(SceneEnum scene_enu);
-    void UnloadScene();
+    void UnloadScene(bool isSaveSceneData);
     void SaveSceneData();
     
 };

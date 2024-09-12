@@ -69,11 +69,12 @@ void SceneManager::LoadScene(SceneEnum scene_enum)
     
 }
 
-void SceneManager::UnloadScene()
+void SceneManager::UnloadScene(bool isSaveSceneData)
 {
     if(!sceneStack.empty())
     {
-        SaveSceneData();
+        if(isSaveSceneData)
+            SaveSceneData();
  
         sceneStack.pop();
 
