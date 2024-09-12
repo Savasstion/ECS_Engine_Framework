@@ -435,7 +435,7 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent->friction = 0.5f;
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24)});
-	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>(); //child class of EventScript btw
+	
 	//	for testing
 	collider1 = polygon2dColliderComponent;
 
@@ -455,6 +455,7 @@ void PauseMenuScene::AddIntoScene()
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	
 	//	for testing
 	collider2 = polygon2dColliderComponent;
@@ -474,7 +475,7 @@ void PauseMenuScene::AddIntoScene()
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
-	
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 
 	//Fullscreen Button
 	entity = this->entityManager->CreateEntity(UI);
@@ -491,6 +492,7 @@ void PauseMenuScene::AddIntoScene()
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	
 	// Main Menu buttons
 	// adding later
