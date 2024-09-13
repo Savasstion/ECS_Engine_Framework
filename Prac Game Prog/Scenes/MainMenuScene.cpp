@@ -157,6 +157,7 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 		isMoving = false;
 		break;
 	}
+	playerSprite->spriteInfo.animating = isMoving;
 	//=================================
 
 	//testing

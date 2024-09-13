@@ -317,11 +317,11 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 		isMoving = false;
 		break;
 	}
+	playerSprite->spriteInfo.animating = isMoving;
 	//=================================
 
 	if (diKeys[DIK_L] & 0x80)
 	{
-
 		isSwitchScene = true;
 	}
 
