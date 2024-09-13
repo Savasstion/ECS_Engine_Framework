@@ -1,6 +1,7 @@
 #include "PauseMenuScene.h"
 
 #include "../Systems/Managers/SceneManager.h"
+#include "../InputManager.h"
 
 
 PauseMenuScene::PauseMenuScene()

@@ -1,6 +1,7 @@
 #include "MainMenuScene.h"
 
 #include "../Systems/Managers/SceneManager.h"
+#include "../InputManager.h"
 
 
 D3DXVECTOR2 worldPosition = D3DXVECTOR2(-SCREEN_WIDTH/2, 0);
