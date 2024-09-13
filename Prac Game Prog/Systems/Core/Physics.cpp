@@ -111,8 +111,11 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                     //  Move colliders apart from each other to resolve physical intersection
                     if(!polygon2dColliderA->isEventTrigger && !polygon2dColliderB->isEventTrigger)
                     {
-                        polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
-                        polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
+                        if(polygon2dColliderA->parent->rigidbody != nullptr && polygon2dColliderB->parent->rigidbody != nullptr)
+                        {
+                            polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
+                            polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
+                        }
                     }
                     
                 }
