@@ -1,10 +1,7 @@
 #pragma once
 #include <memory>
 #include "../../BaseClasses/Sprite.h"
-#include "../../Systems/Core/Audio.h"
 #include "../../Components/TransformComponent.h"
-
-
 class Entity;
 
 
@@ -19,8 +16,6 @@ extern const float soundIntervalMainMenu; // Time interval between sounds in sec
 extern std::shared_ptr<Entity> audioEntityMainMenu;
 extern Sprite spriteInfoMainMenu;
 extern Sprite spriteInfo1MainMenu;
-
-//Audio
 
 //Parallax stuff
 extern std::shared_ptr<TransformComponent> background1Transform;
