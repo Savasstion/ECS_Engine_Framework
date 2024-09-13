@@ -8,6 +8,7 @@
 class ColliderComponent : public Component
 {
 public:
+    bool isEventTrigger = false; // if false, physics response will be done, if true, only just call event trigger
     D3DXVECTOR2 relativePos = D3DXVECTOR2(0,0);
     bool isVisible = false;
     //std::shared_ptr<CollisionEvent> collisionEvent = std::make_shared<CollisionEvent>();

@@ -29,32 +29,33 @@ void Physics::DoAllCycleOfMotion(std::shared_ptr<Scene> scene)
 
 void Physics::DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb)
 {
-
-    if (rgb->mass != 0.0f) {
-        rgb->acceleration = rgb->forceApplied / rgb->mass;
-    } else {
-        rgb->acceleration = D3DXVECTOR2(0, 0); // Prevent division by zero
-    }
-    
-     D3DXVECTOR2 frictionForce = CalculateFrictionForce(rgb->velocity, rgb->friction, rgb->mass);
-
-    rgb->acceleration += frictionForce / rgb->mass;
-
-    rgb->velocity += rgb->acceleration;
-    
-    //  caps velocity to max velocity
-    if (D3DXVec2Length(&rgb->velocity) > D3DXVec2Length(&rgb->maxVelocity))
+    if(!rgb->isStatic)
     {
-        D3DXVec2Normalize(&rgb->velocity,&rgb->velocity);
-        rgb->velocity *= D3DXVec2Length(&rgb->maxVelocity);
+        if (rgb->mass != 0.0f) {
+            rgb->acceleration = rgb->forceApplied / rgb->mass;
+        } else {
+            rgb->acceleration = D3DXVECTOR2(0, 0); // Prevent division by zero
+        }
+    
+        D3DXVECTOR2 frictionForce = CalculateFrictionForce(rgb->velocity, rgb->friction, rgb->mass);
+
+        rgb->acceleration += frictionForce / rgb->mass;
+
+        rgb->velocity += rgb->acceleration;
+    
+        //  caps velocity to max velocity
+        if (D3DXVec2Length(&rgb->velocity) > D3DXVec2Length(&rgb->maxVelocity))
+        {
+            D3DXVec2Normalize(&rgb->velocity,&rgb->velocity);
+            rgb->velocity *= D3DXVec2Length(&rgb->maxVelocity);
+        }
+
+        if (rgb->parent->transform != nullptr)
+            rgb->parent->transform->position += rgb->velocity;
+
+        rgb->forceApplied = D3DXVECTOR2(0,0);   //resets force being applied on entity
     }
-
-    if (rgb->parent->transform != nullptr)
-        rgb->parent->transform->position += rgb->velocity;
-
-    rgb->forceApplied = D3DXVECTOR2(0,0);   //resets force being applied on entity
 }
-
 
 void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
 {
@@ -73,9 +74,11 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
             for(size_t j = i+1; j < components.size(); j++)
             {
                 auto polygon2dColliderB = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[j]);  
+                D3DXVECTOR2 normal= D3DXVECTOR2(0,0);
+                float depth = std::numeric_limits<float>::max();
+                auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld(), &normal, &depth);
 
-                auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld());
-
+                //  do collision routine
                 if(isCollided)
                 {
                     currentTriggeredColliders.insert(polygon2dColliderA);
@@ -105,9 +108,12 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                         polygon2dColliderB->collsionEventScript->RunScript(polygon2dColliderB, polygon2dColliderA);
                     }
 
-                    
-                    
-                    //  Do Physics Response
+                    //  Move colliders apart from each other to resolve physical intersection
+                    if(!polygon2dColliderA->isEventTrigger && !polygon2dColliderB->isEventTrigger)
+                    {
+                        polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
+                        polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
+                    }
                     
                 }
             }
@@ -151,7 +157,22 @@ void Physics::DoAllExitCollisions()
     }
 }
 
-bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std::vector<D3DXVECTOR2> verticesB)
+D3DXVECTOR2 Physics::FindArithmeticMean(std::vector<D3DXVECTOR2> vertices)
+{
+    float sumX = 0.0f;
+    float sumY = 0.0f;
+    
+    for(size_t i = 0; i < vertices.size(); i++)
+    {
+        D3DXVECTOR2 v = vertices[i];
+        sumX += v.x;
+        sumY += v.y;
+    }
+
+    return D3DXVECTOR2(sumX / (float)vertices.size(), sumY / (float)vertices.size());
+}
+
+bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std::vector<D3DXVECTOR2> verticesB, D3DXVECTOR2* normal, float* depth)
 {   //  SAT (Separating Axis Theorem)
     //  Taken reference from Two-Bit Coding on YouTube
     //  Note : make sure only pass it convex polygons, TODO: take account for non-convex polygons
@@ -177,6 +198,25 @@ bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std
         {   //  if true, means there is a gap between the two polygons
             return false;
         }
+
+        //  Resolve Collision
+        //  get smallest depth of collision
+        float axisDepth;
+        auto v1 = maxA - minB;
+        auto v2 = maxB - minA;
+        //  get the smaller of the two
+        if(v1 < v2)
+            axisDepth = v1;
+        else
+            axisDepth = v2;
+
+        if(axisDepth < *depth)
+        {
+            *depth = axisDepth;
+            *normal = axis;
+        }
+        
+            
     }
 
     for(size_t i = 0; i < verticesB.size(); i++)
@@ -190,6 +230,7 @@ bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std
         //  get axis
         //  swap x and y and get the sin component of the new x (put in new x for clockwise normals, put in new y for counter-clockwise)
         D3DXVECTOR2 axis = D3DXVECTOR2(-edge.y, edge.x);
+        D3DXVec2Normalize(&axis, &axis);
 
         //  we project the vertices onto the axis for a number line to check mins and maxes
         float minA, maxA, minB, maxB;
@@ -200,8 +241,38 @@ bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std
         {   //  if true, means there is a gap between the two polygons
             return false;
         }
+        
+        //  Resolve Collision
+        //  get smallest depth of collision
+        float axisDepth;
+        auto v1 = maxA - minB;
+        auto v2 = maxB - minA;
+        //  get the smaller of the two
+        if(v1 < v2)
+            axisDepth = v1;
+        else
+            axisDepth = v2;
+
+        if(axisDepth < *depth)
+        {
+            *depth = axisDepth;
+            *normal = axis;
+        }
     }
 
+    *depth /= D3DXVec2Length(normal);
+
+    //  find center of polygon collider
+    auto centerA = FindArithmeticMean(verticesA);
+    auto centerB = FindArithmeticMean(verticesB);
+
+    auto direction = centerB - centerA;
+
+    if(D3DXVec2Dot(&direction, normal) < 0.0f)
+    {
+        *normal *= -1;
+    }
+    
     return true;
 }
 
