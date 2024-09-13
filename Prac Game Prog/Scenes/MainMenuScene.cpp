@@ -1,7 +1,7 @@
 #include "MainMenuScene.h"
 
 #include "../Systems/Managers/SceneManager.h"
-#include "../InputManager.h"
+#include "../Systems/Managers/InputManager.h"
 
 
 D3DXVECTOR2 worldPosition = D3DXVECTOR2(-SCREEN_WIDTH/2, 0);
@@ -43,6 +43,7 @@ void MainMenuScene::ToggleFullscreen()
 void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 {
     //  update stuff
+	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(playerEntity->renderer);
     
 	bool isMoving = false;
 	static bool wasMoving = false; // Track the previous movement state
@@ -111,44 +112,52 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	auto t = e->transform;
 	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
 	D3DXVECTOR2 forceApplied = D3DXVECTOR2(0,0);
-	if (diKeys[DIK_W] & 0x80)
+	
+	//PLAYER MOVEMENT ===================
+	int lastKey = -1;
+	if (diKeys[DIK_W] & 0x80 || diKeys[DIK_S] & 0x80 || diKeys[DIK_A] & 0x80 || diKeys[DIK_D] & 0x80)
 	{
-		forceApplied += D3DXVECTOR2(0,-1);
-		//forceApplied.x = sin(t->rotation) * thrust;
-		//forceApplied.y = -cos(t->rotation) * thrust;
-		
 		isMoving = true;
-
-		//Sprite Animation
-		
+		if (diKeys[DIK_W] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(0, -1);
+			lastKey = DIK_W;
+		}
+		if (diKeys[DIK_S] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(0, 1);
+			lastKey = DIK_S;
+		}
+		if (diKeys[DIK_A] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(-1, 0);
+			lastKey = DIK_A;
+		}
+		if (diKeys[DIK_D] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(1, 0);
+			lastKey = DIK_D;
+		}
 	}
-
-	if (diKeys[DIK_S] & 0x80)
-	{
-		forceApplied += D3DXVECTOR2(0,1);
-		isMoving = true;
-
-		//Sprite Animation
+	//Player direction will be last key pressed
+	switch (lastKey) {
+	case DIK_W:
+		playerSprite->spriteInfo.currentDirection = spriteInfo.upDirectionValue;
+		break;
+	case DIK_S:
+		playerSprite->spriteInfo.currentDirection = spriteInfo.downDirectionValue;
+		break;
+	case DIK_A:
+		playerSprite->spriteInfo.currentDirection = spriteInfo.leftDirectionValue;
+		break;
+	case DIK_D:
+		playerSprite->spriteInfo.currentDirection = spriteInfo.rightDirectionValue;
+		break;
+	default:
+		isMoving = false;
+		break;
 	}
-
-	if (diKeys[DIK_A] & 0x80)
-	{
-		//t->rotation -= framesToUpdate * rotationSpeed;
-		forceApplied += D3DXVECTOR2(-1,0);
-		isMoving = true;
-
-		//Sprite Animation
-
-	}
-
-	if (diKeys[DIK_D] & 0x80)
-	{
-		forceApplied += D3DXVECTOR2(1,0);
-		isMoving = true;
-
-		//Sprite Animation
-		
-	}
+	//=================================
 
 	//testing
 	if (diKeys[DIK_L] & 0x80)
@@ -365,31 +374,32 @@ void MainMenuScene::AddIntoScene()
 	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
 
 	//MILITIA
-	entity = this->entityManager->CreateEntity(PLAYER);
+	playerEntity = this->entityManager->CreateEntity(PLAYER);
 
-	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(playerEntity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/militia.png", &spriteInfoMainMenu.texture);
 	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 48;
 	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 32;
 	spriteInfoMainMenu.totalRows = 4;
 	spriteInfoMainMenu.totalCols = 4;
 	spriteInfoMainMenu.isAnimated = true;
-	spriteInfo1MainMenu.isDirectional = true;
+	spriteInfoMainMenu.isDirectional = true;
 	spriteInfoMainMenu.upDirectionValue = 3;
 	spriteInfoMainMenu.leftDirectionValue = 1;
 	spriteInfoMainMenu.rightDirectionValue = 2;
 	spriteInfoMainMenu.downDirectionValue = 0;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 
-	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent = this->componentManager->CreateTransformComponent(playerEntity);
 	transformComponent->position = D3DXVECTOR2(500, 100);
 	transformComponent->scale = D3DXVECTOR2(2, 2);
 
-	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(playerEntity);
 	rigidbodyComponent->friction = 0.5f;
-	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(playerEntity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24)});
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>(); //child class of EventScript btw
+
 	//	for testing
 	collider1 = polygon2dColliderComponent;
 	// Audio stuff

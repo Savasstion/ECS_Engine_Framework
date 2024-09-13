@@ -615,6 +615,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Systems\Managers\InputManager.cpp" />
     <ClCompile Include="Systems\Managers\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -655,6 +656,7 @@
     <ClInclude Include="Systems\Core\WindowProcedure.h" />
     <ClInclude Include="Systems\Managers\ComponentManager.h" />
     <ClInclude Include="Systems\Managers\EntityManager.h" />
+    <ClInclude Include="Systems\Managers\InputManager.h" />
     <ClInclude Include="Systems\Managers\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>

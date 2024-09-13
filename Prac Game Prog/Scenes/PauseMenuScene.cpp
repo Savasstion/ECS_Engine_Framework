@@ -1,7 +1,7 @@
 #include "PauseMenuScene.h"
 
 #include "../Systems/Managers/SceneManager.h"
-#include "../InputManager.h"
+#include "../Systems/Managers/InputManager.h"
 
 
 PauseMenuScene::PauseMenuScene()
@@ -267,39 +267,62 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 	auto t = e->transform;
 	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
 	D3DXVECTOR2 forceApplied = D3DXVECTOR2(0,0);
-	if (diKeys[DIK_W] & 0x80)
+
+	
+	//forceApplied.x = sin(t->rotation) * thrust;
+	//forceApplied.y = -cos(t->rotation) * thrust;
+	//t->rotation -= framesToUpdate * rotationSpeed;
+
+	//PLAYER MOVEMENT ===================
+	int lastKey = -1;
+	if (diKeys[DIK_W] & 0x80 || diKeys[DIK_S] & 0x80 || diKeys[DIK_A] & 0x80 || diKeys[DIK_D] & 0x80)
 	{
-		forceApplied += D3DXVECTOR2(0,-1);
-		//forceApplied.x = sin(t->rotation) * thrust;
-		//forceApplied.y = -cos(t->rotation) * thrust;
-		
 		isMoving = true;
+		if (diKeys[DIK_W] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(0, -1);
+			lastKey = DIK_W;
+		}
+		if (diKeys[DIK_S] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(0, 1);
+			lastKey = DIK_S;
+		}
+		if (diKeys[DIK_A] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(-1, 0);
+			lastKey = DIK_A;
+		}
+		if (diKeys[DIK_D] & 0x80)
+		{
+			forceApplied += D3DXVECTOR2(1, 0);
+			lastKey = DIK_D;
+		}
+	}
+	//Player direction will be last key pressed
+	switch (lastKey) {
+	case DIK_W:
 		playerSprite->spriteInfo.currentDirection = spriteInfo.upDirectionValue;
-	}
-
-	if (diKeys[DIK_S] & 0x80)
-	{
-		forceApplied += D3DXVECTOR2(0,1);
-		isMoving = true;
-
+		break;
+	case DIK_S:
 		playerSprite->spriteInfo.currentDirection = spriteInfo.downDirectionValue;
-	}
-
-	if (diKeys[DIK_A] & 0x80)
-	{
-		//t->rotation -= framesToUpdate * rotationSpeed;
-		forceApplied += D3DXVECTOR2(-1,0);
-		isMoving = true;
-
+		break;
+	case DIK_A:
 		playerSprite->spriteInfo.currentDirection = spriteInfo.leftDirectionValue;
-	}
-
-	if (diKeys[DIK_D] & 0x80)
-	{
-		forceApplied += D3DXVECTOR2(1,0);
-		isMoving = true;
-
+		break;
+	case DIK_D:
 		playerSprite->spriteInfo.currentDirection = spriteInfo.rightDirectionValue;
+		break;
+	default:
+		isMoving = false;
+		break;
+	}
+	//=================================
+
+	if (diKeys[DIK_L] & 0x80)
+	{
+
+		isSwitchScene = true;
 	}
 
 	D3DXVec2Normalize(&forceApplied,&forceApplied);

@@ -37,6 +37,4 @@ extern float parallaxFactor3;
 extern float parallaxFactor4;
 extern float parallaxFactor5;
 
-
-
-
+extern std::shared_ptr<Entity> playerEntity;
