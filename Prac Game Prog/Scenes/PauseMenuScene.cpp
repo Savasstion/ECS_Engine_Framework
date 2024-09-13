@@ -465,6 +465,7 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent->friction = .5f;
 	rigidbodyComponent->mass = 100.0f;
 	
+	
 	//	for testing
 	collider2 = polygon2dColliderComponent;
 

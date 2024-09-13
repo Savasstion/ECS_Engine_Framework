@@ -2,12 +2,13 @@
 
 #include "../Systems/Managers/SceneManager.h"
 
-D3DXVECTOR2 worldPosition = D3DXVECTOR2(0, 0);
+
+D3DXVECTOR2 worldPosition = D3DXVECTOR2(-SCREEN_WIDTH/2, 0);
 
 MainMenuScene::MainMenuScene()
 {
     Scene(MAIN_MENU);
-    
+
 }
 
 void MainMenuScene::ToggleFullscreen()
@@ -37,6 +38,7 @@ void MainMenuScene::ToggleFullscreen()
 	}
 }
 
+
 void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 {
     //  update stuff
@@ -52,20 +54,22 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	dInputMouseDevice->Acquire();
 
 	// Increment the world position
-	worldPosition.x += 50.0f * deltaTime; // Adjust speed as needed
-	// Update each background layer's position
-	background1Transform->position.x = -int(worldPosition.x * parallaxFactor5) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background2Transform->position.x = -int(worldPosition.x * parallaxFactor4) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background3Transform->position.x = -int(worldPosition.x * parallaxFactor3) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background4Transform->position.x = -int(worldPosition.x * parallaxFactor2) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background5Transform->position.x = -int(worldPosition.x * parallaxFactor1) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
+	worldPosition.x += 20.0f * deltaTime; // Adjust speed as needed
+
+	// Update the first set of background positions
+	background1Transform->position.x = -int(worldPosition.x * parallaxFactor5) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background2Transform->position.x = -int(worldPosition.x * parallaxFactor4) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background3Transform->position.x = -int(worldPosition.x * parallaxFactor3) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background4Transform->position.x = -int(worldPosition.x * parallaxFactor2) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background5Transform->position.x = -int(worldPosition.x * parallaxFactor1) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
 
 	// Update the second set of background positions for seamless looping
-	background1Transform2->position.x = -int(worldPosition.x * parallaxFactor5 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background2Transform2->position.x = -int(worldPosition.x * parallaxFactor4 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background3Transform2->position.x = -int(worldPosition.x * parallaxFactor3 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background4Transform2->position.x = -int(worldPosition.x * parallaxFactor2 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
-	background5Transform2->position.x = -int(worldPosition.x * parallaxFactor1 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH;
+	background1Transform2->position.x = -int(worldPosition.x * parallaxFactor5 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background2Transform2->position.x = -int(worldPosition.x * parallaxFactor4 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background3Transform2->position.x = -int(worldPosition.x * parallaxFactor3 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background4Transform2->position.x = -int(worldPosition.x * parallaxFactor2 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	background5Transform2->position.x = -int(worldPosition.x * parallaxFactor1 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+
 
 #pragma region MOUSE_INPUTS
 	//	MOUSE INPUT EVENT
@@ -212,7 +216,6 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	}
 
 	
-    
 }
 
 void MainMenuScene::AddIntoScene()
@@ -228,9 +231,9 @@ void MainMenuScene::AddIntoScene()
 	std::shared_ptr<Audio2DComponent> audioBGM;
 
 
-
 	//Parallax background attempt
-	// Back layer
+	#pragma region parallaxbackground
+	//Back layer
 	entity = this->entityManager->CreateEntity(BACKGROUND);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/city 7/1.png", &spriteInfoMainMenu.texture);
@@ -369,6 +372,7 @@ void MainMenuScene::AddIntoScene()
 	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH, (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background5Transform2 = transformComponent;
+	#pragma endregion
 
 
 	
@@ -389,9 +393,14 @@ void MainMenuScene::AddIntoScene()
 	
 	// Test audio entity
 	audioEntityMainMenu = this->entityManager->CreateEntity(ENEMY);
+	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
+	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
+	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false, false);  // [0]
+	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
+	
 	// Sprite component
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(audioEntityMainMenu);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/04.bmp", &spriteInfo1MainMenu.texture);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/0.bmp", &spriteInfo1MainMenu.texture);
 	spriteInfo1MainMenu.sheetHeight = spriteInfo1MainMenu.spriteHeight = 64;
 	spriteInfo1MainMenu.sheetWidth = spriteInfo1MainMenu.spriteWidth = 64;
 	spriteInfo1MainMenu.totalRows = 1;
@@ -442,12 +451,8 @@ void MainMenuScene::AddIntoScene()
 	collider1 = polygon2dColliderComponent;
 	// Audio stuff
 	// this = current this, call componentManager to create Audio2DComponent, e = parent entity
-	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
-	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
-	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false, false);  // [0]
-	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
-	//au2d->LoadSound("Assets/Sounds/jazz-loop.mp3", false, false);
 
+	
 	//UI stuff
 	//Resume Button
 	entity = this->entityManager->CreateEntity(UI);
@@ -464,6 +469,7 @@ void MainMenuScene::AddIntoScene()
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<ImpactEventScript>();
 	
 	//	for testing
 	collider2 = polygon2dColliderComponent;
@@ -501,8 +507,22 @@ void MainMenuScene::AddIntoScene()
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
 
+	//Logo Button
+	entity = this->entityManager->CreateEntity(UI);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/trshgame.png", &spriteInfoMainMenu.texture);
+	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 72;
+	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 580;
+	spriteInfoMainMenu.totalRows = 1;
+	spriteInfoMainMenu.totalCols = 1;
+	spriteInfoMainMenu.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH/2, SCREEN_HEIGHT/6);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+
+	audioManager.PlayAudio(audioEntityMainMenu->audios[1], 0, 0);
 	
-	
-	// Main Menu buttons
-	// adding later
 }
+
+

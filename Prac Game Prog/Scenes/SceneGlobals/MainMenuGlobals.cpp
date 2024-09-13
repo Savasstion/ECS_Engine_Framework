@@ -1,7 +1,6 @@
 #include "MainMenuGlobals.h"
 
 
-
 float mainMenuThrust = 3.5f;
 float mainMenuRotationSpeed = .1f;
 
@@ -12,6 +11,7 @@ const float soundIntervalMainMenu = 0.1f; // Time interval between sounds in sec
 std::shared_ptr<Entity> audioEntityMainMenu = nullptr;
 Sprite spriteInfoMainMenu;
 Sprite spriteInfo1MainMenu;
+
 
 std::shared_ptr<TransformComponent> background1Transform = nullptr;
 std::shared_ptr<TransformComponent> background2Transform = nullptr;

@@ -20,6 +20,8 @@ extern std::shared_ptr<Entity> audioEntityMainMenu;
 extern Sprite spriteInfoMainMenu;
 extern Sprite spriteInfo1MainMenu;
 
+//Audio
+
 //Parallax stuff
 extern std::shared_ptr<TransformComponent> background1Transform;
 extern std::shared_ptr<TransformComponent> background2Transform;

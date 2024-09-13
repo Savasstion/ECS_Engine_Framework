@@ -2,6 +2,7 @@
 #include "../BaseClasses/Scene.h"
 #include "../Scenes/SceneGlobals/MainMenuGlobals.h"
 #include "../Scripts/EventScripts/PrintStringEventScript.h"
+#include "../Scripts/EventScripts/ImpactEventScript.h"
 
 class MainMenuScene : public Scene
 {

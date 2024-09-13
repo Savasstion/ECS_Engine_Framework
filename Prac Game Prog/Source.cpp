@@ -222,7 +222,6 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	sceneManager->LoadScene(PAUSE_MENU);
 
 	// Play background music in loop
-	audioManager.PlayAudio(audioEntity->audios[1], 0, 0);
 	
 	while (GameIsRunning()) //game loop i guess
 	{
