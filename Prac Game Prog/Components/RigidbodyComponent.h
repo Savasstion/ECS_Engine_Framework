@@ -4,6 +4,9 @@
 class RigidbodyComponent : public Component
 {
 public:
+    float mass = 1;
+    float friction;
+    bool isStatic = false;
     virtual ~RigidbodyComponent() = default;  // Virtual destructor
     
 };

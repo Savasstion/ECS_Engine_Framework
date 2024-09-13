@@ -113,8 +113,16 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                     {
                         if(polygon2dColliderA->parent->rigidbody != nullptr && polygon2dColliderB->parent->rigidbody != nullptr)
                         {
+                            auto rgb2dA = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderA->parent->rigidbody);
+                            auto rgb2dB = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderB->parent->rigidbody);
+                            //rgb2dA->ApplyForce(-normal * depth/2.0f);
+                            //rgb2dB->ApplyForce(normal * depth/2.0f);
                             polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
                             polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
+
+                            //  Add forces for realistic physics response
+
+                            ResolveCollision(rgb2dA, rgb2dB, normal, depth);
                         }
                     }
                     
@@ -173,6 +181,26 @@ D3DXVECTOR2 Physics::FindArithmeticMean(std::vector<D3DXVECTOR2> vertices)
     }
 
     return D3DXVECTOR2(sumX / (float)vertices.size(), sumY / (float)vertices.size());
+}
+
+void Physics::ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::shared_ptr<Rigidbody2DComponent> rbB,
+    D3DXVECTOR2 normal, float depth)
+{
+    //  Referenced using Chris Hecker's Physics Part 3 : Collision Response
+    
+    auto relativeVelocity = rbB->velocity - rbA->velocity;
+    //  we dont need to be THAT ACCURATE so imma just set this to 0.1f
+    //  in reality, we should get the smaller restitution between the two rigidbodies
+    float restitution = 0.0f;
+    float magnitude = - (1 + restitution) * D3DXVec2Dot(&relativeVelocity, &normal);
+    magnitude /= (1.0f / rbA->mass) + (1.0f / rbB->mass);
+
+
+    //rbA->velocity -= magnitude / rbA->mass * normal;
+    //rbA->velocity += magnitude / rbB->mass * normal;
+    rbA->ApplyForce(-magnitude / rbA->mass * normal);
+    rbB->ApplyForce(magnitude / rbB->mass * normal);
+
 }
 
 bool Physics::CheckIfPolygons2DIntersect(std::vector<D3DXVECTOR2> verticesA, std::vector<D3DXVECTOR2> verticesB, D3DXVECTOR2* normal, float* depth)

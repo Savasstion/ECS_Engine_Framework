@@ -1,6 +1,6 @@
 #include "PauseMenuGlobals.h"
 
-float thrust = 3.5f;
+float thrust = 3.5 * 100;
 float rotationSpeed = .1f;
 
 

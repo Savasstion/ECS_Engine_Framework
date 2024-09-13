@@ -40,6 +40,6 @@ private:
     static D3DXVECTOR2 FindArithmeticMean(std::vector<D3DXVECTOR2> vertices);
     //static bool CheckCollision(std::shared_ptr<BoxColliderComponent> a, std::shared_ptr<BoxColliderComponent> b);
     //static bool ShouldCollide(std::shared_ptr<BoxColliderComponent> a, std::shared_ptr<BoxColliderComponent> b);
-    //static void ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::shared_ptr<Rigidbody2DComponent> rbB);
+    static void ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::shared_ptr<Rigidbody2DComponent> rbB, D3DXVECTOR2 normal, float depth);
 
 };
