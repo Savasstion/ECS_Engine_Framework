@@ -158,41 +158,6 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 
 	D3DXVec2Normalize(&forceApplied,&forceApplied);
 	rgb->ApplyForce(forceApplied * mainMenuThrust * framesToUpdate);
-
-	auto e1 = this->entityManager->GetEntity(ENEMY);
-	auto t1 = e1->transform;
-	auto rgb1 = std::dynamic_pointer_cast<Rigidbody2DComponent>(e1->rigidbody);
-	D3DXVECTOR2 forceApplied1 = D3DXVECTOR2(0,0);
-	if (diKeys[DIK_UP] & 0x80)
-	{
-		forceApplied1 += D3DXVECTOR2(0,-1);
-		//forceApplied.x = sin(t->rotation) * thrust;
-		//forceApplied.y = -cos(t->rotation) * thrust;
-		
-		isMoving = true;
-	}
-
-	if (diKeys[DIK_DOWN] & 0x80)
-	{
-		forceApplied1 += D3DXVECTOR2(0,1);
-		isMoving = true;
-	}
-
-	if (diKeys[DIK_LEFT] & 0x80)
-	{
-		//t->rotation -= framesToUpdate * rotationSpeed;
-		forceApplied1 += D3DXVECTOR2(-1,0);
-		isMoving = true;
-	}
-
-	if (diKeys[DIK_RIGHT] & 0x80)
-	{
-		forceApplied1 += D3DXVECTOR2(1,0);
-		isMoving = true;
-	}
-	
-	D3DXVec2Normalize(&forceApplied1,&forceApplied1);
-	rgb1->ApplyForce(forceApplied1 * mainMenuThrust * framesToUpdate);
 #pragma endregion
 	
 #pragma endregion
@@ -392,34 +357,11 @@ void MainMenuScene::AddIntoScene()
 
 	
 	// Test audio entity
-	audioEntityMainMenu = this->entityManager->CreateEntity(ENEMY);
+	audioEntityMainMenu = this->entityManager->CreateEntity(BACKGROUND);
 	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
 	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityMainMenu);
 	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false, false);  // [0]
 	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
-	
-	// Sprite component
-	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(audioEntityMainMenu);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/0.bmp", &spriteInfo1MainMenu.texture);
-	spriteInfo1MainMenu.sheetHeight = spriteInfo1MainMenu.spriteHeight = 64;
-	spriteInfo1MainMenu.sheetWidth = spriteInfo1MainMenu.spriteWidth = 64;
-	spriteInfo1MainMenu.totalRows = 1;
-	spriteInfo1MainMenu.totalCols = 1;
-	spriteComponent->InitSpriteInfo(spriteInfo1MainMenu);
-
-	// Sprite transform
-	transformComponent = this->componentManager->CreateTransformComponent(audioEntityMainMenu);
-	transformComponent->position = D3DXVECTOR2(500,500);
-	transformComponent->scale = D3DXVECTOR2(1,1);
-	transformComponent->rotation = 0.0f;
-
-	// Physics stuff
-	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(audioEntityMainMenu);
-	rigidbodyComponent->friction = 0.5f;
-
-
-	//	pls determine freq then set it
-	//au2d->setFrequency()
 
 	//MILITIA
 	entity = this->entityManager->CreateEntity(PLAYER);

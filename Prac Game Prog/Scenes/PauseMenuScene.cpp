@@ -438,6 +438,7 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->friction = 0.5f;
 	rigidbodyComponent->mass = 100;
+	rigidbodyComponent->restitution = 1.0f;
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24)});
 	
@@ -464,6 +465,7 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->friction = .5f;
 	rigidbodyComponent->mass = 100.0f;
+	rigidbodyComponent->restitution = .7f;
 	
 	
 	//	for testing
@@ -486,8 +488,9 @@ void PauseMenuScene::AddIntoScene()
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
-	rigidbodyComponent->mass = 50.0f;
+	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->restitution = .7f;
 
 	//Fullscreen Button
 	entity = this->entityManager->CreateEntity(UI);
@@ -508,6 +511,7 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->friction = .5f;
 	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .4f;
 	
 	// Main Menu buttons
 	// adding later

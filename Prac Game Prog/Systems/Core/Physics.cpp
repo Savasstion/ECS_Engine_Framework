@@ -115,10 +115,11 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                         {
                             auto rgb2dA = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderA->parent->rigidbody);
                             auto rgb2dB = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderB->parent->rigidbody);
-                            //rgb2dA->ApplyForce(-normal * depth/2.0f);
-                            //rgb2dB->ApplyForce(normal * depth/2.0f);
-                            polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
-                            polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
+
+                            if(!rgb2dA->isStatic)
+                                polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
+                            if(!rgb2dB->isStatic)
+                                polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
 
                             //  Add forces for realistic physics response
 
@@ -191,7 +192,7 @@ void Physics::ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::s
     auto relativeVelocity = rbB->velocity - rbA->velocity;
     
     float restitution;
-    //get smaller restituion between the two bodies
+    //get the smaller restitution between the two bodies
     if(rbA->restitution < rbB->restitution)
         restitution = rbA->restitution;
     else
