@@ -189,9 +189,14 @@ void Physics::ResolveCollision(std::shared_ptr<Rigidbody2DComponent> rbA, std::s
     //  Referenced using Chris Hecker's Physics Part 3 : Collision Response
     
     auto relativeVelocity = rbB->velocity - rbA->velocity;
-    //  we dont need to be THAT ACCURATE so imma just set this to 0.1f
-    //  in reality, we should get the smaller restitution between the two rigidbodies
-    float restitution = 0.0f;
+    
+    float restitution;
+    //get smaller restituion between the two bodies
+    if(rbA->restitution < rbB->restitution)
+        restitution = rbA->restitution;
+    else
+        restitution = rbB->restitution;
+    
     float magnitude = - (1 + restitution) * D3DXVec2Dot(&relativeVelocity, &normal);
     magnitude /= (1.0f / rbA->mass) + (1.0f / rbB->mass);
 
