@@ -21,3 +21,4 @@ extern Sprite spriteInfo1gameScene;
 extern std::shared_ptr<Polygon2DColliderComponent> octagonCollider;
 extern std::shared_ptr<Polygon2DColliderComponent> attackColliderL;
 extern std::shared_ptr<Polygon2DColliderComponent> attackColliderR;
+extern std::shared_ptr<Polygon2DColliderComponent> truckCollider;

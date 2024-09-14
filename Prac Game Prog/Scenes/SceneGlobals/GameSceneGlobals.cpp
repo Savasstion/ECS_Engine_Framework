@@ -15,3 +15,4 @@ Sprite spriteInfo1gameScene;
 std::shared_ptr<Polygon2DColliderComponent> octagonCollider;
 std::shared_ptr<Polygon2DColliderComponent> attackColliderL;
 std::shared_ptr<Polygon2DColliderComponent> attackColliderR;
+std::shared_ptr<Polygon2DColliderComponent> truckCollider;

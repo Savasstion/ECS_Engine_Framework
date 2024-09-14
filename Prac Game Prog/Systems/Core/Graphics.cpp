@@ -170,14 +170,23 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
     // //TODO: softcode it in the future, for now i needed a quick visual 
      auto verticesA = octagonCollider->GetColliderVerticesInWorld();
      verticesA.push_back(verticesA[0]);  //to complete loop
+     
      auto verticesB = attackColliderL->GetColliderVerticesInWorld();
      verticesB.push_back(verticesB[0]);  //to complete loop
+     
+     auto verticesC = truckCollider->GetColliderVerticesInWorld();
+     verticesC.push_back(verticesC[0]);  //to complete loop
+
+     auto verticesD = attackColliderR->GetColliderVerticesInWorld();
+     verticesD.push_back(verticesD[0]);  //to complete loop
 
     // auto verticesB = collider2->GetColliderVerticesInWorld();
     // verticesB.push_back(verticesB[0]);  //to complete loop
     //
-     lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(0, 255, 0) );
+     lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(100, 255, 0) );
      lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(255, 0, 0) );
+     lineInterface->Draw(verticesC.data(), verticesC.size(),D3DCOLOR_XRGB(0, 0, 255) );
+     lineInterface->Draw(verticesD.data(), verticesD.size(), D3DCOLOR_XRGB(0, 0, 255));
     //
     lineInterface->End();
     

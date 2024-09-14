@@ -226,6 +226,11 @@ void GameScene::AddIntoScene()
 	attackColliderL->isEventTrigger = true;
 	attackColliderL->collsionEventScript = std::make_shared<TrashHitEventScript>();
 
+	attackColliderR = this->componentManager->CreatePolygon2DColliderComponent(playerEntity);
+	attackColliderR->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(36, -24), D3DXVECTOR2(0, -24), D3DXVECTOR2(0, 24), D3DXVECTOR2(36, 24) });
+	attackColliderR->isEventTrigger = true;
+	attackColliderR->collsionEventScript = std::make_shared<TrashHitEventScript>();
+
 
     // Trash bag
     entity = this->entityManager->CreateEntity(ENEMY);
@@ -242,11 +247,57 @@ void GameScene::AddIntoScene()
     transformComponent->position = D3DXVECTOR2(400, 400);
     transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
     polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
-    polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-128, -128), D3DXVECTOR2(-128, 128), D3DXVECTOR2(128, 128), D3DXVECTOR2(128, -128) });
+    polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ 
+		D3DXVECTOR2(-128, -53),    // Top-left
+		D3DXVECTOR2(-53, -128),    // Top
+		D3DXVECTOR2(53, -128),     // Top-right
+		D3DXVECTOR2(128, -53),     // Right
+		D3DXVECTOR2(128, 53),      // Bottom-right
+		D3DXVECTOR2(53, 128),      // Bottom
+		D3DXVECTOR2(-53, 128),     // Bottom-left
+		D3DXVECTOR2(-128, 53)      // Left 
+		});
     //polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
     rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
     rigidbodyComponent->friction = .5f;
     rigidbodyComponent->mass = 1.0f;
     rigidbodyComponent->restitution = .3f;
     octagonCollider = polygon2dColliderComponent;
+
+
+	// Garbage truck collider
+	entity = this->entityManager->CreateEntity(ENEMY);
+	entity->SetTag(ENEMY);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/garbagetruck.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 189;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 364;
+	spriteInfo.totalRows = 1;
+	spriteInfo.totalCols = 1;
+	spriteInfo.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(1730, 400);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({
+		D3DXVECTOR2(-183, 95), D3DXVECTOR2(-183, -95), D3DXVECTOR2(183, -95),D3DXVECTOR2(183, -95)});
+	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
+
+	// Truck score collider
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({
+		D3DXVECTOR2(-100, -200), D3DXVECTOR2(100, -200), D3DXVECTOR2(100, 200),D3DXVECTOR2(-100, 200) });
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<ScorePointEventScript>();
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
+	truckCollider = polygon2dColliderComponent;
+
 }

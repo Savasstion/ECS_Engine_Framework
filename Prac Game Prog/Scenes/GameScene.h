@@ -2,6 +2,7 @@
 #include "../BaseClasses/Scene.h"
 #include "SceneGlobals/GameSceneGlobals.h"
 #include "../Scripts/EventScripts/TrashHitEventScript.h"
+#include "../Scripts/EventScripts/ScorePointEventScript.h"
 
 
 class GameScene : public Scene
