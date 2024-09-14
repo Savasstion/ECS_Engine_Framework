@@ -1,6 +1,7 @@
 #include "ScorePointEventScript.h"
 #include <iostream>
 
+
 void ScorePointEventScript::RunScript(std::shared_ptr<ColliderComponent> ownerCollider,
     std::shared_ptr<ColliderComponent> incomingCollider)
 {
@@ -13,11 +14,13 @@ void ScorePointEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCompo
     std::shared_ptr<ColliderComponent> incomingCollider)
 {
     EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
-    std::cout << "Point Score!\n";
-
+   
     if (incomingCollider->parent->GetTag() == ENEMY)
     {
-        incomingCollider->parent->Destroy();
+        std::cout << "Point Score!\n";
+        trashScore++;
+        //incomingCollider->parent->Destroy();
+        std::cout << "Score = " << trashScore << std::endl;
     }
 
 }

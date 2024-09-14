@@ -3,6 +3,7 @@
 #include "../../Components/ColliderComponent.h"
 #include "../../BaseClasses/Entity.h"
 
+
 class ScorePointEventScript : public EventScript
 {
 public:
