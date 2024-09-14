@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "../../BaseClasses/Sprite.h"
-
+#include "../../Components/Polygon2DColliderComponent.h"
 
 
 class Entity;
@@ -17,3 +17,7 @@ extern const float soundIntervalgameScene; // Time interval between sounds in se
 extern std::shared_ptr<Entity> audioEntitygameScene;
 extern Sprite spriteInfogameScene;
 extern Sprite spriteInfo1gameScene;
+
+extern std::shared_ptr<Polygon2DColliderComponent> octagonCollider;
+extern std::shared_ptr<Polygon2DColliderComponent> attackColliderL;
+extern std::shared_ptr<Polygon2DColliderComponent> attackColliderR;

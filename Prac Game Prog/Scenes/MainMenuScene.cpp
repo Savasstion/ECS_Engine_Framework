@@ -106,20 +106,6 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 		background1Transform2->position.x = background1Transform->position.x + SCREEN_WIDTH;
 	}
 
-	// Update the first set of background positions
-	// background1Transform->position.x = -int(worldPosition.x * parallaxFactor5) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background2Transform->position.x = -int(worldPosition.x * parallaxFactor4) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background3Transform->position.x = -int(worldPosition.x * parallaxFactor3) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background4Transform->position.x = -int(worldPosition.x * parallaxFactor2) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background5Transform->position.x = -int(worldPosition.x * parallaxFactor1) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	//
-	// // Update the second set of background positions for seamless looping
-	// background1Transform2->position.x = -int(worldPosition.x * parallaxFactor5 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background2Transform2->position.x = -int(worldPosition.x * parallaxFactor4 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background3Transform2->position.x = -int(worldPosition.x * parallaxFactor3 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background4Transform2->position.x = -int(worldPosition.x * parallaxFactor2 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-	// background5Transform2->position.x = -int(worldPosition.x * parallaxFactor1 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
-
 
 #pragma region MOUSE_INPUTS
 	//	MOUSE INPUT EVENT

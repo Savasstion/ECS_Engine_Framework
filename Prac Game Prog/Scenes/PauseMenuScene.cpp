@@ -499,8 +499,25 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
 	
-	// Main Menu buttons
-	// adding later
+	entity = this->entityManager->CreateEntity(ENEMY);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/garbagebag.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 256;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 256;
+	spriteInfo.totalRows = 1;
+	spriteInfo.totalCols = 1;
+	spriteInfo.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(400, 400);
+	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-128, -128), D3DXVECTOR2(-128, 128), D3DXVECTOR2(128, 128), D3DXVECTOR2(128, -128) });
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
 }
 
 

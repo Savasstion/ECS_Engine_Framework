@@ -64,6 +64,27 @@ void SceneManager::LoadScene(SceneEnum scene_enum)
             }
             break;
         case GAME_SCENE:
+            {
+            auto menu = std::make_shared<GameScene>();
+            menu->sceneName = GAME_SCENE;
+            auto entityManager = sceneEntityMap[menu->sceneName];
+            if (entityManager != NULL)
+            {
+                menu->entityManager = entityManager;
+            }
+            else
+            {
+                menu->AddIntoScene();
+            }
+            auto componentManager = sceneComponentMap[menu->sceneName];
+            if (componentManager != NULL)
+            {
+                menu->componentManager = componentManager;
+            }
+
+            sceneStack.push(menu);
+            currentScene = menu;
+            }
             break;
     }
     
