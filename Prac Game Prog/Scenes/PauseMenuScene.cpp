@@ -320,10 +320,13 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 	playerSprite->spriteInfo.animating = isMoving;
 	//=================================
 
-	if (diKeys[DIK_L] & 0x80)
+	//change scene WHEN RELEASE
+	bool currentLKeyState = (diKeys[DIK_L] & 0x80) != 0;
+	if (!currentLKeyState && changeSceneTriggered)
 	{
 		isSwitchScene = true;
 	}
+	changeSceneTriggered = currentLKeyState;
 
 	D3DXVec2Normalize(&forceApplied,&forceApplied);
 	rgb->ApplyForce(forceApplied * thrust * framesToUpdate);
@@ -407,6 +410,7 @@ void PauseMenuScene::AddIntoScene()
 	spriteInfo.totalCols = 4;
 	spriteInfo.isAnimated = true;
 	spriteInfo.isDirectional = true;
+	spriteInfo.fpsFactor = 3;
 	spriteInfo.upDirectionValue = 3;
 	spriteInfo.leftDirectionValue = 1;
 	spriteInfo.rightDirectionValue = 2;
@@ -427,73 +431,73 @@ void PauseMenuScene::AddIntoScene()
 	// //	for testing
 	// collider1 = polygon2dColliderComponent;
 	//
-	// //UI stuff
-	// //Resume Button
-	// entity = this->entityManager->CreateEntity(UI);
-	// spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	// D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/resumebutton.png", &spriteInfo.texture);
-	// spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	// spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	// spriteInfo.totalRows = 1;
-	// spriteInfo.totalCols = 1;
-	// spriteInfo.isAnimated = false;
-	// spriteComponent->InitSpriteInfo(spriteInfo);
-	// transformComponent = this->componentManager->CreateTransformComponent(entity);
-	// transformComponent->position = D3DXVECTOR2(200, 200);
-	// transformComponent->scale = D3DXVECTOR2(1, 1);
-	// polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
-	// polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
-	// polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
-	// rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
-	// rigidbodyComponent->friction = .0f;
-	// rigidbodyComponent->mass = 1000000.0f;
-	// rigidbodyComponent->restitution = .7f;
-	//
-	//
-	// //	for testing
-	// collider2 = polygon2dColliderComponent;
-	//
-	// //Volume Button
-	// entity = this->entityManager->CreateEntity(UI);
-	// spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	// D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/volumebutton.png", &spriteInfo.texture);
-	// spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	// spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	// spriteInfo.totalRows = 1;
-	// spriteInfo.totalCols = 1;
-	// spriteInfo.isAnimated = false;
-	// spriteComponent->InitSpriteInfo(spriteInfo);
-	// transformComponent = this->componentManager->CreateTransformComponent(entity);
-	// transformComponent->position = D3DXVECTOR2(200, 300);
-	// transformComponent->scale = D3DXVECTOR2(1, 1);
-	// polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
-	// polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
-	// polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
-	// rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
-	// rigidbodyComponent->mass = 1.0f;
-	// rigidbodyComponent->friction = .5f;
-	// rigidbodyComponent->restitution = .4f;
-	//
-	// //Fullscreen Button
-	// entity = this->entityManager->CreateEntity(UI);
-	// spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	// D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfo.texture);
-	// spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
-	// spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
-	// spriteInfo.totalRows = 1;
-	// spriteInfo.totalCols = 1;
-	// spriteInfo.isAnimated = false;
-	// spriteComponent->InitSpriteInfo(spriteInfo);
-	// transformComponent = this->componentManager->CreateTransformComponent(entity);
-	// transformComponent->position = D3DXVECTOR2(200, 400);
-	// transformComponent->scale = D3DXVECTOR2(1, 1);
-	// polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
-	// polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
-	// polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
-	// rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
-	// rigidbodyComponent->friction = .5f;
-	// rigidbodyComponent->mass = 1.0f;
-	// rigidbodyComponent->restitution = .3f;
+	//UI stuff
+	//Resume Button
+	entity = this->entityManager->CreateEntity(UI);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/resumebutton.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
+	spriteInfo.totalRows = 1;
+	spriteInfo.totalCols = 1;
+	spriteInfo.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(200, 200);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->friction = .0f;
+	rigidbodyComponent->mass = 1000000.0f;
+	rigidbodyComponent->restitution = .7f;
+	
+	
+	//	for testing
+	collider2 = polygon2dColliderComponent;
+	
+	//Volume Button
+	entity = this->entityManager->CreateEntity(UI);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/volumebutton.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
+	spriteInfo.totalRows = 1;
+	spriteInfo.totalCols = 1;
+	spriteInfo.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(200, 300);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->restitution = .4f;
+	
+	//Fullscreen Button
+	entity = this->entityManager->CreateEntity(UI);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/UI/fullscreenbutton.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 45;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 127;
+	spriteInfo.totalRows = 1;
+	spriteInfo.totalCols = 1;
+	spriteInfo.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(200, 400);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
 	
 	// Main Menu buttons
 	// adding later

@@ -2,3 +2,4 @@
 
 bool fullscreenTriggered = false;
 bool attackTriggered = false;
+bool changeSceneTriggered = false;

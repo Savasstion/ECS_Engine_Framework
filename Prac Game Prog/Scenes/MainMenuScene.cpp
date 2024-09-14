@@ -56,21 +56,69 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	dInputMouseDevice->Acquire();
 
 	// Increment the world position
-	worldPosition.x += 20.0f * deltaTime; // Adjust speed as needed
+	//worldPosition.x += 100.0f * deltaTime; // Adjust speed as needed
+	int speed = 200;
+
+	background5Transform->position.x -= speed * deltaTime * parallaxFactor1;
+	background5Transform2->position.x -= speed * deltaTime * parallaxFactor1;
+	background4Transform->position.x -= speed * deltaTime * parallaxFactor2;
+	background4Transform2->position.x -= speed * deltaTime * parallaxFactor2;
+	background3Transform->position.x -= speed * deltaTime * parallaxFactor3;
+	background3Transform2->position.x -= speed * deltaTime * parallaxFactor3;
+	background2Transform->position.x -= speed * deltaTime * parallaxFactor4;
+	background2Transform2->position.x -= speed * deltaTime * parallaxFactor4;
+	background1Transform->position.x -= speed * deltaTime* parallaxFactor5;
+	background1Transform2->position.x -= speed * deltaTime * parallaxFactor5;
+
+	// Cycle backgrounds
+	if (background5Transform->position.x < -SCREEN_WIDTH/2) {
+		background5Transform->position.x = background5Transform2->position.x + SCREEN_WIDTH;
+	}
+	if (background5Transform2->position.x < -SCREEN_WIDTH/2) {
+		background5Transform2->position.x = background5Transform->position.x + SCREEN_WIDTH;
+	}
+	//4
+	if (background4Transform->position.x < -SCREEN_WIDTH/2) {
+		background4Transform->position.x = background4Transform2->position.x + SCREEN_WIDTH;
+	}
+	if (background4Transform2->position.x < -SCREEN_WIDTH/2) {
+		background4Transform2->position.x = background4Transform->position.x + SCREEN_WIDTH;
+	}
+
+	if (background3Transform->position.x < -SCREEN_WIDTH/2) {
+		background3Transform->position.x = background3Transform2->position.x + SCREEN_WIDTH;
+	}
+	if (background3Transform2->position.x < -SCREEN_WIDTH/2) {
+		background3Transform2->position.x = background3Transform->position.x + SCREEN_WIDTH;
+	}
+
+	if (background2Transform->position.x < -SCREEN_WIDTH/2) {
+		background2Transform->position.x = background2Transform2->position.x + SCREEN_WIDTH;
+	}
+	if (background2Transform2->position.x < -SCREEN_WIDTH/2) {
+		background2Transform2->position.x = background2Transform->position.x + SCREEN_WIDTH;
+	}
+
+	if (background1Transform->position.x < -SCREEN_WIDTH/2) {
+		background1Transform->position.x = background1Transform2->position.x + SCREEN_WIDTH;
+	}
+	if (background1Transform2->position.x < -SCREEN_WIDTH/2) {
+		background1Transform2->position.x = background1Transform->position.x + SCREEN_WIDTH;
+	}
 
 	// Update the first set of background positions
-	background1Transform->position.x = -int(worldPosition.x * parallaxFactor5) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background2Transform->position.x = -int(worldPosition.x * parallaxFactor4) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background3Transform->position.x = -int(worldPosition.x * parallaxFactor3) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background4Transform->position.x = -int(worldPosition.x * parallaxFactor2) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background5Transform->position.x = -int(worldPosition.x * parallaxFactor1) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-
-	// Update the second set of background positions for seamless looping
-	background1Transform2->position.x = -int(worldPosition.x * parallaxFactor5 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background2Transform2->position.x = -int(worldPosition.x * parallaxFactor4 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background3Transform2->position.x = -int(worldPosition.x * parallaxFactor3 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background4Transform2->position.x = -int(worldPosition.x * parallaxFactor2 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
-	background5Transform2->position.x = -int(worldPosition.x * parallaxFactor1 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH / 2;
+	// background1Transform->position.x = -int(worldPosition.x * parallaxFactor5) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background2Transform->position.x = -int(worldPosition.x * parallaxFactor4) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background3Transform->position.x = -int(worldPosition.x * parallaxFactor3) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background4Transform->position.x = -int(worldPosition.x * parallaxFactor2) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background5Transform->position.x = -int(worldPosition.x * parallaxFactor1) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	//
+	// // Update the second set of background positions for seamless looping
+	// background1Transform2->position.x = -int(worldPosition.x * parallaxFactor5 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background2Transform2->position.x = -int(worldPosition.x * parallaxFactor4 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background3Transform2->position.x = -int(worldPosition.x * parallaxFactor3 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background4Transform2->position.x = -int(worldPosition.x * parallaxFactor2 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
+	// background5Transform2->position.x = -int(worldPosition.x * parallaxFactor1 + SCREEN_WIDTH) % (SCREEN_WIDTH * 2) + SCREEN_WIDTH * 2;
 
 
 #pragma region MOUSE_INPUTS
@@ -161,11 +209,13 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	//=================================
 
 	//testing
-	if (diKeys[DIK_L] & 0x80)
+	//change scene WHEN RELEASE
+	bool currentLKeyState = (diKeys[DIK_L] & 0x80) != 0;
+	if (!currentLKeyState && changeSceneTriggered)
 	{
-		
 		isSwitchScene = true;
 	}
+	changeSceneTriggered = currentLKeyState;
 
 	D3DXVec2Normalize(&forceApplied,&forceApplied);
 	rgb->ApplyForce(forceApplied * mainMenuThrust * framesToUpdate);
@@ -220,7 +270,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH/2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((0), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background1Transform = transformComponent;
 	entity = this->entityManager->CreateEntity(BACKGROUND);
@@ -233,7 +283,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH/2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background1Transform2 = transformComponent;
 
@@ -248,7 +298,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((0), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background2Transform = transformComponent;
 	entity = this->entityManager->CreateEntity(BACKGROUND);
@@ -261,7 +311,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH*2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background2Transform2 = transformComponent;
 
@@ -276,7 +326,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((0), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background3Transform = transformComponent;
 	entity = this->entityManager->CreateEntity(BACKGROUND);
@@ -289,7 +339,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background3Transform2 = transformComponent;
 
@@ -304,7 +354,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((0), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background4Transform = transformComponent;
 	entity = this->entityManager->CreateEntity(BACKGROUND);
@@ -317,7 +367,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
+	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH), (SCREEN_HEIGHT / 2));
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	background4Transform2 = transformComponent;
 

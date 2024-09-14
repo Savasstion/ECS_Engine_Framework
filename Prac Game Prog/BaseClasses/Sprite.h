@@ -10,13 +10,11 @@ public:
     int totalRows, totalCols;
     int sheetWidth, sheetHeight;
     int sheetGap = 0;
-
-    int maxRows = 1; //how many rows
-    int maxCols = 1; //images per row
     int maxFrames = 1; //total frames
-
+    int fpsFactor = 1;
     bool isAnimated = false;
     bool isDirectional = false;
+    bool animating = false;
 
     int spriteHeight;
     int spriteWidth;

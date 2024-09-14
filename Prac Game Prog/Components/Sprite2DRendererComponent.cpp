@@ -59,7 +59,8 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
             //std::cout << "Animating Directional" << '\n';
 
             frameCounter += framesToUpdate;
-            int colIndex = frameCounter % (spriteInfo.maxCols + 1);
+            int colIndex = 0;
+            if (spriteInfo.animating) colIndex = frameCounter/spriteInfo.fpsFactor % (spriteInfo.totalCols + 1);
             int rowIndex = 0;
 
             if (spriteInfo.currentDirection == spriteInfo.upDirectionValue)
@@ -77,13 +78,13 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
                 rowIndex = spriteInfo.rightDirectionValue;
                 //std::cout << "Animating RIGHT" << '\n';
             }
-            if (spriteInfo.currentDirection == spriteInfo.rightDirectionValue)
+            if (spriteInfo.currentDirection == spriteInfo.downDirectionValue)
             {
                 rowIndex = spriteInfo.downDirectionValue;
                 //std::cout << "Animating DOWN" << '\n';
             }
 
-            if (frameCounter % (spriteInfo.maxRows + 1) == 0)
+            if (frameCounter % (spriteInfo.totalRows + 1) == 0)
                 frameCounter = 0;
 
             spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
@@ -95,10 +96,10 @@ void Sprite2DRendererComponent::UpdateSpriteAnimation(int framesToUpdate)
         {
             //std::cout << "Animating Non-Directional" << '\n';
             frameCounter += framesToUpdate;
-            int colIndex = frameCounter % spriteInfo.maxFrames % (spriteInfo.maxCols);
-            int rowIndex = frameCounter % spriteInfo.maxFrames / (spriteInfo.maxRows);
+            int colIndex = frameCounter % spriteInfo.maxFrames % (spriteInfo.totalCols);
+            int rowIndex = frameCounter % spriteInfo.maxFrames / (spriteInfo.totalRows);
 
-            if (frameCounter % (spriteInfo.maxRows + 1) == 0)
+            if (frameCounter % (spriteInfo.totalRows + 1) == 0)
                 frameCounter = 0;
 
             spriteRect.left = colIndex % spriteInfo.totalCols * spriteInfo.spriteWidth;
