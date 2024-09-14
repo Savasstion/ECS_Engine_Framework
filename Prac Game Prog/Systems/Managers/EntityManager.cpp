@@ -15,13 +15,20 @@ void EntityManager::UpdateEntityList()
     //  check all entities if not active, remove from main lists
     for(auto e : entities)
     {
-        if(!e->GetIsActive())
+        if(e != nullptr)
         {
-            //  clear e's pointers
-            e->ClearPointers();
-            //  move e to the end of vector and change the end of vector to leave out e
-            entities.erase(std::remove(entities.begin(), entities.end(), e), entities.end());
-            entityMap[e->GetTag()].erase(std::remove(entityMap[e->GetTag()].begin(), entityMap[e->GetTag()].end(), e), entityMap[e->GetTag()].end());
+            if(!e->GetIsActive())
+            {
+                //  clear e's pointers
+                e->ClearPointers();
+                //  move e to the end of vector and change the end of vector to leave out e
+                //std::cout << entities.size() << std::endl;
+                entities.erase(std::remove(entities.begin(), entities.end(), e), entities.end());
+                //std::cout << entities.size() << std::endl;
+                std::cout << entityMap[e->GetTag()].size() << std::endl;
+                entityMap[e->GetTag()].erase(std::remove(entityMap[e->GetTag()].begin(), entityMap[e->GetTag()].end(), e), entityMap[e->GetTag()].end());
+                std::cout << entityMap[e->GetTag()].size() << std::endl;
+            }
         }
     }
     

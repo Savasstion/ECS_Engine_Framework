@@ -21,11 +21,18 @@ void ComponentManager::UpdateComponentList()
     //  check all entities if not active, remove from main lists
     for(auto c : components)
     {
-        if(!c->GetIsActive())
+        if(c != nullptr)
         {
-            //  move e to the end of vector and change the end of vector to leave out e
-            components.erase(std::remove(components.begin(), components.end(), c), components.end());
-            componentMap[c->GetComponentTag()].erase(std::remove(componentMap[c->GetComponentTag()].begin(), componentMap[c->GetComponentTag()].end(), c), componentMap[c->GetComponentTag()].end());
+            if(!c->GetIsActive())
+            {
+                //  move e to the end of vector and change the end of vector to leave out e
+                std::cout << components.size() << std::endl;
+                components.erase(std::remove(components.begin(), components.end(), c), components.end());
+                std::cout << components.size() << std::endl;
+
+                auto vec = componentMap[c->GetComponentTag()];
+                vec.erase(std::remove(vec.begin(), vec.end(), c), vec.end());
+            }
         }
     }
     

@@ -20,7 +20,7 @@ Entity::Entity(size_t uid, TagEnum tag, std::string name, D3DXVECTOR2 scale, flo
 D3DXMATRIX Entity::GetTransformMatrix()
 {
     D3DXMATRIX mat;
-    if (transform != NULL)
+    if (transform != nullptr)
     {
         auto r = std::dynamic_pointer_cast<Sprite2DRendererComponent>(renderer);
         auto pos = r->GetSpriteRenderPos();
@@ -36,12 +36,47 @@ D3DXMATRIX Entity::GetTransformMatrix()
 
 void Entity::ClearPointers()
 {
-    transform->Destroy();
-    name->Destroy();
-    renderer->Destroy();
+    if(transform)
+    {
+        transform->Destroy();
+        transform->parent = nullptr;
+        transform = nullptr;
+    }
+    if(name)
+    {
+        name->Destroy();
+        name->parent = nullptr;
+        name = nullptr;
+    }
+
+    if(renderer)
+    {
+        renderer->Destroy();
+        renderer->parent = nullptr;
+        renderer = nullptr;
+    }
+
+    if(rigidbody)
+    {
+        rigidbody->Destroy();
+        rigidbody->parent = nullptr;
+        rigidbody = nullptr;
+    }
+
     for(auto c : colliders)
     {
         c->Destroy();
+        c->parent = nullptr;
+        c->currentTriggeredColliders.clear();
+        c->prevTriggeredColliders.clear();
+        c = nullptr;
+    }
+    
+    for(auto c : audios)
+    {
+        c->Destroy();
+        c->parent = nullptr;
+        c = nullptr;
     }
 }
 

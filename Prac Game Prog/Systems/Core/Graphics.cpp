@@ -167,27 +167,35 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
     lineInterface->Begin();
 
     // //Draw colliders
-    // //TODO: softcode it in the future, for now i needed a quick visual 
-     auto verticesA = octagonCollider->GetColliderVerticesInWorld();
-     verticesA.push_back(verticesA[0]);  //to complete loop
-     
-     auto verticesB = attackColliderL->GetColliderVerticesInWorld();
-     verticesB.push_back(verticesB[0]);  //to complete loop
-     
-     auto verticesC = truckCollider->GetColliderVerticesInWorld();
-     verticesC.push_back(verticesC[0]);  //to complete loop
+    // //TODO: softcode it in the future, for now i needed a quick visual
+    if(octagonCollider != nullptr && octagonCollider->parent != nullptr)
+    {
+        auto verticesA = octagonCollider->GetColliderVerticesInWorld();
+        verticesA.push_back(verticesA[0]);  //to complete loop
+        lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(100, 255, 0) );
+    }
 
-     auto verticesD = attackColliderR->GetColliderVerticesInWorld();
-     verticesD.push_back(verticesD[0]);  //to complete loop
+    if(attackColliderL != nullptr)
+    {
+        auto verticesB = attackColliderL->GetColliderVerticesInWorld();
+        verticesB.push_back(verticesB[0]);  //to complete loop
+        lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(255, 0, 0) );
+    }
 
-    // auto verticesB = collider2->GetColliderVerticesInWorld();
-    // verticesB.push_back(verticesB[0]);  //to complete loop
-    //
-     lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(100, 255, 0) );
-     lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(255, 0, 0) );
-     lineInterface->Draw(verticesC.data(), verticesC.size(),D3DCOLOR_XRGB(0, 0, 255) );
-     lineInterface->Draw(verticesD.data(), verticesD.size(), D3DCOLOR_XRGB(0, 0, 255));
-    //
+    if(truckCollider != nullptr)
+    {
+        auto verticesC = truckCollider->GetColliderVerticesInWorld();
+        verticesC.push_back(verticesC[0]);  //to complete loop
+        lineInterface->Draw(verticesC.data(), verticesC.size(),D3DCOLOR_XRGB(0, 0, 255) );
+    }
+
+    if(attackColliderR)
+    {
+        auto verticesD = attackColliderR->GetColliderVerticesInWorld();
+        verticesD.push_back(verticesD[0]);  //to complete loop
+        lineInterface->Draw(verticesD.data(), verticesD.size(), D3DCOLOR_XRGB(0, 0, 255));
+    }
+
     lineInterface->End();
     
 	
@@ -221,9 +229,11 @@ void Graphics::DrawAll2DSprites(std::vector<std::shared_ptr<Component>> sprite2D
     {
         std::shared_ptr<Sprite2DRendererComponent> c = std::dynamic_pointer_cast<Sprite2DRendererComponent>(r);
         D3DXMATRIX mat;
-        mat = c->parent->GetTransformMatrix();
-        spriteBrush->SetTransform(&mat);
-        spriteBrush->Draw(c->spriteInfo.texture,&c->spriteRect,NULL,NULL,D3DCOLOR_XRGB(255, 255, 255));
-		
+        if(c->parent != nullptr)
+        {
+            mat = c->parent->GetTransformMatrix();
+            spriteBrush->SetTransform(&mat);
+            spriteBrush->Draw(c->spriteInfo.texture,&c->spriteRect,NULL,NULL,D3DCOLOR_XRGB(255, 255, 255));
+        }
     }
 }
