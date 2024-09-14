@@ -11,7 +11,7 @@ public:
     //override and make child classes
     virtual void RunScript(std::shared_ptr<ColliderComponent> ownerCollider, std::shared_ptr<ColliderComponent> incomingCollider);
     virtual void DoEnterCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider, std::shared_ptr<ColliderComponent> incomingCollider);
-    virtual void DoExitCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider);
+    virtual void DoExitCollisionScript(std::shared_ptr<ColliderComponent> incomingCollider);
 
     //In child class header,
     //  void RunScript(std::shared_ptr<ColliderComponent> ownerCollider, std::shared_ptr<ColliderComponent> incomingCollider) override;

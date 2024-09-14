@@ -3,8 +3,6 @@
 #undef max 
 
 const float Physics::globalGravityConstant = 1.0f;
-std::set<std::shared_ptr<ColliderComponent>> Physics::currentTriggeredColliders;
-std::set<std::shared_ptr<ColliderComponent>> Physics::prevTriggeredColliders;   
 
 void Physics::DoScenePhysics(std::shared_ptr<Scene> scene, int framesToUpdate)
 {
@@ -59,21 +57,27 @@ void Physics::DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb)
 
 void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
 {
-    // Update prevSet to be the current state
-    prevTriggeredColliders = currentTriggeredColliders;
-    // Clear currentSet for the next update cycle
-    currentTriggeredColliders.clear();
+    auto components = scene->componentManager->GetComponents(POLYGON2D_COLLIDER);
     
-    //  Check for Polygon2D collisions
+    for(size_t i = 0; i < components.size(); i++)
     {
-        auto components = scene->componentManager->GetComponents(POLYGON2D_COLLIDER);
-        
-        for(size_t i = 0; i < components.size(); i++)
-        {
+        auto polygon2dCollider = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[i]);
+        // Update prevSet to be the current state
+        polygon2dCollider->prevTriggeredColliders = polygon2dCollider->currentTriggeredColliders;
+        // Clear currentSet for the next update cycle
+        polygon2dCollider->currentTriggeredColliders.clear();
+    }
+    
+    //  Check for Polygon2D collision
+    for(size_t i = 0; i < components.size(); i++)
+    {
             auto polygon2dColliderA = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[i]);
+ 
             for(size_t j = i+1; j < components.size(); j++)
             {
                 auto polygon2dColliderB = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[j]);  
+                
+
                 D3DXVECTOR2 normal= D3DXVECTOR2(0,0);
                 float depth = std::numeric_limits<float>::max();
                 auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld(), &normal, &depth);
@@ -81,8 +85,8 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                 //  do collision routine
                 if(isCollided)
                 {
-                    currentTriggeredColliders.insert(polygon2dColliderA);
-                    currentTriggeredColliders.insert(polygon2dColliderB);
+                    polygon2dColliderB->currentTriggeredColliders.insert(polygon2dColliderA);
+                    polygon2dColliderA->currentTriggeredColliders.insert(polygon2dColliderB);
                     
                     //std::cout<<"COLLISION_DETECTED!"<<'\n';
                     
@@ -126,15 +130,14 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                             ResolveCollision(rgb2dA, rgb2dB, normal, depth);
                         }
                     }
-                    
                 }
             }
-        }
-
-        DoAllExitCollisions();
-
-
-
+    }
+    
+    for(size_t i = 0; i < components.size(); i++)
+    {
+        auto collider = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[i]);
+        collider->DoAllExitCollisions();
     }
      
 }
@@ -156,18 +159,6 @@ void Physics::ProjectVerticesOntoAxis(std::vector<D3DXVECTOR2> vertices, D3DXVEC
     
 }
 
-void Physics::DoAllExitCollisions()
-{
-    //  Do All Exit Collision events
-    // Iterate over prevSet to find colliders no longer in currentSet
-    for (auto collider : prevTriggeredColliders) {
-        if (currentTriggeredColliders.find(collider) == currentTriggeredColliders.end()) {
-            // If collider is not found in currentSet, it means collision has exited
-            if( collider->collsionEventScript != nullptr)
-                collider->collsionEventScript->DoExitCollisionScript(collider);
-        }
-    }
-}
 
 D3DXVECTOR2 Physics::FindArithmeticMean(std::vector<D3DXVECTOR2> vertices)
 {

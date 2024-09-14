@@ -27,8 +27,8 @@ void ImpactEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderComponent
    
 }
 
-void ImpactEventScript::DoExitCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider)
+void ImpactEventScript::DoExitCollisionScript(std::shared_ptr<ColliderComponent> incomingCollider)
 {
-    EventScript::DoExitCollisionScript(ownerCollider);
+    EventScript::DoExitCollisionScript(incomingCollider);
     std::cout << "Stop Blowing up world\n";
 }
