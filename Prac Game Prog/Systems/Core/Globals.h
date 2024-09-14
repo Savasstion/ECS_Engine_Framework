@@ -59,6 +59,8 @@ extern IDirect3DDevice9* d3dDevice;
 //	create a box to store my virtual GPU requirements
 extern D3DPRESENT_PARAMETERS d3dPP;
 
+//Score
+extern int trashScore;
 
 //	INPUT STUFF
 //	Direct Input object.

@@ -2,6 +2,8 @@
 
 int intendedFPS = 60;
 
+int trashScore = 0;
+
 HWND g_hWnd = nullptr;
 HINSTANCE hInstance = GetModuleHandle(nullptr);
 WNDCLASS wndClass = WNDCLASS();
