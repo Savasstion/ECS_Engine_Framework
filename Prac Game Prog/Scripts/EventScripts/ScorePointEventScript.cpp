@@ -14,6 +14,12 @@ void ScorePointEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCompo
 {
     EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
     std::cout << "Point Score!\n";
+
+    if (incomingCollider->parent->GetTag() == ENEMY)
+    {
+        incomingCollider->parent->Destroy();
+    }
+
 }
 
 void ScorePointEventScript::DoExitCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider)
