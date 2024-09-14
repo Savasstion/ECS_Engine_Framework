@@ -39,6 +39,7 @@ public:
     Entity(size_t uid, TagEnum tag, std::string name, D3DXVECTOR2 scale, float rotation, D3DXVECTOR2 position);
     D3DXMATRIX GetTransformMatrix();
     TagEnum GetTag(){return tag;}
+    void SetTag(TagEnum tag) { this->tag = tag; }
     bool GetIsActive(){return isActive;}
     void Destroy(){isActive = false;}
     void ClearPointers();

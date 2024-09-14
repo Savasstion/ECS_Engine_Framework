@@ -3,6 +3,7 @@
 #include "../Systems/Managers/SceneManager.h"
 #include "../Systems/Managers/InputManager.h"
 
+
 GameScene::GameScene()
 {
     Scene(GAME_SCENE);
@@ -219,10 +220,16 @@ void GameScene::AddIntoScene()
     rigidbodyComponent->restitution = 0.0f;
     polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(playerEntity);
     polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24) });
+	
+	attackColliderL = this->componentManager->CreatePolygon2DColliderComponent(playerEntity);
+	attackColliderL->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-36, -24), D3DXVECTOR2(0, -24), D3DXVECTOR2(0, 24), D3DXVECTOR2(-36, 24) });
+	attackColliderL->isEventTrigger = true;
+	attackColliderL->collsionEventScript = std::make_shared<TrashHitEventScript>();
 
 
     // Trash bag
     entity = this->entityManager->CreateEntity(ENEMY);
+	entity->SetTag(ENEMY);
     spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
     D3DXCreateTextureFromFile(d3dDevice, "Assets/garbagebag.png", &spriteInfo.texture);
     spriteInfo.sheetHeight = spriteInfo.spriteHeight = 256;
@@ -236,7 +243,7 @@ void GameScene::AddIntoScene()
     transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
     polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
     polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-128, -128), D3DXVECTOR2(-128, 128), D3DXVECTOR2(128, 128), D3DXVECTOR2(128, -128) });
-    polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+    //polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
     rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
     rigidbodyComponent->friction = .5f;
     rigidbodyComponent->mass = 1.0f;

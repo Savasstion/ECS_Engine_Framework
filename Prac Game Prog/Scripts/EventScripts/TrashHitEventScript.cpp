@@ -17,8 +17,7 @@ void TrashHitEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCompone
     //stuff
     
     //if(attackTriggered)
-    {
-        if(incomingCollider->parent->GetTag() == TagEnum::ENEMY)
+        if(incomingCollider->parent->GetTag() == ENEMY)
         {
             D3DXVECTOR2 playerToEnemyDir;
             playerToEnemyDir = incomingCollider->parent->transform->position - ownerCollider->parent->transform->position;
@@ -28,13 +27,15 @@ void TrashHitEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCompone
             {
                 auto enemyRGB2d = std::dynamic_pointer_cast<Rigidbody2DComponent>(incomingCollider->parent->rigidbody);
                 enemyRGB2d->ApplyForce(playerToEnemyDir * forceMagnitude);
+                std::cout << "Trash hit" << std::endl;
             }
         }
-    }
+        
 }
 
 void TrashHitEventScript::DoExitCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider)
 {
     EventScript::DoExitCollisionScript(ownerCollider);
     //stuff
+    std::cout << "Trash exit" << std::endl;
 }

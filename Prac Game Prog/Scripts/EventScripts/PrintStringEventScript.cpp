@@ -14,11 +14,11 @@ void PrintStringEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderComp
     std::shared_ptr<ColliderComponent> incomingCollider)
 {
     EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
-    //std::cout << "Start to Blow up world\n";
+    std::cout << "Start to Blow up world\n";
 }
 
 void PrintStringEventScript::DoExitCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider)
 {
     EventScript::DoExitCollisionScript(ownerCollider);
-    std::cout << "Stop Blowing up world\n";
+    //std::cout << "Stop Blowing up world\n";
 }

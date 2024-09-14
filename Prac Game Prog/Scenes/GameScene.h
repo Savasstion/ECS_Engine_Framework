@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseClasses/Scene.h"
 #include "SceneGlobals/GameSceneGlobals.h"
+#include "../Scripts/EventScripts/TrashHitEventScript.h"
 
 
 class GameScene : public Scene
