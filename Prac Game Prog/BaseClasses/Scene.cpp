@@ -37,7 +37,7 @@ void Scene::AddIntoScene()
 void Scene::SwitchScene(std::shared_ptr<SceneManager> scene_manager, SceneEnum sceneName)
 {
     //Switch scene
-    scene_manager->UnloadScene(false);
+    scene_manager->UnloadScene(true);
     scene_manager->LoadScene(sceneName);
 
 }

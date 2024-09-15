@@ -38,7 +38,7 @@ void GameScene::ToggleFullscreen()
 
 void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 {
-	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(playerEntity->renderer);
+	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(this->entityManager->GetEntity(PLAYER)->renderer);
 
 	bool isMoving = false;
 	static bool wasMoving = false; // Track the previous movement state

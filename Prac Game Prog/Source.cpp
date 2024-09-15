@@ -255,7 +255,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 				num = MAIN_MENU;
 			else
 			{
-				num = PAUSE_MENU;
+				num = GAME_SCENE;
 			}
 			flip = !flip;
 			sceneManager->currentScene->isSwitchScene = false;

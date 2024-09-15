@@ -19,7 +19,7 @@ void ScorePointEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCompo
     {
         std::cout << "Point Score!\n";
         trashScore++;
-        //incomingCollider->parent->Destroy();
+        incomingCollider->parent->Destroy();
         std::cout << "Score = " << trashScore << std::endl;
     }
 
