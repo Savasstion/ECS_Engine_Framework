@@ -22,4 +22,5 @@ public:
     static void DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene);
     static int RenderScene(std::shared_ptr<Scene> currentScene);
     static void DrawAll2DSprites(std::vector<std::shared_ptr<Component>> sprite2DRendererComponents);
+    static bool CompareByYPosition(std::shared_ptr<Sprite2DRendererComponent> rendererA, std::shared_ptr<Sprite2DRendererComponent> rendererB);
 };

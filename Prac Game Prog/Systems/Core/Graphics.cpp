@@ -1,4 +1,7 @@
 #include "Graphics.h"
+
+#include <algorithm>
+
 #include "Globals.h"
 #include "../../Scenes/SceneGlobals/GameSceneGlobals.h"
 
@@ -239,9 +242,20 @@ void Graphics::DrawAll2DSprites(std::vector<std::shared_ptr<Component>> sprite2D
 {
     //	DRAW ALL SPRITE2D Components
     //	Sprite2DRenderer.DrawAllSprites
+    std::vector<std::shared_ptr<Sprite2DRendererComponent>> sprite2dRenderers;
     for(std::shared_ptr<Component> r : sprite2DRendererComponents)
     {
         std::shared_ptr<Sprite2DRendererComponent> c = std::dynamic_pointer_cast<Sprite2DRendererComponent>(r);
+        if(c->parent != nullptr)
+            sprite2dRenderers.push_back(c);
+    }  
+
+    std::vector<std::shared_ptr<Sprite2DRendererComponent>> sortedRenderers = sprite2dRenderers;
+    //  Sort the renderers so the further below the screen a sprite is, the higher render priority
+    std::sort(sortedRenderers.begin(), sortedRenderers.end(), CompareByYPosition);
+    
+    for(auto c : sortedRenderers)
+    {
         D3DXMATRIX mat;
         if(c->parent != nullptr)
         {
@@ -250,4 +264,9 @@ void Graphics::DrawAll2DSprites(std::vector<std::shared_ptr<Component>> sprite2D
             spriteBrush->Draw(c->spriteInfo.texture,&c->spriteRect,NULL,NULL,D3DCOLOR_XRGB(255, 255, 255));
         }
     }
+}
+
+bool Graphics::CompareByYPosition(std::shared_ptr<Sprite2DRendererComponent> rendererA, std::shared_ptr<Sprite2DRendererComponent> rendererB)
+{
+    return rendererA->parent->transform->position.y < rendererB->parent->transform->position.y;
 }
