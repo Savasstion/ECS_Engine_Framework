@@ -9,6 +9,8 @@ public:
     //  Friction cant be a negative
     //  Restitution is a value between 0 and 1
     
+    bool isMoving = false;
+
     float mass = 1;
     float friction;
     //  restitution is the ratio of how much a body will bounce back. If 1 then full bounce with no loss of energy. If 0, no bounce at all

@@ -16,5 +16,5 @@ public:
     void AddIntoScene()override;
 private:
     float timeSinceLastSpawn = 0.0f;
-    float spawnInterval = 5.0f;
+    float spawnInterval = 8.0f;
 };

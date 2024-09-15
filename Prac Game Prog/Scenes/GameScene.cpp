@@ -49,7 +49,7 @@ void GameScene::createTrashEntity(const D3DXVECTOR2& position, const std::string
 		});
 	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
-	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->friction = .2f;
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
 }
@@ -330,7 +330,7 @@ void GameScene::AddIntoScene()
 		});
 	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
-	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->friction = 0.2f;
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
 	octagonCollider = polygon2dColliderComponent;
