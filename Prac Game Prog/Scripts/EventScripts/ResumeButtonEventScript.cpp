@@ -1,7 +1,6 @@
 #include "ResumeButtonEventScript.h"
 
 #include <iostream>
-
 #include "../../Systems/Managers/SceneManager.h"
 
 void ResumeButtonEventScript::RunScript(std::shared_ptr<ColliderComponent> ownerCollider,
