@@ -4,6 +4,7 @@
 #include "../../BaseClasses/Entity.h"
 #include "../../Components/ColliderComponent.h"
 #include "../../Components/Rigidbody2DComponent.h"
+#include "../../Scenes/SceneGlobals/PauseMenuGlobals.h"
 
 class ResumeButtonEventScript : public EventScript
 {

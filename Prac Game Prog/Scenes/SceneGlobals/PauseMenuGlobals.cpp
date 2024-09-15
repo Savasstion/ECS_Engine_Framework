@@ -1,5 +1,8 @@
 #include "PauseMenuGlobals.h"
 
+#include "../../Systems/Managers/SceneManager.h"
+
+
 float thrust = 3.5 * 100;
 float rotationSpeed = .1f;
 
@@ -15,6 +18,8 @@ Audio audioManager;
 
 // Mouse
 std::shared_ptr<Entity> mousePointerEntity = nullptr;
+
+std::shared_ptr<SceneManager> pauseMenuSceneManager;
 
 
 

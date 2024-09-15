@@ -14,6 +14,7 @@
 #include "Systems/Core/Physics.h"
 #include "Systems/Managers/SceneManager.h"
 #include "Systems/Core/Audio.h"
+#include "Scenes/SceneGlobals/PauseMenuGlobals.h"
 
 
 #pragma region GLOBAL_VAR
@@ -33,6 +34,8 @@ LPDIRECT3DTEXTURE9 numbersTexture = nullptr;
 //TODO: mave mouse pointer an entity and remove this 
 RECT spriteRect;
 RECT textRect;
+
+std::shared_ptr<SceneManager> sceneManager = std::make_shared<SceneManager>();
 
 //testing vars
 

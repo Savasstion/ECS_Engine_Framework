@@ -211,6 +211,7 @@ void PauseMenuScene::ToggleFullscreen()
 
 void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> sceneManager)
 {
+	pauseMenuSceneManager = sceneManager;
 	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(playerEntity->renderer);
 	
 	bool isMoving = false;
@@ -251,8 +252,9 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 	//	KEYBOARD INPUT EVENT
 	if (diKeys[DIK_ESCAPE] & 0x80)
 	{
-		
-		scene_manager->LoadScene(GAME_SCENE);
+		sceneManager->UnloadScene(false);
+		sceneManager->LoadScene(GAME_SCENE);
+		return;
 	}
 
 	//FULLSCREEN WHEN RELEASE

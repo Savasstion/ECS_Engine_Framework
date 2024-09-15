@@ -4,6 +4,7 @@
 #include "../../Systems/Core/Audio.h"
 
 
+class SceneManager;
 class Entity;
 
 
@@ -22,5 +23,6 @@ extern Sprite spriteInfo1;
 extern Audio audioManager;
 
 extern std::shared_ptr<Entity> mousePointerEntity;
+extern std::shared_ptr<SceneManager> pauseMenuSceneManager;
 
 
