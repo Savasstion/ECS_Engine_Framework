@@ -242,20 +242,23 @@ void Graphics::DrawAll2DSprites(std::vector<std::shared_ptr<Component>> sprite2D
 {
     //	DRAW ALL SPRITE2D Components
     //	Sprite2DRenderer.DrawAllSprites
-    std::vector<std::shared_ptr<Sprite2DRendererComponent>> sprite2dRenderers;
-    for(std::shared_ptr<Component> r : sprite2DRendererComponents)
+    // std::vector<std::shared_ptr<Sprite2DRendererComponent>> sprite2dRenderers;
+    // for(std::shared_ptr<Component> r : sprite2DRendererComponents)
+    // {
+    //     std::shared_ptr<Sprite2DRendererComponent> c = std::dynamic_pointer_cast<Sprite2DRendererComponent>(r);
+    //     if(c->parent != nullptr)
+    //         sprite2dRenderers.push_back(c);
+    // }  
+    //
+    // std::vector<std::shared_ptr<Sprite2DRendererComponent>> sortedRenderers = sprite2dRenderers;
+    //  Sort the renderers so the further below the screen a sprite is, the higher render priority
+    // std::sort(sortedRenderers.begin(), sortedRenderers.end(), CompareByYPosition);
+
+    //  for now this kind of implementation of the render queue brings problems so imma set it back  
+    //for(auto c : sortedRenderers)
+    for(auto r : sprite2DRendererComponents)
     {
         std::shared_ptr<Sprite2DRendererComponent> c = std::dynamic_pointer_cast<Sprite2DRendererComponent>(r);
-        if(c->parent != nullptr)
-            sprite2dRenderers.push_back(c);
-    }  
-
-    std::vector<std::shared_ptr<Sprite2DRendererComponent>> sortedRenderers = sprite2dRenderers;
-    //  Sort the renderers so the further below the screen a sprite is, the higher render priority
-    std::sort(sortedRenderers.begin(), sortedRenderers.end(), CompareByYPosition);
-    
-    for(auto c : sortedRenderers)
-    {
         D3DXMATRIX mat;
         if(c->parent != nullptr)
         {
