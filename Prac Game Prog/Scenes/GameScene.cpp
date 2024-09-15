@@ -268,6 +268,25 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
  		timeSinceLastSound = 0.0f; // Reset the timer
  	}
 
+	// Entities Boundaries
+	auto entities = this->entityManager->GetEntities();
+	for (auto e : entities) {
+		if (e->transform != nullptr) {
+			if (e->transform->position.x < 0) {
+				e->transform->position.x = 0;
+			}
+			if (e->transform->position.x > SCREEN_WIDTH) {
+				e->transform->position.x = SCREEN_WIDTH;
+			}
+			if (e->transform->position.y < 0) {
+				e->transform->position.y = 0;
+			}
+			if (e->transform->position.y > SCREEN_HEIGHT) {
+				e->transform->position.y = SCREEN_HEIGHT;
+			}
+		}
+	}
+
 }
 
 void GameScene::AddIntoScene()

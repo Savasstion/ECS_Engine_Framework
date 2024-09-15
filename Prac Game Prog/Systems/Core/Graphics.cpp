@@ -171,19 +171,19 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
 
     // //Draw colliders
     // //TODO: softcode it in the future, for now i needed a quick visual
-    if(octagonCollider != nullptr && octagonCollider->parent != nullptr)
-    {
-        auto verticesA = octagonCollider->GetColliderVerticesInWorld();
-        verticesA.push_back(verticesA[0]);  //to complete loop
-        lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(100, 255, 0) );
-    }
+    //if(octagonCollider != nullptr && octagonCollider->parent != nullptr)
+    //{
+    //    auto verticesA = octagonCollider->GetColliderVerticesInWorld();
+    //    verticesA.push_back(verticesA[0]);  //to complete loop
+    //    lineInterface->Draw(verticesA.data(), verticesA.size(),D3DCOLOR_XRGB(100, 255, 0) );
+    //}
 
-    if(attackColliderL != nullptr)
-    {
-        auto verticesB = attackColliderL->GetColliderVerticesInWorld();
-        verticesB.push_back(verticesB[0]);  //to complete loop
-        lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(255, 0, 0) );
-    }
+    //if(attackColliderL != nullptr)
+    //{
+    //    auto verticesB = attackColliderL->GetColliderVerticesInWorld();
+    //    verticesB.push_back(verticesB[0]);  //to complete loop
+    //    lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(255, 0, 0) );
+    //}
 
     if(truckGoalCollider != nullptr)
     {
@@ -192,25 +192,25 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
         lineInterface->Draw(verticesC.data(), verticesC.size(),D3DCOLOR_XRGB(0, 255, 255) );
     }
 
-    if(attackColliderR)
-    {
-        auto verticesD = attackColliderR->GetColliderVerticesInWorld();
-        verticesD.push_back(verticesD[0]);  //to complete loop
-        lineInterface->Draw(verticesD.data(), verticesD.size(), D3DCOLOR_XRGB(0, 0, 255));
-    }
+    //if(attackColliderR)
+    //{
+    //    auto verticesD = attackColliderR->GetColliderVerticesInWorld();
+    //    verticesD.push_back(verticesD[0]);  //to complete loop
+    //    lineInterface->Draw(verticesD.data(), verticesD.size(), D3DCOLOR_XRGB(0, 0, 255));
+    //}
 
-    if (truckCollider != nullptr)
-    {
-        auto verticesE = truckCollider->GetColliderVerticesInWorld();
-        verticesE.push_back(verticesE[0]);  //to complete loop
-        lineInterface->Draw(verticesE.data(), verticesE.size(), D3DCOLOR_XRGB(255, 0, 255));
-    }
-    if (mousePointerCollider != nullptr)
-    {
-        auto verticesE = mousePointerCollider->GetColliderVerticesInWorld();
-        verticesE.push_back(verticesE[0]);  //to complete loop
-        lineInterface->Draw(verticesE.data(), verticesE.size(), D3DCOLOR_XRGB(255, 0, 255));
-    }
+    //if (truckCollider != nullptr)
+    //{
+    //    auto verticesE = truckCollider->GetColliderVerticesInWorld();
+    //    verticesE.push_back(verticesE[0]);  //to complete loop
+    //    lineInterface->Draw(verticesE.data(), verticesE.size(), D3DCOLOR_XRGB(255, 0, 255));
+    //}
+    //if (mousePointerCollider != nullptr)
+    //{
+    //    auto verticesE = mousePointerCollider->GetColliderVerticesInWorld();
+    //    verticesE.push_back(verticesE[0]);  //to complete loop
+    //    lineInterface->Draw(verticesE.data(), verticesE.size(), D3DCOLOR_XRGB(255, 0, 255));
+    //}
 
 
     lineInterface->End();
