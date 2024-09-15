@@ -230,16 +230,14 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		sceneManager->currentScene->componentManager->UpdateComponentList();
 		int framesToUpdate = gameTimer->GetFramesToUpdate();
 		float deltaTime = gameTimer->GetDeltaTime();
-		//TODO: DO ANIM, PHYSICS COMPONENTS 
+
 		
 		//get input
 		GetInput();
 		//do physics
-		//DoPhysics();
 		Physics::DoScenePhysics(sceneManager->currentScene, framesToUpdate);
 		//AI
 		//game update/logic
-		//remove sceneManager param soon maybe, for now it is a testing var
 		sceneManager->currentScene->UpdateScene(framesToUpdate, deltaTime, sceneManager);
 		//Draw!!!!
 		Graphics::RenderScene(sceneManager->currentScene);
@@ -247,6 +245,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 		audioManager.UpdateSound();
 
 
+		//temporary way to switch scene
 		if(sceneManager->currentScene->isSwitchScene)
 		{
 			SceneEnum num;
