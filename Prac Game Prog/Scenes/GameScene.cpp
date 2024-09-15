@@ -120,7 +120,9 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 	//	KEYBOARD INPUT EVENT
 	if (diKeys[DIK_ESCAPE] & 0x80)
 	{
-
+		scene_manager->UnloadScene(true);
+		scene_manager->LoadScene(PAUSE_MENU);
+		return;
 	}
 
 	//FULLSCREEN WHEN RELEASE
@@ -231,7 +233,7 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 
 	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
 	{
-		//audioManager.PlayAudio(audioEntity->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
+		audioManager.PlayAudio(audioEntityGameScene->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
 		timeSinceLastSound = 0.0f; // Reset the timer
 	}
 
@@ -251,6 +253,15 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 		createTrashEntity(randomPosition, "Assets/garbagebag.png"); // Adjust texture path as needed
 	}
 
+	//Play sound only when movement starts and regulate it with deltaTime
+	timeSinceLastSoundGameScene += deltaTime;
+	static float timeSinceLastSoundGameScene = 0.0f;
+ 	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
+ 	{
+ 		audioManager.PlayAudio(audioEntityGameScene->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
+ 		timeSinceLastSound = 0.0f; // Reset the timer
+ 	}
+
 }
 
 void GameScene::AddIntoScene()
@@ -262,6 +273,12 @@ void GameScene::AddIntoScene()
 	std::shared_ptr<Polygon2DColliderComponent> polygon2dColliderComponent;
 	std::shared_ptr<Audio2DComponent> audioComponent;
 	std::shared_ptr<Audio2DComponent> audioBGM;
+
+	audioEntityGameScene = this->entityManager->CreateEntity(AUDIO);
+	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityGameScene);
+	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityGameScene);
+	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
+	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
 
 	playerEntity = this->entityManager->CreateEntity(PLAYER);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(playerEntity);
@@ -382,4 +399,5 @@ void GameScene::AddIntoScene()
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
 
+	audioManager.PlayAudio(audioEntityGameScene->audios[1], 0, 0);
 }
