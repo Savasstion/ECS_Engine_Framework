@@ -4,6 +4,8 @@
 #include "../Scripts/EventScripts/PrintStringEventScript.h"
 #include "../Scripts/EventScripts/ImpactEventScript.h"
 #include "../Scripts/EventScripts/OptionButtonEventScript.h"
+#include "../Scripts/EventScripts/MainMenuQuitButtonEventScript.h"
+#include "../Scripts/EventScripts/MainMenuPlayButtonEventScript.h"
 
 class MainMenuScene : public Scene
 {

@@ -220,7 +220,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 	FrameTimer* gameTimer = new FrameTimer();
 	gameTimer->Init(60);
 
-	sceneManager->LoadScene(GAME_SCENE);
+	sceneManager->LoadScene(MAIN_MENU);
 
 	// Play background music in loop
 	

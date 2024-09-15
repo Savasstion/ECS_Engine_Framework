@@ -44,12 +44,6 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 {
 	mainMenuSceneManager = sceneManager;
 
-    //  update stuff
-	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(playerEntity->renderer);
-    
-	bool isMoving = false;
-	static bool wasMoving = false; // Track the previous movement state
-
 	// Update timeSinceLastSound
 	timeSinceLastSoundMainMenu += deltaTime;
 
@@ -329,35 +323,6 @@ void MainMenuScene::AddIntoScene()
 	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false, false);  // [0]
 	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
 
-	//MILITIA
-	playerEntity = this->entityManager->CreateEntity(PLAYER);
-
-	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(playerEntity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/militia.png", &spriteInfoMainMenu.texture);
-	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = 48;
-	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = 32;
-	spriteInfoMainMenu.totalRows = 4;
-	spriteInfoMainMenu.totalCols = 4;
-	spriteInfoMainMenu.isAnimated = true;
-	spriteInfoMainMenu.isDirectional = true;
-	spriteInfoMainMenu.upDirectionValue = 3;
-	spriteInfoMainMenu.leftDirectionValue = 1;
-	spriteInfoMainMenu.rightDirectionValue = 2;
-	spriteInfoMainMenu.downDirectionValue = 0;
-	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
-
-	transformComponent = this->componentManager->CreateTransformComponent(playerEntity);
-	transformComponent->position = D3DXVECTOR2(500, 100);
-	transformComponent->scale = D3DXVECTOR2(2, 2);
-
-	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(playerEntity);
-	rigidbodyComponent->friction = 0.5f;
-	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(playerEntity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24)});
-	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>(); //child class of EventScript btw
-
-	//	for testing
-	collider1 = polygon2dColliderComponent;
 	// Audio stuff
 	// this = current this, call componentManager to create Audio2DComponent, e = parent entity
 
@@ -374,11 +339,11 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 700);
+	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH / 2, 700);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
-	polygon2dColliderComponent->collsionEventScript = std::make_shared<ImpactEventScript>();
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<MainMenuPlayButtonEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->isStatic = true;
 	rigidbodyComponent->friction = .5f;
@@ -387,6 +352,7 @@ void MainMenuScene::AddIntoScene()
 	
 	//	for testing
 	collider2 = polygon2dColliderComponent;
+
 
 	//Options Button
 	entity = this->entityManager->CreateEntity(UI);
@@ -399,7 +365,7 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 800);
+	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH / 2, 800);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
@@ -423,10 +389,12 @@ void MainMenuScene::AddIntoScene()
 	spriteInfoMainMenu.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 900);
+	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH / 2, 900);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<MainMenuQuitButtonEventScript>();
+	polygon2dColliderComponent->isEventTrigger = true;
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->isStatic = true;
 	rigidbodyComponent->friction = .5f;

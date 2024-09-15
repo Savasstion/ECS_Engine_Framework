@@ -29,5 +29,13 @@ void Audio::UpdateSound()
     result = audioSystem->update();
 }
 
+void Audio::StopAudio()
+{
+    if (channel != nullptr)
+    {
+        channel->stop();  // Stop the sound playback
+    }
+}
+
 
 

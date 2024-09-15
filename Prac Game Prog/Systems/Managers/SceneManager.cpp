@@ -116,6 +116,7 @@ void SceneManager::LoadScene(SceneEnum scene_enum)
 
 void SceneManager::UnloadScene(bool isSaveSceneData)
 {
+    audioManager.StopAudio();
     prevScene = currentScene->sceneName;
     if(!sceneStack.empty())
     {

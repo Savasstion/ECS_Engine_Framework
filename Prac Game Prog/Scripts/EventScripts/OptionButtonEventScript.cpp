@@ -1,6 +1,5 @@
 #include "OptionButtonEventScript.h"
 #include <iostream>
-#include "../../Systems/Managers/SceneManager.h"
 
 void OptionButtonEventScript::RunScript(std::shared_ptr<ColliderComponent> ownerCollider,
     std::shared_ptr<ColliderComponent> incomingCollider)
@@ -19,7 +18,7 @@ void OptionButtonEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCom
         {
             std::cout << "Resume Button clicked\n";
             mainMenuSceneManager->UnloadScene(false);
-            mainMenuSceneManager->LoadScene(PAUSE_MENU);
+            mainMenuSceneManager->LoadScene(OPTIONS_MENU);
             EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
         }
 }

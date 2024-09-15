@@ -2,6 +2,8 @@
 #include "../BaseClasses/Scene.h"
 #include "../Scenes/SceneGlobals/PauseMenuGlobals.h"
 #include "../Scripts/EventScripts/PrintStringEventScript.h"
+#include "../Scripts/EventScripts/ResumeButtonEventScript.h"
+#include "../Scripts/EventScripts/PauseMenuQuitButtonEventScript.h"
 
 
 class PauseMenuScene : public Scene

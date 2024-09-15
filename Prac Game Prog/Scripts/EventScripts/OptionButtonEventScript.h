@@ -5,6 +5,7 @@
 #include "../../Components/ColliderComponent.h"
 #include "../../Components/Rigidbody2DComponent.h"
 #include "../../Scenes/SceneGlobals/OptionSceneGlobals.h"
+#include "../../Systems/Managers/SceneManager.h"
 
 class OptionButtonEventScript : public EventScript
 {

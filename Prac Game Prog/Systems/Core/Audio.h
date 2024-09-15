@@ -13,4 +13,5 @@ public:
     void InitAudio();
     void PlayAudio(std::shared_ptr<AudioComponent> au, float spritePosX, float screenWidth);
     void UpdateSound();
+    void StopAudio();
 };

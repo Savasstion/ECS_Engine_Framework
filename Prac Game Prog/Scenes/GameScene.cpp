@@ -83,7 +83,7 @@ void GameScene::ToggleFullscreen()
 
 void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
 {
-	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(this->entityManager->GetEntity(PLAYER)->renderer);
+	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(playerEntity->renderer);
 
 	bool isMoving = false;
 	static bool wasMoving = false; // Track the previous movement state
@@ -142,7 +142,7 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 
 #pragma region PLAYER_KEYBOARD_INPUTS
 	// player inputs
-	auto e = this->entityManager->GetEntity(PLAYER);
+	auto e = playerEntity;
 	auto t = e->transform;
 	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
 	D3DXVECTOR2 forceApplied = D3DXVECTOR2(0, 0);
