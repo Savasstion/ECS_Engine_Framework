@@ -11,6 +11,7 @@ enum TagEnum
     OBSTACLE,
     PICKABLE,
     UI,
-    BACKGROUND
+    BACKGROUND,
+    GOAL
     
 };

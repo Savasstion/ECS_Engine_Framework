@@ -11,6 +11,10 @@ public:
     GameScene();
     virtual ~GameScene() = default; //  virtual destructor
     void ToggleFullscreen();
+    void createTrashEntity(const D3DXVECTOR2& position, const std::string& texturePath);
     void UpdateScene(int framesToUpdate,float deltaTime, std::shared_ptr<SceneManager> scene_manager)override;
     void AddIntoScene()override;
+private:
+    float timeSinceLastSpawn = 0.0f;
+    float spawnInterval = 5.0f;
 };

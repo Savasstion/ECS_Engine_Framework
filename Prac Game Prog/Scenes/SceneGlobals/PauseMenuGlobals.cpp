@@ -13,5 +13,5 @@ Sprite spriteInfo1;
 
 Audio audioManager;
 
-std::shared_ptr<Entity> playerEntity;
+
 

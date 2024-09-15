@@ -18,7 +18,11 @@ extern std::shared_ptr<Entity> audioEntitygameScene;
 extern Sprite spriteInfogameScene;
 extern Sprite spriteInfo1gameScene;
 
+extern std::shared_ptr<Entity> playerEntity;
+extern std::shared_ptr<Entity> goalEntity;
+
 extern std::shared_ptr<Polygon2DColliderComponent> octagonCollider;
 extern std::shared_ptr<Polygon2DColliderComponent> attackColliderL;
 extern std::shared_ptr<Polygon2DColliderComponent> attackColliderR;
 extern std::shared_ptr<Polygon2DColliderComponent> truckCollider;
+extern std::shared_ptr<Polygon2DColliderComponent> truckGoalCollider;

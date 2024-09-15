@@ -21,4 +21,4 @@ extern Sprite spriteInfo1;
 
 extern Audio audioManager;
 
-extern std::shared_ptr<Entity> playerEntity;
+

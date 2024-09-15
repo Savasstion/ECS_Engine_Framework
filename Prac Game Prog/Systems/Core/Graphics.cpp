@@ -182,11 +182,11 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
         lineInterface->Draw(verticesB.data(), verticesB.size(),D3DCOLOR_XRGB(255, 0, 0) );
     }
 
-    if(truckCollider != nullptr)
+    if(truckGoalCollider != nullptr)
     {
-        auto verticesC = truckCollider->GetColliderVerticesInWorld();
+        auto verticesC = truckGoalCollider->GetColliderVerticesInWorld();
         verticesC.push_back(verticesC[0]);  //to complete loop
-        lineInterface->Draw(verticesC.data(), verticesC.size(),D3DCOLOR_XRGB(0, 0, 255) );
+        lineInterface->Draw(verticesC.data(), verticesC.size(),D3DCOLOR_XRGB(0, 255, 255) );
     }
 
     if(attackColliderR)
@@ -194,6 +194,13 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
         auto verticesD = attackColliderR->GetColliderVerticesInWorld();
         verticesD.push_back(verticesD[0]);  //to complete loop
         lineInterface->Draw(verticesD.data(), verticesD.size(), D3DCOLOR_XRGB(0, 0, 255));
+    }
+
+    if (truckCollider != nullptr)
+    {
+        auto verticesE = truckCollider->GetColliderVerticesInWorld();
+        verticesE.push_back(verticesE[0]);  //to complete loop
+        lineInterface->Draw(verticesE.data(), verticesE.size(), D3DCOLOR_XRGB(255, 0, 255));
     }
 
     lineInterface->End();
