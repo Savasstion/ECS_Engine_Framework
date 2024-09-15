@@ -40,7 +40,7 @@ bool Graphics::SpawnWindow()
         Create the Window.
     */
     //	You are to refer to MSDN for each of the parameters details.
-    g_hWnd = CreateWindowEx(0, wndClass.lpszClassName, "Valorant 1.6", WS_OVERLAPPEDWINDOW /*WS_EX_TOPMOST | WS_POPUP*/, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+    g_hWnd = CreateWindowEx(0, wndClass.lpszClassName, "TRSH GAME", WS_OVERLAPPEDWINDOW /*WS_EX_TOPMOST | WS_POPUP*/, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
     ShowWindow(g_hWnd, 1);
 	
     //	ShowCursor(false);
