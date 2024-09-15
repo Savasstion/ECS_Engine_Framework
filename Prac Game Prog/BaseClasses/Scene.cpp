@@ -41,3 +41,8 @@ void Scene::SwitchScene(std::shared_ptr<SceneManager> scene_manager, SceneEnum s
     scene_manager->LoadScene(sceneName);
 
 }
+
+void Scene::InitSceneAudio()
+{
+}
+

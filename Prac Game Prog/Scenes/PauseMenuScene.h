@@ -15,5 +15,5 @@ public:
     //  virtual destructor
     void UpdateScene(int framesToUpdate,float deltaTime, std::shared_ptr<SceneManager> scene_manager)override;
     void AddIntoScene()override;
-
+    void InitSceneAudio()override;
 };

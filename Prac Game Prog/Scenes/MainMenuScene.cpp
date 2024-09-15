@@ -448,10 +448,12 @@ void MainMenuScene::AddIntoScene()
 	rigidbodyComponent->friction = .5f;
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
-
-	// BGM 
-	audioManager.PlayAudio(audioEntityMainMenu->audios[1], 0, 0);
 	
+}
+
+void MainMenuScene::InitSceneAudio()
+{
+	audioManager.PlayAudio(audioEntityMainMenu->audios[1], 0, 0);
 }
 
 

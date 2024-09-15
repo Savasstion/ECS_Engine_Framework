@@ -111,7 +111,7 @@ void SceneManager::LoadScene(SceneEnum scene_enum)
             }
             break;
     }
-    
+    currentScene->InitSceneAudio();
 }
 
 void SceneManager::UnloadScene(bool isSaveSceneData)

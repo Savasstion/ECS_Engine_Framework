@@ -29,4 +29,5 @@ public:
     virtual void AddIntoScene();
     //testing
     void SwitchScene(std::shared_ptr<SceneManager> scene_manager, SceneEnum sceneName);
+    virtual void InitSceneAudio();
 };

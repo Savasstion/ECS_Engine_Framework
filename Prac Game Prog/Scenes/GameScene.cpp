@@ -403,5 +403,11 @@ void GameScene::AddIntoScene()
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
 
+}
+
+void GameScene::InitSceneAudio()
+{
 	audioManager.PlayAudio(audioEntityGameScene->audios[1], 0, 0);
 }
+
+
