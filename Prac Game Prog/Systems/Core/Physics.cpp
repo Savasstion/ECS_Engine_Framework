@@ -51,6 +51,12 @@ void Physics::DoCycleOfMotion2D(std::shared_ptr<Rigidbody2DComponent> rgb)
             rgb->velocity *= D3DXVec2Length(&rgb->maxVelocity);
         }
 
+        if(D3DXVec2Length(&rgb->velocity) != 0.0f)
+            rgb->isMoving = true;
+        else
+            rgb->isMoving = false;
+
+        
         if (rgb->parent != nullptr)
             rgb->parent->transform->position += rgb->velocity;
 
@@ -85,56 +91,60 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                     auto polygon2dColliderB = std::dynamic_pointer_cast<Polygon2DColliderComponent>(components[j]);  
                     if(polygon2dColliderB->parent != nullptr)
                     {
-                        D3DXVECTOR2 normal= D3DXVECTOR2(0,0);
-                        float depth = std::numeric_limits<float>::max();
-                        auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld(), &normal, &depth);
-
-                        //  do collision routine
-                        if(isCollided)
+                        //  check if one of them are moving first before checking for collision but still keep checking with behavbiour with player
+                        if(polygon2dColliderA->parent->rigidbody->isMoving || polygon2dColliderB->parent->rigidbody->isMoving || polygon2dColliderA->parent->GetTag() == PLAYER || polygon2dColliderB->parent->GetTag() == PLAYER)
                         {
-                            polygon2dColliderB->currentTriggeredColliders.insert(polygon2dColliderA);
-                            polygon2dColliderA->currentTriggeredColliders.insert(polygon2dColliderB);
-                    
-                            //std::cout<<"COLLISION_DETECTED!"<<'\n';
-                    
-                            //  Do polygon2dColliderA collision event
-                            if(polygon2dColliderA->collsionEventScript != nullptr)
-                            {
-                                // polygon2dColliderA->collisionEvent->ownerCollider = polygon2dColliderA;
-                                // polygon2dColliderA->collisionEvent->incomingCollider = polygon2dColliderB;
-                                // auto listenerIDA = polygon2dColliderA->AddCollisionListener();
-                                // polygon2dColliderA->collisionEvent->TriggerEvent();
-                                // polygon2dColliderA->collisionEvent->RemoveListener(listenerIDA);
-                                polygon2dColliderA->collsionEventScript->RunScript(polygon2dColliderA, polygon2dColliderB);
-                            }
+                            D3DXVECTOR2 normal= D3DXVECTOR2(0,0);
+                            float depth = std::numeric_limits<float>::max();
+                            auto isCollided = CheckIfPolygons2DIntersect(polygon2dColliderA->GetColliderVerticesInWorld(), polygon2dColliderB->GetColliderVerticesInWorld(), &normal, &depth);
 
-                            //  Do polygon2dColliderB collision event
-                            if(polygon2dColliderB->collsionEventScript != nullptr)
+                            //  do collision routine
+                            if(isCollided)
                             {
-                                // polygon2dColliderB->collisionEvent->ownerCollider = polygon2dColliderB;
-                                // polygon2dColliderB->collisionEvent->incomingCollider = polygon2dColliderA;
-                                // auto listenerIDB = polygon2dColliderB->AddCollisionListener();
-                                // polygon2dColliderB->collisionEvent->TriggerEvent();
-                                // polygon2dColliderB->collisionEvent->RemoveListener(listenerIDB);
-                                polygon2dColliderB->collsionEventScript->RunScript(polygon2dColliderB, polygon2dColliderA);
-                            }
-
-                            //  Move colliders apart from each other to resolve physical intersection
-                            if(!polygon2dColliderA->isEventTrigger && !polygon2dColliderB->isEventTrigger)
-                            {
-                                if(polygon2dColliderA->parent->rigidbody != nullptr && polygon2dColliderB->parent->rigidbody != nullptr)
+                                polygon2dColliderB->currentTriggeredColliders.insert(polygon2dColliderA);
+                                polygon2dColliderA->currentTriggeredColliders.insert(polygon2dColliderB);
+                    
+                                //std::cout<<"COLLISION_DETECTED!"<<'\n';
+                    
+                                //  Do polygon2dColliderA collision event
+                                if(polygon2dColliderA->collsionEventScript != nullptr)
                                 {
-                                    auto rgb2dA = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderA->parent->rigidbody);
-                                    auto rgb2dB = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderB->parent->rigidbody);
+                                    // polygon2dColliderA->collisionEvent->ownerCollider = polygon2dColliderA;
+                                    // polygon2dColliderA->collisionEvent->incomingCollider = polygon2dColliderB;
+                                    // auto listenerIDA = polygon2dColliderA->AddCollisionListener();
+                                    // polygon2dColliderA->collisionEvent->TriggerEvent();
+                                    // polygon2dColliderA->collisionEvent->RemoveListener(listenerIDA);
+                                    polygon2dColliderA->collsionEventScript->RunScript(polygon2dColliderA, polygon2dColliderB);
+                                }
 
-                                    if(!rgb2dA->isStatic)
-                                        polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
-                                    if(!rgb2dB->isStatic)
-                                        polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
+                                //  Do polygon2dColliderB collision event
+                                if(polygon2dColliderB->collsionEventScript != nullptr)
+                                {
+                                    // polygon2dColliderB->collisionEvent->ownerCollider = polygon2dColliderB;
+                                    // polygon2dColliderB->collisionEvent->incomingCollider = polygon2dColliderA;
+                                    // auto listenerIDB = polygon2dColliderB->AddCollisionListener();
+                                    // polygon2dColliderB->collisionEvent->TriggerEvent();
+                                    // polygon2dColliderB->collisionEvent->RemoveListener(listenerIDB);
+                                    polygon2dColliderB->collsionEventScript->RunScript(polygon2dColliderB, polygon2dColliderA);
+                                }
 
-                                    //  Add forces for realistic physics response
+                                //  Move colliders apart from each other to resolve physical intersection
+                                if(!polygon2dColliderA->isEventTrigger && !polygon2dColliderB->isEventTrigger)
+                                {
+                                    if(polygon2dColliderA->parent->rigidbody != nullptr && polygon2dColliderB->parent->rigidbody != nullptr)
+                                    {
+                                        auto rgb2dA = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderA->parent->rigidbody);
+                                        auto rgb2dB = std::dynamic_pointer_cast<Rigidbody2DComponent>(polygon2dColliderB->parent->rigidbody);
 
-                                    ResolveCollision(rgb2dA, rgb2dB, normal, depth);
+                                        if(!rgb2dA->isStatic)
+                                            polygon2dColliderA->parent->transform->position += (-normal * depth/2.0f);
+                                        if(!rgb2dB->isStatic)
+                                            polygon2dColliderB->parent->transform->position += (normal * depth/2.0f);
+
+                                        //  Add forces for realistic physics response
+
+                                        ResolveCollision(rgb2dA, rgb2dB, normal, depth);
+                                    }
                                 }
                             }
                         }
