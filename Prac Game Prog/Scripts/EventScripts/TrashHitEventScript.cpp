@@ -14,7 +14,8 @@ void TrashHitEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCompone
     std::shared_ptr<ColliderComponent> incomingCollider)
 {
     //std::cout << "hit" << std::endl;
-    //if(attackTriggered)
+    if(isAttackingLeft == isLeft || !isAttackingLeft == !isLeft)
+    if(attackTriggered)
         if(incomingCollider->parent->GetTag() == ENEMY)
         {
             D3DXVECTOR2 playerToEnemyDir;

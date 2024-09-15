@@ -9,6 +9,8 @@ class TrashHitEventScript: public EventScript
 {
 public:
     float forceMagnitude = 10;
+    bool isLeft;
+    bool isAttackingLeft;
     
     void RunScript(std::shared_ptr<ColliderComponent> ownerCollider, std::shared_ptr<ColliderComponent> incomingCollider)override;
     void DoEnterCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider, std::shared_ptr<ColliderComponent> incomingCollider)override;

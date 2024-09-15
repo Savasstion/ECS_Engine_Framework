@@ -100,10 +100,14 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 	mousePos.x += mouseState.lX;
 	mousePos.y += mouseState.lY;
 
-	if (mouseState.rgbButtons[0] & 0x80)
+	//ATTACK WHEN RELEASE
+	bool currentLeftClickState = (mouseState.rgbButtons[0] & 0x80) != 0;
+	if (!currentLeftClickState && attackTriggered)
 	{
+		// The LEFT CLICK was just released
 		std::cout << "LEFT CLICK" << std::endl;
 	}
+	attackTriggered = currentLeftClickState;
 
 	if (mouseState.rgbButtons[1] & 0x80)
 	{
@@ -182,9 +186,13 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 		break;
 	case DIK_A:
 		playerSprite->spriteInfo.currentDirection = spriteInfo.leftDirectionValue;
+		std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderL->collsionEventScript)->isAttackingLeft = true;
+		std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderR->collsionEventScript)->isAttackingLeft = true;
 		break;
 	case DIK_D:
 		playerSprite->spriteInfo.currentDirection = spriteInfo.rightDirectionValue;
+		std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderL->collsionEventScript)->isAttackingLeft = false;
+		std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderR->collsionEventScript)->isAttackingLeft = false;
 		break;
 	default:
 		isMoving = false;
@@ -283,14 +291,16 @@ void GameScene::AddIntoScene()
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-16, -24), D3DXVECTOR2(16, -24), D3DXVECTOR2(16, 24), D3DXVECTOR2(-16, 24) });
 
 	attackColliderL = this->componentManager->CreatePolygon2DColliderComponent(playerEntity);
-	attackColliderL->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-36, -24), D3DXVECTOR2(0, -24), D3DXVECTOR2(0, 24), D3DXVECTOR2(-36, 24) });
+	attackColliderL->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-48, -24), D3DXVECTOR2(0, -24), D3DXVECTOR2(0, 24), D3DXVECTOR2(-48, 24) });
 	attackColliderL->isEventTrigger = true;
 	attackColliderL->collsionEventScript = std::make_shared<TrashHitEventScript>();
+	std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderL->collsionEventScript)->isLeft = true;
 
 	attackColliderR = this->componentManager->CreatePolygon2DColliderComponent(playerEntity);
-	attackColliderR->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(36, -24), D3DXVECTOR2(0, -24), D3DXVECTOR2(0, 24), D3DXVECTOR2(36, 24) });
+	attackColliderR->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(48, -24), D3DXVECTOR2(0, -24), D3DXVECTOR2(0, 24), D3DXVECTOR2(48, 24) });
 	attackColliderR->isEventTrigger = true;
 	attackColliderR->collsionEventScript = std::make_shared<TrashHitEventScript>();
+	std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderR->collsionEventScript)->isLeft = false;
 
 
 	// Trash bag
@@ -362,9 +372,9 @@ void GameScene::AddIntoScene()
 
 	truckGoalCollider = this->componentManager->CreatePolygon2DColliderComponent(goalEntity);
 	truckGoalCollider->vertices = std::vector<D3DXVECTOR2>({
-		D3DXVECTOR2(-100, -200), D3DXVECTOR2(100, -200), D3DXVECTOR2(100, 200),D3DXVECTOR2(-100, 200) });
+		D3DXVECTOR2(-100, -500), D3DXVECTOR2(100, -500), D3DXVECTOR2(100, 700),D3DXVECTOR2(-100, 700) });
 	truckGoalCollider->collsionEventScript = std::make_shared<ScorePointEventScript>();
-	truckGoalCollider->isEventTrigger = false;
+	truckGoalCollider->isEventTrigger = true;
 
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(goalEntity);
 	rigidbodyComponent->isStatic = true;

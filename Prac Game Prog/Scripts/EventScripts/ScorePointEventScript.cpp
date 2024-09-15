@@ -7,6 +7,13 @@ void ScorePointEventScript::RunScript(std::shared_ptr<ColliderComponent> ownerCo
 {
     EventScript::RunScript(ownerCollider, incomingCollider);
     //std::cout << "Blow up world\n";
+    if (incomingCollider->parent->GetTag() == ENEMY)
+    {
+        std::cout << "Point Score!\n";
+        trashScore++;
+        incomingCollider->parent->Destroy();
+        std::cout << "Score = " << trashScore << std::endl;
+    }
 
 }
 
@@ -15,13 +22,7 @@ void ScorePointEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderCompo
 {
     EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
    
-    if (incomingCollider->parent->GetTag() == ENEMY)
-    {
-        std::cout << "Point Score!\n";
-        trashScore++;
-        incomingCollider->parent->Destroy();
-        std::cout << "Score = " << trashScore << std::endl;
-    }
+    
 
 }
 
