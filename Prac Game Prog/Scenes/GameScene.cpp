@@ -303,8 +303,25 @@ void GameScene::AddIntoScene()
 	audioComponent = this->componentManager->CreateAudio2DComponent(audioEntityGameScene);
 	audioBGM = this->componentManager->CreateAudio2DComponent(audioEntityGameScene);
 	audioComponent->LoadSound("Assets/Sounds/right-gravel-footstep-2.wav", false,false);  // [0]
-	audioBGM->LoadSound("Assets/Sounds/jazz-loop.mp3", true, false); // [1]
+	audioBGM->LoadSound("Assets/Sounds/8bit_bgm.mp3", true, false); // [1]
 
+	// Background
+	entity = this->entityManager->CreateEntity(BACKGROUND);
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/backgroundhorizontal.png", &spriteInfoMainMenu.texture);
+	spriteInfoMainMenu.sheetHeight = spriteInfoMainMenu.spriteHeight = SCREEN_HEIGHT;
+	spriteInfoMainMenu.sheetWidth = spriteInfoMainMenu.spriteWidth = SCREEN_WIDTH;
+	spriteInfoMainMenu.totalRows = 1;
+	spriteInfoMainMenu.totalCols = 1;
+	spriteInfoMainMenu.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfoMainMenu);
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+
+	// Player
 	playerEntity = this->entityManager->CreateEntity(PLAYER);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(playerEntity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/militia.png", &spriteInfo.texture);
@@ -344,31 +361,24 @@ void GameScene::AddIntoScene()
 	attackColliderR->collsionEventScript = std::make_shared<TrashHitEventScript>();
 	std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderR->collsionEventScript)->isLeft = false;
 
+	
+
 
 	// Trash bag ( Change to ball )
 	entity = this->entityManager->CreateEntity(ENEMY);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
-	D3DXCreateTextureFromFile(d3dDevice, "Assets/garbagebag.png", &spriteInfo.texture);
-	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 256;
-	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 256;
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/ball.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 32;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 32;
 	spriteInfo.totalRows = 1;
 	spriteInfo.totalCols = 1;
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(400, 400);
-	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
-	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({
-	D3DXVECTOR2(-118, 91),	//A    
-	D3DXVECTOR2(-53, 108),  //B  
-	D3DXVECTOR2(53, 108),   //C  
-	D3DXVECTOR2(118, 91),   //D  
-	D3DXVECTOR2(118, 38),   //E 
-	D3DXVECTOR2(53, 0),     //F  
-	D3DXVECTOR2(-53, 0),    //G  
-	D3DXVECTOR2(-118, 38)   //H  
-		});
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-16, -16), D3DXVECTOR2(16, -16), D3DXVECTOR2(16, 16), D3DXVECTOR2(-16, 16) });
 	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->friction = 0.2f;
