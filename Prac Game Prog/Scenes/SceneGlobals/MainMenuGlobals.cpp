@@ -12,6 +12,8 @@ std::shared_ptr<Entity> audioEntityMainMenu = nullptr;
 Sprite spriteInfoMainMenu;
 Sprite spriteInfo1MainMenu;
 
+std::shared_ptr<SceneManager> mainMenuSceneManager = nullptr;
+
 
 std::shared_ptr<TransformComponent> background1Transform = nullptr;
 std::shared_ptr<TransformComponent> background2Transform = nullptr;

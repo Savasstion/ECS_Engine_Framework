@@ -40,8 +40,10 @@ void MainMenuScene::ToggleFullscreen()
 }
 
 
-void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> scene_manager)
+void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> sceneManager)
 {
+	mainMenuSceneManager = sceneManager;
+
     //  update stuff
 	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(playerEntity->renderer);
     
@@ -112,10 +114,17 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	mousePos.x += mouseState.lX;
 	mousePos.y += mouseState.lY;
 
-	if (mouseState.rgbButtons[0] & 0x80) 
+	mousePointerEntity->transform->position.x += mouseState.lX;
+	mousePointerEntity->transform->position.y += mouseState.lY;
+
+	//ATTACK WHEN RELEASE
+	bool currentLeftClickState = (mouseState.rgbButtons[0] & 0x80) != 0;
+	if (!currentLeftClickState && attackTriggered)
 	{
+		// The LEFT CLICK was just released
 		std::cout << "LEFT CLICK" << std::endl;
 	}
+	attackTriggered = currentLeftClickState;
 
 	if (mouseState.rgbButtons[1] & 0x80)
 	{
@@ -124,90 +133,6 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 
 #pragma endregion
 
-#pragma region KEYBOARD_INPUTS
-	//	KEYBOARD INPUT EVENT
-	if (diKeys[DIK_ESCAPE] & 0x80)
-	{
-		
-	}
-
-	//FULLSCREEN WHEN RELEASE
-	bool currentFKeyState = (diKeys[DIK_F] & 0x80) != 0;
-	if (!currentFKeyState && fullscreenTriggered)
-	{
-		// The F key was just released
-		ToggleFullscreen();
-	}
-	fullscreenTriggered = currentFKeyState;
-
-#pragma region PLAYER_KEYBOARD_INPUTS
-	// player inputs
-	auto e = this->entityManager->GetEntity(PLAYER);
-	auto t = e->transform;
-	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
-	D3DXVECTOR2 forceApplied = D3DXVECTOR2(0,0);
-	
-	//PLAYER MOVEMENT ===================
-	int lastKey = -1;
-	if (diKeys[DIK_W] & 0x80 || diKeys[DIK_S] & 0x80 || diKeys[DIK_A] & 0x80 || diKeys[DIK_D] & 0x80)
-	{
-		isMoving = true;
-		if (diKeys[DIK_W] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(0, -1);
-			lastKey = DIK_W;
-		}
-		if (diKeys[DIK_S] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(0, 1);
-			lastKey = DIK_S;
-		}
-		if (diKeys[DIK_A] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(-1, 0);
-			lastKey = DIK_A;
-		}
-		if (diKeys[DIK_D] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(1, 0);
-			lastKey = DIK_D;
-		}
-	}
-	//Player direction will be last key pressed
-	switch (lastKey) {
-	case DIK_W:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.upDirectionValue;
-		break;
-	case DIK_S:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.downDirectionValue;
-		break;
-	case DIK_A:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.leftDirectionValue;
-		break;
-	case DIK_D:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.rightDirectionValue;
-		break;
-	default:
-		isMoving = false;
-		break;
-	}
-	playerSprite->spriteInfo.animating = isMoving;
-	//=================================
-
-	//testing
-	//change scene WHEN RELEASE
-	bool currentLKeyState = (diKeys[DIK_L] & 0x80) != 0;
-	if (!currentLKeyState && changeSceneTriggered)
-	{
-		isSwitchScene = true;
-	}
-	changeSceneTriggered = currentLKeyState;
-
-	D3DXVec2Normalize(&forceApplied,&forceApplied);
-	rgb->ApplyForce(forceApplied * mainMenuThrust * framesToUpdate);
-#pragma endregion
-	
-#pragma endregion
 
 	// Sprite Animation Update															
 	auto sprites = this->componentManager->GetComponents(SPRITE2D_RENDERER);
@@ -220,12 +145,6 @@ void MainMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared
 	// Play sound only when movement starts and regulate it with deltaTime
 	static float timeSinceLastSound = 0.0f;
 	timeSinceLastSound += deltaTime;
-
-	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
-	{
-		audioManager.PlayAudio(audioEntityMainMenu->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
-		timeSinceLastSound = 0.0f; // Reset the timer
-	}
 
 	
 }
@@ -460,6 +379,11 @@ void MainMenuScene::AddIntoScene()
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<ImpactEventScript>();
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
 	
 	//	for testing
 	collider2 = polygon2dColliderComponent;
@@ -479,6 +403,13 @@ void MainMenuScene::AddIntoScene()
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<OptionButtonEventScript>();
+	polygon2dColliderComponent->isEventTrigger = true;
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
 	
 
 	//Quit Button
@@ -496,6 +427,11 @@ void MainMenuScene::AddIntoScene()
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
 
 	//Logo Button
 	entity = this->entityManager->CreateEntity(UI);
@@ -510,7 +446,42 @@ void MainMenuScene::AddIntoScene()
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH/2, SCREEN_HEIGHT/6);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
 
+	
+	// Mouse pointer
+	entity = this->entityManager->CreateEntity(MOUSE_POINTER);
+	mousePointerEntity = entity;
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/mousePointer.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 16;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 16;
+	spriteInfo.totalRows = 1;
+	spriteInfo.totalCols = 1;
+	spriteInfo.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(mousePos.x, mousePos.y);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-1, -1), D3DXVECTOR2(-1, 1), D3DXVECTOR2(1, 1), D3DXVECTOR2(1, -1) });
+	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	polygon2dColliderComponent->relativePos = D3DXVECTOR2(0, 0);
+	polygon2dColliderComponent->isEventTrigger = true;
+	mousePointerCollider = polygon2dColliderComponent;
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
+
+	// BGM 
 	audioManager.PlayAudio(audioEntityMainMenu->audios[1], 0, 0);
 	
 }

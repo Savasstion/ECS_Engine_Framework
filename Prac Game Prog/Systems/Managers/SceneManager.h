@@ -6,6 +6,7 @@
 #include "../../Scenes/MainMenuScene.h"
 #include "../../Scenes/PauseMenuScene.h"
 #include "../../Scenes/GameScene.h"
+#include "../../Scenes/OptionsScene.h"
 
 
 class SceneManager

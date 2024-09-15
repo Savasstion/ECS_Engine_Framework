@@ -5,6 +5,7 @@
 #include "../Scripts/EventScripts/ScorePointEventScript.h"
 
 
+
 class GameScene : public Scene
 {
 public:

@@ -2,6 +2,7 @@
 
 
 
+
 SceneManager::SceneManager()
 {
     // auto menu = std::make_shared<PauseMenuScene>();
@@ -67,6 +68,29 @@ void SceneManager::LoadScene(SceneEnum scene_enum)
             {
             auto menu = std::make_shared<GameScene>();
             menu->sceneName = GAME_SCENE;
+            auto entityManager = sceneEntityMap[menu->sceneName];
+            if (entityManager != NULL)
+            {
+                menu->entityManager = entityManager;
+            }
+            else
+            {
+                menu->AddIntoScene();
+            }
+            auto componentManager = sceneComponentMap[menu->sceneName];
+            if (componentManager != NULL)
+            {
+                menu->componentManager = componentManager;
+            }
+
+            sceneStack.push(menu);
+            currentScene = menu;
+            }
+            break;
+        case OPTIONS_MENU:
+            {
+            auto menu = std::make_shared<OptionsScene>();
+            menu->sceneName = OPTIONS_MENU;
             auto entityManager = sceneEntityMap[menu->sceneName];
             if (entityManager != NULL)
             {

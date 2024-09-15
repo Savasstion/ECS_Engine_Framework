@@ -212,10 +212,7 @@ void PauseMenuScene::ToggleFullscreen()
 void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr<SceneManager> sceneManager)
 {
 	pauseMenuSceneManager = sceneManager;
-	auto playerSprite = std::dynamic_pointer_cast<Sprite2DRendererComponent>(playerEntity->renderer);
 	
-	bool isMoving = false;
-	static bool wasMoving = false; // Track the previous movement state
 
 	// Update timeSinceLastSound
 	timeSinceLastSound += deltaTime;
@@ -256,95 +253,6 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 		sceneManager->LoadScene(GAME_SCENE);
 		return;
 	}
-
-	//FULLSCREEN WHEN RELEASE
-	bool currentFKeyState = (diKeys[DIK_F] & 0x80) != 0;
-	if (!currentFKeyState && fullscreenTriggered)
-	{
-		// The F key was just released
-		ToggleFullscreen();
-	}
-	fullscreenTriggered = currentFKeyState;
-
-	/*if (diKeys[DIK_F] & 0x80)
-	{
-		ToggleFullscreen();
-	}*/
-
-
-#pragma region PLAYER_KEYBOARD_INPUTS
-	// player inputs
-	auto e = this->entityManager->GetEntity(PLAYER);
-	auto t = e->transform;
-	auto rgb = std::dynamic_pointer_cast<Rigidbody2DComponent>(e->rigidbody);
-	D3DXVECTOR2 forceApplied = D3DXVECTOR2(0,0);
-
-	
-	//forceApplied.x = sin(t->rotation) * thrust;
-	//forceApplied.y = -cos(t->rotation) * thrust;
-	//t->rotation -= framesToUpdate * rotationSpeed;
-
-	//PLAYER MOVEMENT ===================
-	int lastKey = -1;
-	if (diKeys[DIK_W] & 0x80 || diKeys[DIK_S] & 0x80 || diKeys[DIK_A] & 0x80 || diKeys[DIK_D] & 0x80)
-	{
-		isMoving = true;
-		if (diKeys[DIK_W] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(0, -1);
-			lastKey = DIK_W;
-		}
-		if (diKeys[DIK_S] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(0, 1);
-			lastKey = DIK_S;
-		}
-		if (diKeys[DIK_A] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(-1, 0);
-			lastKey = DIK_A;
-		}
-		if (diKeys[DIK_D] & 0x80)
-		{
-			forceApplied += D3DXVECTOR2(1, 0);
-			lastKey = DIK_D;
-		}
-	}
-	//Player direction will be last key pressed
-	switch (lastKey) {
-	case DIK_W:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.upDirectionValue;
-		break;
-	case DIK_S:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.downDirectionValue;
-		break;
-	case DIK_A:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.leftDirectionValue;
-		break;
-	case DIK_D:
-		playerSprite->spriteInfo.currentDirection = spriteInfo.rightDirectionValue;
-		break;
-	default:
-		isMoving = false;
-		break;
-	}
-	playerSprite->spriteInfo.animating = isMoving;
-	//=================================
-
-	//change scene WHEN RELEASE
-	bool currentLKeyState = (diKeys[DIK_L] & 0x80) != 0;
-	if (!currentLKeyState && changeSceneTriggered)
-	{
-		isSwitchScene = true;
-	}
-	changeSceneTriggered = currentLKeyState;
-
-	D3DXVec2Normalize(&forceApplied,&forceApplied);
-	rgb->ApplyForce(forceApplied * thrust * framesToUpdate);
-
-	
-#pragma endregion
-	
 #pragma endregion
 
 	// Sprite Animation Update															
@@ -355,15 +263,6 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 		sprite2d->UpdateSpriteAnimation(framesToUpdate);
 	}
 
-	// Play sound only when movement starts and regulate it with deltaTime
-	static float timeSinceLastSound = 0.0f;
-	timeSinceLastSound += deltaTime;
-
-	if (isMoving && !wasMoving && timeSinceLastSound >= 0.5f) // 0.5 seconds between sounds
-	{
-		//audioManager.PlayAudio(audioEntity->audios[0], t->position.x, SCREEN_WIDTH); // pans left and right
-		timeSinceLastSound = 0.0f; // Reset the timer
-	}
 	
 }
 
@@ -460,7 +359,6 @@ void PauseMenuScene::AddIntoScene()
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<ResumeButtonEventScript>();
-
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->isStatic = true;
 	rigidbodyComponent->friction = .0f;

@@ -38,14 +38,14 @@ void GameScene::createTrashEntity(const D3DXVECTOR2& position, const std::string
 	// Set up the collider component
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({
-		D3DXVECTOR2(-128, -53),    // Top-left
-		D3DXVECTOR2(-53, -128),    // Top
-		D3DXVECTOR2(53, -128),     // Top-right
-		D3DXVECTOR2(128, -53),     // Right
-		D3DXVECTOR2(128, 53),      // Bottom-right
-		D3DXVECTOR2(53, 128),      // Bottom
-		D3DXVECTOR2(-53, 128),     // Bottom-left
-		D3DXVECTOR2(-128, 53)      // Left 
+			D3DXVECTOR2(-118, 91),	//A    
+			D3DXVECTOR2(-53, 108),  //B  
+			D3DXVECTOR2(53, 108),   //C  
+			D3DXVECTOR2(118, 91),   //D  
+			D3DXVECTOR2(118, 38),   //E 
+			D3DXVECTOR2(53, 0),     //F  
+			D3DXVECTOR2(-53, 0),    //G  
+			D3DXVECTOR2(-118, 38)   //H  
 		});
 	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);

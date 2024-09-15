@@ -3,6 +3,7 @@
 #include "../Scenes/SceneGlobals/MainMenuGlobals.h"
 #include "../Scripts/EventScripts/PrintStringEventScript.h"
 #include "../Scripts/EventScripts/ImpactEventScript.h"
+#include "../Scripts/EventScripts/OptionButtonEventScript.h"
 
 class MainMenuScene : public Scene
 {

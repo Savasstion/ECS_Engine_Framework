@@ -2,6 +2,7 @@
 #include <memory>
 #include "../../BaseClasses/Sprite.h"
 #include "../../Components/TransformComponent.h"
+#include "../../Systems/Managers/SceneManager.h"
 class Entity;
 
 
@@ -16,6 +17,8 @@ extern const float soundIntervalMainMenu; // Time interval between sounds in sec
 extern std::shared_ptr<Entity> audioEntityMainMenu;
 extern Sprite spriteInfoMainMenu;
 extern Sprite spriteInfo1MainMenu;
+
+extern std::shared_ptr<SceneManager> mainMenuSceneManager;
 
 //Parallax stuff
 extern std::shared_ptr<TransformComponent> background1Transform;
