@@ -16,12 +16,12 @@ void OptionMenuQuitButtonEventScript::DoEnterCollisionScript(std::shared_ptr<Col
         if (incomingCollider->parent->GetTag() == MOUSE_POINTER)
         {
             std::cout << "Option Menu Quit Button clicked\n";
-            if(optionSceneManager->currentScene->sceneName == MAIN_MENU)
+            if(prevScene == MAIN_MENU)
             {
                 optionSceneManager->UnloadScene(false);
                 optionSceneManager->LoadScene(PAUSE_MENU);
                 EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
-            }else if(optionSceneManager->currentScene->sceneName == PAUSE_MENU)
+            }else if(prevScene == PAUSE_MENU)
             {
                 optionSceneManager->UnloadScene(false);
                 optionSceneManager->LoadScene(PAUSE_MENU);
