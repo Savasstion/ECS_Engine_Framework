@@ -289,7 +289,7 @@ void PauseMenuScene::AddIntoScene()
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 200);
+	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH / 2, 200);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
@@ -315,7 +315,7 @@ void PauseMenuScene::AddIntoScene()
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 300);
+	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH / 2, 300);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
@@ -338,7 +338,7 @@ void PauseMenuScene::AddIntoScene()
 	spriteInfo.isAnimated = false;
 	spriteComponent->InitSpriteInfo(spriteInfo);
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
-	transformComponent->position = D3DXVECTOR2(200, 400);
+	transformComponent->position = D3DXVECTOR2(SCREEN_WIDTH/2, 400);
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
@@ -379,6 +379,10 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
 
+}
+
+void PauseMenuScene::InitSceneAudio()
+{
 }
 
 
