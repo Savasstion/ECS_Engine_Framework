@@ -34,8 +34,6 @@ LPDIRECT3DTEXTURE9 numbersTexture = nullptr;
 RECT spriteRect;
 RECT textRect;
 
-std::shared_ptr<SceneManager> sceneManager = std::make_shared<SceneManager>();
-
 //testing vars
 
 

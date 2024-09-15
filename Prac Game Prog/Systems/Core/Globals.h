@@ -87,5 +87,7 @@ extern FMOD::Channel* channel;	//
 //for testing purposes
 extern std::shared_ptr<Polygon2DColliderComponent> collider1, collider2;
 
+extern std::shared_ptr<SceneManager> sceneManager;
+
 #endif // GLOBAL_H
     

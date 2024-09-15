@@ -1,4 +1,5 @@
 #include "Globals.h"
+#include "../Managers/SceneManager.h"
 
 int intendedFPS = 60;
 
