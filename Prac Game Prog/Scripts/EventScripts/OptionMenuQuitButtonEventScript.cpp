@@ -19,7 +19,7 @@ void OptionMenuQuitButtonEventScript::DoEnterCollisionScript(std::shared_ptr<Col
             if(prevScene == MAIN_MENU)
             {
                 optionSceneManager->UnloadScene(false);
-                optionSceneManager->LoadScene(PAUSE_MENU);
+                optionSceneManager->LoadScene(MAIN_MENU);
                 EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
             }else if(prevScene == PAUSE_MENU)
             {
