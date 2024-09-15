@@ -36,6 +36,7 @@
 
 //for testing
 #include "../../Components/Polygon2DColliderComponent.h"
+#include "../../Enums/SceneEnum.h"
 
 #pragma endregion
 
@@ -87,6 +88,6 @@ extern FMOD::Channel* channel;	//
 //for testing purposes
 extern std::shared_ptr<Polygon2DColliderComponent> collider1, collider2;
 
-
+extern SceneEnum prevScene;
 #endif // GLOBAL_H
     
