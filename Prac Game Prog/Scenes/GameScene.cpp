@@ -9,7 +9,7 @@ GameScene::GameScene()
     Scene(GAME_SCENE);
 }
 
-void GameScene::createTrashEntity(const D3DXVECTOR2& position, const std::string& texturePath) {
+void GameScene::createTrashEntity(const D3DXVECTOR2& position, const std::string& texturePath, const float size) {
 	std::shared_ptr<Sprite2DRendererComponent> spriteComponent;
 	std::shared_ptr<TransformComponent> transformComponent;
 	std::shared_ptr<Polygon2DColliderComponent> polygon2dColliderComponent;
@@ -33,7 +33,7 @@ void GameScene::createTrashEntity(const D3DXVECTOR2& position, const std::string
 	// Set up the transform component
 	transformComponent = this->componentManager->CreateTransformComponent(entity);
 	transformComponent->position = position;
-	transformComponent->scale = D3DXVECTOR2(0.25, 0.25);
+	transformComponent->scale = D3DXVECTOR2(0.25 * size, 0.25 * size);
 
 	// Set up the collider component
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
@@ -50,8 +50,8 @@ void GameScene::createTrashEntity(const D3DXVECTOR2& position, const std::string
 	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->friction = .2f;
-	rigidbodyComponent->mass = 1.0f;
-	rigidbodyComponent->restitution = .3f;
+	rigidbodyComponent->mass = 100.0f * (size);
+	rigidbodyComponent->restitution = 1.0f; //0.3f
 }
 
 void GameScene::ToggleFullscreen()
@@ -243,14 +243,19 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 	{
 		// Reset the timer
 		timeSinceLastSpawn = 0.0f;
+		
+		float x = minRangeX + (std::rand() % (maxRangeX - minRangeX + 1));
+		float y = minRangeY + (std::rand() % (maxRangeY - minRangeY + 1));
 
-		// Generate a random position
-		float x = static_cast<float>(rand() % SCREEN_WIDTH - 500); // Adjust bounds as needed
-		float y = static_cast<float>(rand() % SCREEN_HEIGHT); // Adjust bounds as needed
+		float size = minSize + (std::rand() % (maxSize - minSize + 1));
+		
 		D3DXVECTOR2 randomPosition(x, y);
 
 		// Call createTrashEntity
-		createTrashEntity(randomPosition, "Assets/garbagebag.png"); // Adjust texture path as needed
+		if (currentTrashCount < spawnLimit) {
+			createTrashEntity(randomPosition, "Assets/garbagebag.png", size); // Adjust texture path as needed
+			currentTrashCount++;
+		}
 	}
 
 	//Play sound only when movement starts and regulate it with deltaTime
@@ -320,9 +325,8 @@ void GameScene::AddIntoScene()
 	std::dynamic_pointer_cast<TrashHitEventScript>(attackColliderR->collsionEventScript)->isLeft = false;
 
 
-	// Trash bag
+	// Trash bag ( Change to ball )
 	entity = this->entityManager->CreateEntity(ENEMY);
-	entity->SetTag(ENEMY);
 	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
 	D3DXCreateTextureFromFile(d3dDevice, "Assets/garbagebag.png", &spriteInfo.texture);
 	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 256;
@@ -349,7 +353,7 @@ void GameScene::AddIntoScene()
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->friction = 0.2f;
 	rigidbodyComponent->mass = 1.0f;
-	rigidbodyComponent->restitution = .3f;
+	rigidbodyComponent->restitution = 0.9f;
 	octagonCollider = polygon2dColliderComponent;
 
 

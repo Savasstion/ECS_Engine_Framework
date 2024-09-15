@@ -2,6 +2,7 @@
 #include "../EventScript.h"
 #include "../../Components/ColliderComponent.h"
 #include "../../BaseClasses/Entity.h"
+#include "../../Scenes/SceneGlobals/GameSceneGlobals.h"
 
 
 class ScorePointEventScript : public EventScript

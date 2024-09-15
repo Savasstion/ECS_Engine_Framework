@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 void ScorePointEventScript::RunScript(std::shared_ptr<ColliderComponent> ownerCollider,
     std::shared_ptr<ColliderComponent> incomingCollider)
 {
@@ -13,6 +14,7 @@ void ScorePointEventScript::RunScript(std::shared_ptr<ColliderComponent> ownerCo
         trashScore++;
         incomingCollider->parent->Destroy();
         std::cout << "Score = " << trashScore << std::endl;
+        currentTrashCount--;
     }
 
 }

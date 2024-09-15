@@ -13,9 +13,9 @@ void Rigidbody2DComponent::ApplyForce(D3DXVECTOR2 force)
 {
     forceApplied += force;
 
-    if (mass != 0) {
-        acceleration = forceApplied / mass;
-    } else {
-        acceleration = D3DXVECTOR2(0, 0); // Prevent division by zero
-    }
+   /* if (mass != 0) {
+        acceleration = forceApplied / mass;*/
+    //} else {
+        //acceleration = D3DXVECTOR2(0, 0); // Prevent division by zero
+    //}
 }

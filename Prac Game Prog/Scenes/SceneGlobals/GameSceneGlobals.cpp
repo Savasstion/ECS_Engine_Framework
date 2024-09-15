@@ -8,6 +8,8 @@ float gameSceneRotationSpeed = .1f;
 float timeSinceLastSoundGameScene = 0.0f; // Track time since the last sound was played
 const float soundIntervalGameScene = 0.1f; // Time interval between sounds in seconds
 
+int currentTrashCount = 0;
+
 std::shared_ptr<Entity> audioEntityGameScene = nullptr;
 Sprite spriteInfogameScene;
 Sprite spriteInfo1gameScene;

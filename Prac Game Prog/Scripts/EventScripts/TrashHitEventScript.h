@@ -8,7 +8,7 @@
 class TrashHitEventScript: public EventScript
 {
 public:
-    float forceMagnitude = 100;
+    float forceMagnitude = 2250;
     bool isLeft;
     bool isAttackingLeft;
     

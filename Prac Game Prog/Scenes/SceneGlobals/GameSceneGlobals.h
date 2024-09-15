@@ -10,6 +10,7 @@ class Entity;
 extern float Thrust;
 extern float gameSceneRotationSpeed;
 
+extern int currentTrashCount;
 
 extern float timeSinceLastSoundGameScene; // Track time since the last sound was played
 extern const float soundIntervalGameScene; // Time interval between sounds in seconds
