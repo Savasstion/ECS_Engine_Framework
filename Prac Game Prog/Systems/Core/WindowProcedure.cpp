@@ -8,7 +8,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			switch(wParam)
 			{
-			case VK_ESCAPE:
+			case 0x50: // P button
 				PostQuitMessage(0);
 				break;
 			}

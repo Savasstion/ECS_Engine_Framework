@@ -12,6 +12,7 @@ enum TagEnum
     PICKABLE,
     UI,
     BACKGROUND,
-    GOAL
+    GOAL,
+    AUDIO
     
 };

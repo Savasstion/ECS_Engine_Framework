@@ -11,12 +11,12 @@ extern float Thrust;
 extern float gameSceneRotationSpeed;
 
 
-extern float timeSinceLastSoundgameScene; // Track time since the last sound was played
-extern const float soundIntervalgameScene; // Time interval between sounds in seconds
+extern float timeSinceLastSoundGameScene; // Track time since the last sound was played
+extern const float soundIntervalGameScene; // Time interval between sounds in seconds
 
-extern std::shared_ptr<Entity> audioEntitygameScene;
-extern Sprite spriteInfogameScene;
-extern Sprite spriteInfo1gameScene;
+extern std::shared_ptr<Entity> audioEntityGameScene;
+extern Sprite spriteInfogGameScene;
+extern Sprite spriteInfo1GameScene;
 
 extern std::shared_ptr<Entity> playerEntity;
 extern std::shared_ptr<Entity> goalEntity;

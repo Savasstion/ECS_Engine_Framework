@@ -244,6 +244,7 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 	if (diKeys[DIK_ESCAPE] & 0x80)
 	{
 		
+		scene_manager->LoadScene(GAME_SCENE);
 	}
 
 	//FULLSCREEN WHEN RELEASE
@@ -449,6 +450,7 @@ void PauseMenuScene::AddIntoScene()
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
 	rigidbodyComponent->friction = .0f;
 	rigidbodyComponent->mass = 1000000.0f;
 	rigidbodyComponent->restitution = .7f;
@@ -474,6 +476,7 @@ void PauseMenuScene::AddIntoScene()
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->friction = .5f;
 	rigidbodyComponent->restitution = .4f;
@@ -495,6 +498,7 @@ void PauseMenuScene::AddIntoScene()
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23) });
 	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
 	rigidbodyComponent->friction = .5f;
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
