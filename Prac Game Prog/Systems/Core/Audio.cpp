@@ -1,5 +1,7 @@
 #include "Audio.h"
 
+#include "../../Scenes/SceneGlobals/OptionSceneGlobals.h"
+
 void Audio::InitAudio()
 {
     result = FMOD::System_Create(&audioSystem);
@@ -12,7 +14,7 @@ void Audio::PlayAudio(std::shared_ptr<AudioComponent> au, float spriteX, float s
     //                                       au->channelGroup, au->isPaused (i think isPause shouldnt be used)
     result = audioSystem->playSound(au2d->sound, 0, false, &channel);
     //TODO: need to set freq and volume
-    channel->setVolume(au2d->GetVolume());
+    channel->setVolume(au2d->GetVolume() * volumeModifier);
     channel->setFrequency(48000);
     
     float normalizedPan = (spriteX / screenWidth) * 2.0f - 1.0f;
