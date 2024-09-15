@@ -13,5 +13,8 @@ Sprite spriteInfo1;
 
 Audio audioManager;
 
+// Mouse
+std::shared_ptr<Entity> mousePointerEntity = nullptr;
+
 
 

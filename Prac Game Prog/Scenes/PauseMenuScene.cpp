@@ -2,6 +2,7 @@
 
 #include "../Systems/Managers/SceneManager.h"
 #include "../Systems/Managers/InputManager.h"
+#include "../Scripts/EventScripts/ResumeButtonEventScript.h"
 
 
 PauseMenuScene::PauseMenuScene()
@@ -227,10 +228,17 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 	mousePos.x += mouseState.lX;
 	mousePos.y += mouseState.lY;
 
-	if (mouseState.rgbButtons[0] & 0x80) 
+	mousePointerEntity->transform->position.x += mouseState.lX;
+	mousePointerEntity->transform->position.y += mouseState.lY;
+
+	//ATTACK WHEN RELEASE
+	bool currentLeftClickState = (mouseState.rgbButtons[0] & 0x80) != 0;
+	if (!currentLeftClickState && attackTriggered)
 	{
+		// The LEFT CLICK was just released
 		std::cout << "LEFT CLICK" << std::endl;
 	}
+	attackTriggered = currentLeftClickState;
 
 	if (mouseState.rgbButtons[1] & 0x80)
 	{
@@ -432,6 +440,7 @@ void PauseMenuScene::AddIntoScene()
 	// //	for testing
 	// collider1 = polygon2dColliderComponent;
 	//
+	
 	//UI stuff
 	//Resume Button
 	entity = this->entityManager->CreateEntity(UI);
@@ -448,7 +457,8 @@ void PauseMenuScene::AddIntoScene()
 	transformComponent->scale = D3DXVECTOR2(1, 1);
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({D3DXVECTOR2(-64, -23), D3DXVECTOR2(-64, 23), D3DXVECTOR2(64, 23), D3DXVECTOR2(64, -23)});
-	polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	polygon2dColliderComponent->collsionEventScript = std::make_shared<ResumeButtonEventScript>();
+
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->isStatic = true;
 	rigidbodyComponent->friction = .0f;
@@ -522,6 +532,35 @@ void PauseMenuScene::AddIntoScene()
 	rigidbodyComponent->friction = .5f;
 	rigidbodyComponent->mass = 1.0f;
 	rigidbodyComponent->restitution = .3f;
+
+	// Mouse pointer
+	entity = this->entityManager->CreateEntity(MOUSE_POINTER);
+	mousePointerEntity = entity;
+	spriteComponent = this->componentManager->CreateSprite2DRendererComponent(entity);
+	D3DXCreateTextureFromFile(d3dDevice, "Assets/mousePointer.png", &spriteInfo.texture);
+	spriteInfo.sheetHeight = spriteInfo.spriteHeight = 16;
+	spriteInfo.sheetWidth = spriteInfo.spriteWidth = 16;
+	spriteInfo.totalRows = 1;
+	spriteInfo.totalCols = 1;
+	spriteInfo.isAnimated = false;
+	spriteComponent->InitSpriteInfo(spriteInfo);
+
+	transformComponent = this->componentManager->CreateTransformComponent(entity);
+	transformComponent->position = D3DXVECTOR2(mousePos.x, mousePos.y);
+	transformComponent->scale = D3DXVECTOR2(1, 1);
+
+	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
+	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-1, -1), D3DXVECTOR2(-1, 1), D3DXVECTOR2(1, 1), D3DXVECTOR2(1, -1) });
+	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
+	polygon2dColliderComponent->relativePos = D3DXVECTOR2(-8, -8);
+	polygon2dColliderComponent->isEventTrigger = true;
+
+	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
+	rigidbodyComponent->isStatic = true;
+	rigidbodyComponent->friction = .5f;
+	rigidbodyComponent->mass = 1.0f;
+	rigidbodyComponent->restitution = .3f;
+
 }
 
 

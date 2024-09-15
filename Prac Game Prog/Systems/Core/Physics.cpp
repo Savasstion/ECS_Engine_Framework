@@ -92,7 +92,7 @@ void Physics::HandleAllCollision(std::shared_ptr<Scene> scene)
                     if(polygon2dColliderB->parent != nullptr)
                     {
                         //  check if one of them are moving first before checking for collision but still keep checking with behavbiour with player
-                        if(polygon2dColliderA->parent->rigidbody->isMoving || polygon2dColliderB->parent->rigidbody->isMoving || polygon2dColliderA->parent->GetTag() == PLAYER || polygon2dColliderB->parent->GetTag() == PLAYER)
+                        if(polygon2dColliderA->parent->rigidbody->isMoving || polygon2dColliderB->parent->rigidbody->isMoving || polygon2dColliderA->parent->GetTag() == PLAYER || polygon2dColliderB->parent->GetTag() == PLAYER || polygon2dColliderA->parent->GetTag() == MOUSE_POINTER || polygon2dColliderB->parent->GetTag() == MOUSE_POINTER)
                         {
                             D3DXVECTOR2 normal= D3DXVECTOR2(0,0);
                             float depth = std::numeric_limits<float>::max();

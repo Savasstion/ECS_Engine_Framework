@@ -13,6 +13,7 @@ enum TagEnum
     UI,
     BACKGROUND,
     GOAL,
-    AUDIO
+    AUDIO,
+    MOUSE_POINTER
     
 };
