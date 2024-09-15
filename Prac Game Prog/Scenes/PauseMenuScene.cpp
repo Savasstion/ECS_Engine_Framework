@@ -552,8 +552,9 @@ void PauseMenuScene::AddIntoScene()
 	polygon2dColliderComponent = this->componentManager->CreatePolygon2DColliderComponent(entity);
 	polygon2dColliderComponent->vertices = std::vector<D3DXVECTOR2>({ D3DXVECTOR2(-1, -1), D3DXVECTOR2(-1, 1), D3DXVECTOR2(1, 1), D3DXVECTOR2(1, -1) });
 	//polygon2dColliderComponent->collsionEventScript = std::make_shared<PrintStringEventScript>();
-	polygon2dColliderComponent->relativePos = D3DXVECTOR2(-8, -8);
+	polygon2dColliderComponent->relativePos = D3DXVECTOR2(0, 0);
 	polygon2dColliderComponent->isEventTrigger = true;
+	mousePointerCollider = polygon2dColliderComponent;
 
 	rigidbodyComponent = this->componentManager->CreateRigidbody2DComponent(entity);
 	rigidbodyComponent->isStatic = true;

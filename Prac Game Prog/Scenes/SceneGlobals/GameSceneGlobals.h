@@ -27,3 +27,4 @@ extern std::shared_ptr<Polygon2DColliderComponent> attackColliderL;
 extern std::shared_ptr<Polygon2DColliderComponent> attackColliderR;
 extern std::shared_ptr<Polygon2DColliderComponent> truckCollider;
 extern std::shared_ptr<Polygon2DColliderComponent> truckGoalCollider;
+extern std::shared_ptr<Polygon2DColliderComponent> mousePointerCollider;

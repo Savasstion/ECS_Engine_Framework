@@ -14,7 +14,6 @@ void ResumeButtonEventScript::RunScript(std::shared_ptr<ColliderComponent> owner
 void ResumeButtonEventScript::DoEnterCollisionScript(std::shared_ptr<ColliderComponent> ownerCollider,
     std::shared_ptr<ColliderComponent> incomingCollider)
 {
-    EventScript::DoEnterCollisionScript(ownerCollider, incomingCollider);
     if (attackTriggered)
         if (incomingCollider->parent->GetTag() == MOUSE_POINTER)
         {

@@ -202,6 +202,13 @@ void Graphics::DrawInterfacesOfScene(std::shared_ptr<Scene> currentScene)
         verticesE.push_back(verticesE[0]);  //to complete loop
         lineInterface->Draw(verticesE.data(), verticesE.size(), D3DCOLOR_XRGB(255, 0, 255));
     }
+    if (mousePointerCollider != nullptr)
+    {
+        auto verticesE = mousePointerCollider->GetColliderVerticesInWorld();
+        verticesE.push_back(verticesE[0]);  //to complete loop
+        lineInterface->Draw(verticesE.data(), verticesE.size(), D3DCOLOR_XRGB(255, 0, 255));
+    }
+
 
     lineInterface->End();
     

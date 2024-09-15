@@ -22,3 +22,4 @@ std::shared_ptr<Polygon2DColliderComponent> attackColliderL;
 std::shared_ptr<Polygon2DColliderComponent> attackColliderR;
 std::shared_ptr<Polygon2DColliderComponent> truckCollider;
 std::shared_ptr<Polygon2DColliderComponent> truckGoalCollider;
+std::shared_ptr<Polygon2DColliderComponent> mousePointerCollider;
