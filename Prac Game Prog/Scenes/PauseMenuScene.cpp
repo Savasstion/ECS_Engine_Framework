@@ -249,6 +249,7 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 	//	KEYBOARD INPUT EVENT
 	if (diKeys[DIK_ESCAPE] & 0x80)
 	{
+		audioManager.StopAudio();
 		sceneManager->UnloadScene(false);
 		sceneManager->LoadScene(GAME_SCENE);
 		return;
