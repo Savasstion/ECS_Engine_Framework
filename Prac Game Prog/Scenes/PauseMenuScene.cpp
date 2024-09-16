@@ -246,24 +246,24 @@ void PauseMenuScene::UpdateScene(int framesToUpdate, float deltaTime, std::share
 #pragma endregion
 
 #pragma region KEYBOARD_INPUTS
-	////	KEYBOARD INPUT EVENT
-	//if (diKeys[DIK_ESCAPE] & 0x80)
-	//{
-	//	sceneManager->UnloadScene(false);
-	//	sceneManager->LoadScene(GAME_SCENE);
-	//	return;
-	//}
-
-	//ESCAPE WHEN RELEASE - Close Pause
-	bool currentEscState = (diKeys[DIK_ESCAPE] & 0x80) != 0;
-	if (!currentEscState && escapeTriggered)
+	//	KEYBOARD INPUT EVENT
+	if (diKeys[DIK_ESCAPE] & 0x80)
 	{
 		sceneManager->UnloadScene(false);
 		sceneManager->LoadScene(GAME_SCENE);
 		return;
-		std::cout << "Escape" << std::endl;
 	}
-	escapeTriggered = currentEscState;
+
+	////ESCAPE WHEN RELEASE - Close Pause
+	//bool currentEscState = (diKeys[DIK_ESCAPE] & 0x80) != 0;
+	//if (!currentEscState && escapeTriggered)
+	//{
+	//	sceneManager->UnloadScene(false);
+	//	sceneManager->LoadScene(GAME_SCENE);
+	//	return;
+	//	std::cout << "Escape" << std::endl;
+	//}
+	//escapeTriggered = currentEscState;
 #pragma endregion
 
 	// Sprite Animation Update															

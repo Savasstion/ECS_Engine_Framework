@@ -118,16 +118,16 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 
 #pragma region KEYBOARD_INPUTS
 	////	KEYBOARD INPUT EVENT
-	//if (diKeys[DIK_ESCAPE] & 0x80)
-	//{
-	//	audioManager.StopAudio();
-	//	scene_manager->UnloadScene(true);
-	//	scene_manager->LoadScene(PAUSE_MENU);
-	//	return;
-	//}
+	if (diKeys[DIK_ESCAPE] & 0x80)
+	{
+		audioManager.StopAudio();
+		scene_manager->UnloadScene(true);
+		scene_manager->LoadScene(PAUSE_MENU);
+		return;
+	}
 
 	//ESCAPE WHEN RELEASE
-	bool currentEscState = (diKeys[DIK_ESCAPE] & 0x80) != 0;
+	/*bool currentEscState = (diKeys[DIK_ESCAPE] & 0x80) != 0;
 	if (!currentEscState && escapeTriggered)
 	{
 		audioManager.StopAudio();
@@ -136,7 +136,7 @@ void GameScene::UpdateScene(int framesToUpdate, float deltaTime, std::shared_ptr
 		return;
 		std::cout << "Escape" << std::endl;
 	}
-	escapeTriggered = currentEscState;
+	escapeTriggered = currentEscState;*/
 
 	//FULLSCREEN WHEN RELEASE
 	bool currentFKeyState = (diKeys[DIK_F] & 0x80) != 0;
