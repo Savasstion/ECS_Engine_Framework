@@ -18,6 +18,9 @@
 
 ### Justin Liew Jhun Kin
  - Audio module
+ - Spaial Audio
+ - Parallax scrolling
+ - Game Design (The premade demo scenes)
 
 ### Gregory Chia Ming Feng
  - Input module
